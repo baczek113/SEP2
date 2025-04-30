@@ -1,9 +1,10 @@
 package Model;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.ArrayList;
 
-public class Project {
+public class Project implements Serializable {
   private int project_id;
   private int created_by;
   private String name;
@@ -13,6 +14,8 @@ public class Project {
   private Date end_date;
   private ArrayList<Task> tasks;
   private ArrayList<Sprint> sprints;
+  private ProjectState currentState;
+
 
   public Project(int project_id, int created_by, String name, String description,
       String status, Date start_date, Date end_date) {
@@ -25,12 +28,44 @@ public class Project {
     this.end_date = end_date;
     this.tasks = new ArrayList<>();
     this.sprints = new ArrayList<>();
+    this.currentState = new PendingState();
   }
 
-  public Project() { //might need when retrieving from DB
+  public Project() {
     this.tasks = new ArrayList<>();
     this.sprints = new ArrayList<>();
+    this.currentState = new PendingState();
   }
+
+  public boolean onPending(int employeeId) {
+    return currentState.onPending(this, employeeId);
+  }
+
+  public boolean onOngoing(int employeeId) {
+    return currentState.onOngoing(this, employeeId);
+  }
+
+  public boolean onLate(int employeeId) {
+    return currentState.onLate(this, employeeId);
+  }
+
+  public boolean onFinished(int employeeId) {
+    return currentState.onFinished(this, employeeId);
+  }
+
+
+  public String getState() {
+    return currentState.getState();
+  }
+
+  public String getStateDescription() {
+    return currentState.getStateDescription();
+  }
+
+  void setState(ProjectState newState) {
+    this.currentState = newState;
+  }
+
 
   public int getProject_id() {
     return project_id;

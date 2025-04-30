@@ -1,10 +1,11 @@
 package Model;
 
-public interface ProjectState
-{
-  boolean onPending (Project project, int employeeID);
-  boolean onOngoing (Project project, int employeeID);
-  boolean onLate (Project project, int employeeID);
-  boolean onFinished (Project project, int employeeID);
-
+public interface ProjectState {
+  boolean onPending(Project project, int employeeId);
+  boolean onOngoing(Project project, int employeeId);
+  boolean onLate(Project project, int employeeId);
+  boolean onFinished(Project project, int employeeId);
+  String getState();
+  String getStateDescription();
 }
+
