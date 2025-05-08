@@ -12,6 +12,7 @@ public class DAO {
 
     protected Connection getConnection() throws SQLException
     {
+        //Substitute for your own database login/password
         return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=sep_database", "postgres", "gigakoks1");
     }
 }
