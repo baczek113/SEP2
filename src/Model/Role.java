@@ -1,4 +1,4 @@
-package Network;
+package Model;
 
 public class Role {
     private int role_id;

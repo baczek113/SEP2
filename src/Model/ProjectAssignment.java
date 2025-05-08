@@ -1,4 +1,4 @@
-package Network;
+package Model;
 
 public class ProjectAssignment {
     private int employee_id;

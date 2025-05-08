@@ -1,4 +1,4 @@
-package Network;
+package Model;
 
 public class TaskAssignment {
     private int employee_id;

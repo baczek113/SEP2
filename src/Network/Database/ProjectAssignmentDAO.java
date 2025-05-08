@@ -1,7 +1,7 @@
 package Network.Database;
 
-import Network.Employee;
-import Network.Project;
+import Model.Employee;
+import Model.Project;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

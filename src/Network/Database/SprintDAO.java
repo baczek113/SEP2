@@ -1,7 +1,7 @@
 package Network.Database;
 
-import Network.Project;
-import Network.Sprint;
+import Model.Project;
+import Model.Sprint;
 
 import java.sql.*;
 

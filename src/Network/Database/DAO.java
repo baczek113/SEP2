@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class DAO {
+public abstract class DAO {
     protected DAO() throws SQLException
     {
         DriverManager.registerDriver(new org.postgresql.Driver());

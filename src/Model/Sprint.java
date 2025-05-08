@@ -3,60 +3,57 @@ package Model;
 import java.sql.Date;
 
 public class Sprint {
-  private int sprint_id;
-  private int project_id;
-  private String name;
-  private Date start_date;
-  private Date end_date;
+    private int sprint_id;
+    private int project_id;
+    private String name;
+    private Date start_date;
+    private Date end_date;
 
-  public Sprint(int sprint_id, int project_id, String name, Date start_date, Date end_date) {
-    this.sprint_id = sprint_id;
-    this.project_id = project_id;
-    this.name = name;
-    this.start_date = start_date;
-    this.end_date = end_date;
-  }
+    public Sprint(int sprint_id, int project_id, String name, Date start_date, Date end_date) {
+        this.sprint_id = sprint_id;
+        this.project_id = project_id;
+        this.name = name;
+        this.start_date = start_date;
+        this.end_date = end_date;
+    }
 
-  public Sprint() {
-  }
+    public int getSprint_id() {
+        return sprint_id;
+    }
 
-  public int getSprint_id() {
-    return sprint_id;
-  }
+    public void setSprint_id(int sprint_id) {
+        this.sprint_id = sprint_id;
+    }
 
-  public int getProject_id() {
-    return project_id;
-  }
+    public int getProject_id() {
+        return project_id;
+    }
 
-  public String getName() {
-    return name;
-  }
+    public void setProject_id(int project_id) {
+        this.project_id = project_id;
+    }
 
-  public Date getStart_date() {
-    return start_date;
-  }
+    public String getName() {
+        return name;
+    }
 
-  public Date getEnd_date() {
-    return end_date;
-  }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-  public void setSprint_id(int sprint_id) {
-    this.sprint_id = sprint_id;
-  }
+    public Date getStart_date() {
+        return start_date;
+    }
 
-  public void setProject_id(int project_id) {
-    this.project_id = project_id;
-  }
+    public void setStart_date(Date start_date) {
+        this.start_date = start_date;
+    }
 
-  public void setName(String name) {
-    this.name = name;
-  }
+    public Date getEnd_date() {
+        return end_date;
+    }
 
-  public void setStart_date(Date start_date) {
-    this.start_date = start_date;
-  }
-
-  public void setEnd_date(Date end_date) {
-    this.end_date = end_date;
-  }
+    public void setEnd_date(Date end_date) {
+        this.end_date = end_date;
+    }
 }
