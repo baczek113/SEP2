@@ -1,4 +1,7 @@
-package Network;
+package Network.Database;
+
+import Network.Employee;
+import Network.Task;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

@@ -1,4 +1,4 @@
-package Network;
+package Network.Database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
