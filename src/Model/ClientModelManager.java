@@ -20,6 +20,7 @@ public class ClientModelManager {
     this.tasks = new ArrayList<>();
   }
 
+  //hardcoded values for now
   public void createProject(String name, String description) {
     Project project = new Project(1, 001, "sleep", "needa sleep", "Ongoing",
         new Date(2025, 8, 9), new Date(2025, 9, 9));
@@ -39,80 +40,17 @@ public class ClientModelManager {
     clientConnection.sendRequest(request);
   }
 
-  public void retrieveProject(String projectId) {
-    Request request = new Request("project", "retrieve", projectId, null);
-    clientConnection.sendRequest(request);
-  }
+  public void handleResponse(Response response)
+  {
+    List<Project> newProjects = response.getProjects();
+    List<Sprint> newSprints = response.getSprints();
+    List<Task> newTasks = response.getTasks();
 
-  public void listSprints(String projectId) {
-    Request request = new Request("sprint", "list", null, projectId);
-    clientConnection.sendRequest(request);
-  }
-
-  public void listTasks(String sprintId) {
-    Request request = new Request("task", "list", null, sprintId);
-    clientConnection.sendRequest(request);
-  }
-
-  public void handleServerResponse(Response response) {
-    if (response.getData() != null) {
-      Object result = response.getData();
-      if (result instanceof String) {
-
-        String id = (String) result;
-
-        System.out.println("Received ID: " + id);
-      } else if (result instanceof Project) {
-        Project project = (Project) result;
-        updateProject(project);
-      } else if (result instanceof Sprint) {
-        Sprint sprint = (Sprint) result;
-        updateSprint(sprint);
-      } else if (result instanceof List) {
-        List<?> list = (List<?>) result;
-        if (!list.isEmpty()) {
-          if (list.get(0) instanceof Project) {
-            updateProjects((List<Project>) list);
-          } else if (list.get(0) instanceof Sprint) {
-            updateSprints((List<Sprint>) list);
-          } else if (list.get(0) instanceof Task) {
-            updateTasks((List<Task>) list);
-          }
-        }
-      }
-    } else {
-      System.err.println("Error from server: " + response.getMessage());
-    }
-  }
-
-  // Update methods
-  private void updateProject(Project project) {
-    projects.clear();
-    projects.add(project);
-  }
-
-  private void updateSprint(Sprint sprint) {
-    sprints.clear();
-    sprints.add(sprint);
-  }
-
-  private void updateTask(Task task) {
-    tasks.clear();
-    tasks.add(task);
-  }
-
-  private void updateProjects(List<Project> newProjects) {
     projects.clear();
     projects.addAll(newProjects);
-  }
 
-  private void updateSprints(List<Sprint> newSprints) {
     sprints.clear();
     sprints.addAll(newSprints);
-  }
-
-  private void updateTasks(List<Task> newTasks) {
-    tasks.clear();
     tasks.addAll(newTasks);
   }
 }

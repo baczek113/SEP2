@@ -30,18 +30,10 @@ public class ClientConnection implements Runnable {
     try {
       while (true) {
         Response response = (Response) inFromServer.readObject();
-        clientModelManager.handleServerResponse(response);
-        System.out.println("clientconnection");
+        clientModelManager.handleResponse(response);
         System.out.println("Client handled server response.");
       }
     } catch (IOException | ClassNotFoundException e) {
-      try {
-        if (inFromServer != null) inFromServer.close();
-        if (outToServer != null) outToServer.close();
-        if (socket != null) socket.close();
-      } catch (IOException ex) {
-        ex.printStackTrace();
-      }
       throw new RuntimeException(e);
     }
   }
