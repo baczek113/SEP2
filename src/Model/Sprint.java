@@ -1,8 +1,10 @@
 package Model;
 
+import java.io.Serializable;
 import java.sql.Date;
 
-public class Sprint {
+public class Sprint implements Serializable
+{
     private int sprint_id;
     private int project_id;
     private String name;
