@@ -2,14 +2,13 @@ package Network;
 
 import Model.Employee;
 import Model.Project;
-
+import Network.Utils.EmployeeList;
 import java.util.ArrayList;
-import java.util.List;
 
 public class ServerModelManager {
     private static ServerModelManager instance;
-    private List<Project> projects;
-    private List<Employee> employees;
+    private ArrayList<Project> projects;
+    private EmployeeList employees;
 
     public ServerModelManager() {
 
@@ -22,11 +21,11 @@ public class ServerModelManager {
         return instance;
     }
 
-    public void setProjects(List<Project> projects) {
+    public void setProjects(ArrayList<Project> projects) {
         this.projects = projects;
     }
 
-    public void setEmployees(List<Employee> employees) {
+    public void setEmployees(EmployeeList employees) {
         this.employees = employees;
     }
 }
