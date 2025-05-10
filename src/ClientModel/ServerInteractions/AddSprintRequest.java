@@ -1,5 +1,6 @@
-package View.ServerInteractions;
+package ClientModel.ServerInteractions;
 
+import Model.Employee;
 import Model.Project;
 
 import java.util.Date;
@@ -11,9 +12,9 @@ public class AddSprintRequest extends Request
   private String description;
   private Date startDate, endDate;
 
-  public AddSprintRequest(String action, Project project, String name, String description, Date startDate, Date endDate)
+  public AddSprintRequest(String action, Employee employee, Project project, String name, String description, Date startDate, Date endDate)
   {
-    super(action);
+    super(action, employee);
     this.project = project;
     this.name = name;
     this.description = description;

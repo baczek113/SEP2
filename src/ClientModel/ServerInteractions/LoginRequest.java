@@ -1,13 +1,15 @@
-package View.ServerInteractions;
+package ClientModel.ServerInteractions;
+
+import Model.Employee;
 
 public class LoginRequest extends Request
 {
 
   private String username, password;
 
-  public LoginRequest(String action, String username, String password)
+  public LoginRequest(String action, Employee employee, String username, String password)
   {
-    super(action);
+    super(action, employee);
     this.username = username;
     this.password = password;
   }

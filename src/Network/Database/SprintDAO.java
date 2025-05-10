@@ -4,6 +4,7 @@ import Model.Project;
 import Model.Sprint;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class SprintDAO extends DAO{
     private static SprintDAO instance;
@@ -59,6 +60,19 @@ public class SprintDAO extends DAO{
             statement.setDate(3, sprint.getEnd_date());
             statement.setInt(4, sprint.getSprint_id());
             statement.executeUpdate();
+        }
+    }
+
+    public ArrayList<Sprint> getSprints(Project project) throws SQLException {
+        try(Connection connection = getConnection()) {
+            ArrayList<Sprint> sprints = new ArrayList<>();
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM sprint WHERE project_id = ?");
+            statement.setInt(1, project.getProject_id());
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                sprints.add(new Sprint(resultSet.getInt("sprint_id"), resultSet.getInt("project_id"), resultSet.getString("name"), resultSet.getDate("start_date"), resultSet.getDate("end_date")));
+            }
+            return sprints;
         }
     }
 }

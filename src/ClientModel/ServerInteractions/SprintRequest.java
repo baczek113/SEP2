@@ -1,14 +1,15 @@
-package View.ServerInteractions;
+package ClientModel.ServerInteractions;
 
 import Model.Sprint;
+import Model.Employee;
 
 public class SprintRequest extends Request
 {
   private Sprint sprint;
 
-  public SprintRequest(String action, Sprint sprint)
+  public SprintRequest(String action, Employee employee, Sprint sprint)
   {
-    super(action);
+    super(action, employee);
     this.sprint = sprint;
   }
 
