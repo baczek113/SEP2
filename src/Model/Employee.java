@@ -2,19 +2,19 @@ package Model;
 
 public class Employee {
     private int employee_id;
-    private int role_id;
+    private Role role;
     private String username;
     private String password;
 
     public Employee(int employee_id, int role_id, String username, String password) {
         this.employee_id = employee_id;
-        this.role_id = role_id;
+        this.role = new Role(role_id);
         this.username = username;
         this.password = password;
     }
 
-    public int getRole_id() {
-        return role_id;
+    public Role getRole() {
+        return role;
     }
 
     public String getPassword() {
@@ -33,8 +33,8 @@ public class Employee {
         this.password = password;
     }
 
-    public void setRole_id(int role_id) {
-        this.role_id = role_id;
+    public void setRole(int role_id) {
+        this.role = new Role(role_id);
     }
 
     public void setEmployee_id(int employee_id) {

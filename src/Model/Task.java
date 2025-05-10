@@ -1,24 +1,26 @@
 package Model;
 
+import java.util.ArrayList;
+
 public class Task {
     private int task_id;
-    private int sprint_id;
-    private int created_by;
-    private int project_id;
+    private Sprint sprint;
+    private Employee created_by;
     private String title;
     private String description;
     private String status;
     private int priority;
+    private ArrayList<Employee> assignedTo;
 
-    public Task(int task_id, int sprint_id, int created_by, int project_id, String title, String description, String status, int priority) {
+    public Task(int task_id, Sprint sprint, Employee created_by, String title, String description, String status, int priority) {
         this.task_id = task_id;
-        this.sprint_id = sprint_id;
+        this.sprint = sprint;
         this.created_by = created_by;
         this.title = title;
-        this.project_id = project_id;
         this.description = description;
         this.priority = priority;
         this.status = status;
+        this.assignedTo = new ArrayList<Employee>();
     }
 
     public int getTask_id() {
@@ -29,28 +31,20 @@ public class Task {
         this.task_id = task_id;
     }
 
-    public int getSprint_id() {
-        return sprint_id;
+    public Sprint getSprint() {
+        return sprint;
     }
 
-    public void setSprint_id(int sprint_id) {
-        this.sprint_id = sprint_id;
+    public void setSprint(Sprint sprint) {
+        this.sprint = sprint;
     }
 
-    public int getCreated_by() {
+    public Employee getCreated_by() {
         return created_by;
     }
 
-    public void setCreated_by(int created_by) {
+    public void setCreated_by(Employee created_by) {
         this.created_by = created_by;
-    }
-
-    public int getProject_id() {
-        return project_id;
-    }
-
-    public void setProject_id(int project_id) {
-        this.project_id = project_id;
     }
 
     public String getTitle() {
@@ -83,5 +77,17 @@ public class Task {
 
     public void setPriority(int priority) {
         this.priority = priority;
+    }
+
+    public void assignTo(Employee employee) {
+        assignedTo.add(employee);
+    }
+
+    public void unassignTo(Employee employee) {
+        assignedTo.remove(employee);
+    }
+
+    public ArrayList<Employee> getAssignedTo() {
+        return assignedTo;
     }
 }

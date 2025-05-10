@@ -1,17 +1,20 @@
 package Model;
 
 import java.sql.Date;
+import java.util.ArrayList;
 
 public class Project {
     private int project_id;
-    private int created_by;
+    private Employee created_by;
     private String name;
     private String description;
     private String status;
     private Date start_date;
     private Date end_date;
+    private ArrayList<Employee> employees; //List containing all the project participants incl. the product owner
+    private ArrayList<Sprint> sprints; //List containing all the project sprints
 
-    public Project(int project_id, int created_by, String name, String description, String status, Date start_date, Date end_date) {
+    public Project(int project_id, Employee created_by, String name, String description, String status, Date start_date, Date end_date) {
         this.project_id = project_id;
         this.created_by = created_by;
         this.name = name;
@@ -19,6 +22,8 @@ public class Project {
         this.status = status;
         this.start_date = start_date;
         this.end_date = end_date;
+        this.employees = new ArrayList<Employee>();
+        this.sprints = new ArrayList<Sprint>();
     }
 
     public int getProject_id() {
@@ -37,7 +42,7 @@ public class Project {
         return start_date;
     }
 
-    public int getCreated_by() {
+    public Employee getCreated_by() {
         return created_by;
     }
 
@@ -53,7 +58,7 @@ public class Project {
         return status;
     }
 
-    public void setCreated_by(int created_by) {
+    public void setCreated_by(Employee created_by) {
         this.created_by = created_by;
     }
 
@@ -75,5 +80,29 @@ public class Project {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public void addEmployee(Employee employee) {
+        this.employees.add(employee);
+    }
+
+    public void addSprint(Sprint sprint)
+    {
+        this.sprints.add(sprint);
+    }
+
+    public void removeEmployee(Employee employee)
+    {
+        this.employees.remove(employee);
+    }
+
+    public void removeSprint(Sprint sprint)
+    {
+        this.sprints.remove(sprint);
+    }
+
+    public ArrayList<Sprint> getSprints()
+    {
+        return sprints;
     }
 }

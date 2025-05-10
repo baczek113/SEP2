@@ -1,20 +1,23 @@
 package Model;
 
 import java.sql.Date;
+import java.util.ArrayList;
 
 public class Sprint {
     private int sprint_id;
-    private int project_id;
+    private Project project;
     private String name;
     private Date start_date;
     private Date end_date;
+    private ArrayList<Task> tasks;
 
-    public Sprint(int sprint_id, int project_id, String name, Date start_date, Date end_date) {
+    public Sprint(int sprint_id, Project project, String name, Date start_date, Date end_date) {
         this.sprint_id = sprint_id;
-        this.project_id = project_id;
+        this.project = project;
         this.name = name;
         this.start_date = start_date;
         this.end_date = end_date;
+        this.tasks = new ArrayList<Task>();
     }
 
     public int getSprint_id() {
@@ -25,12 +28,12 @@ public class Sprint {
         this.sprint_id = sprint_id;
     }
 
-    public int getProject_id() {
-        return project_id;
+    public Project getProject() {
+        return project;
     }
 
-    public void setProject_id(int project_id) {
-        this.project_id = project_id;
+    public void setProject(Project project) {
+        this.project = project;
     }
 
     public String getName() {
@@ -55,5 +58,18 @@ public class Sprint {
 
     public void setEnd_date(Date end_date) {
         this.end_date = end_date;
+    }
+
+    public void addTask(Task task) {
+        this.tasks.add(task);
+    }
+
+    public void removeTask(Task task) {
+        this.tasks.remove(task);
+    }
+
+    public ArrayList<Task> getTasks()
+    {
+        return tasks;
     }
 }
