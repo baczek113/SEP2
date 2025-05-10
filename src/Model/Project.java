@@ -2,6 +2,7 @@ package Model;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import Network.Utils.EmployeeList;
 
 public class Project {
     private int project_id;
@@ -11,7 +12,7 @@ public class Project {
     private String status;
     private Date start_date;
     private Date end_date;
-    private ArrayList<Employee> employees; //List containing all the project participants incl. the product owner
+    private EmployeeList employees; //List containing all the project participants incl. the product owner
     private ArrayList<Sprint> sprints; //List containing all the project sprints
 
     public Project(int project_id, Employee created_by, String name, String description, String status, Date start_date, Date end_date) {
@@ -22,7 +23,7 @@ public class Project {
         this.status = status;
         this.start_date = start_date;
         this.end_date = end_date;
-        this.employees = new ArrayList<Employee>();
+        this.employees = new EmployeeList();
         this.sprints = new ArrayList<Sprint>();
     }
 
@@ -104,5 +105,9 @@ public class Project {
     public ArrayList<Sprint> getSprints()
     {
         return sprints;
+    }
+
+    public EmployeeList getEmployees() {
+        return employees;
     }
 }

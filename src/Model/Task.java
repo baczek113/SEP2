@@ -1,5 +1,7 @@
 package Model;
 
+import Network.Utils.EmployeeList;
+
 import java.util.ArrayList;
 
 public class Task {
@@ -10,7 +12,7 @@ public class Task {
     private String description;
     private String status;
     private int priority;
-    private ArrayList<Employee> assignedTo;
+    private EmployeeList assignedTo;
 
     public Task(int task_id, Sprint sprint, Employee created_by, String title, String description, String status, int priority) {
         this.task_id = task_id;
@@ -20,7 +22,7 @@ public class Task {
         this.description = description;
         this.priority = priority;
         this.status = status;
-        this.assignedTo = new ArrayList<Employee>();
+        this.assignedTo = new EmployeeList();
     }
 
     public int getTask_id() {
@@ -87,7 +89,7 @@ public class Task {
         assignedTo.remove(employee);
     }
 
-    public ArrayList<Employee> getAssignedTo() {
+    public EmployeeList getAssignedTo() {
         return assignedTo;
     }
 }

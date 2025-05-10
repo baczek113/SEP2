@@ -3,7 +3,6 @@ package Network.Utils;
 import Model.Employee;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class EmployeeList {
     private ArrayList<Employee> employees;
