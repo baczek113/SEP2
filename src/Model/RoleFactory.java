@@ -1,6 +1,6 @@
 package Model;
 
-import Network.Database.RoleDAO;
+import Network.Database.DAO;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -12,8 +12,7 @@ public class RoleFactory {
     private RoleFactory() throws SQLException {
         roles = new HashMap<>();
         try{
-            RoleDAO roleDAO = new RoleDAO();
-            roles = roleDAO.getAllRoles();
+            roles = DAO.getInstance().getAllRoles();
         } catch (SQLException e) {
             System.out.println("Couldn't successfuly get get roles from the database");
         }
