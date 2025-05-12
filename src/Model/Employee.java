@@ -4,21 +4,15 @@ public class Employee {
     private int employee_id;
     private Role role;
     private String username;
-    private String password;
 
-    public Employee(int employee_id, int role_id, String username, String password) {
+    public Employee(int employee_id, int role_id, String username) {
         this.employee_id = employee_id;
         this.role = new Role(role_id);
         this.username = username;
-        this.password = password;
     }
 
     public Role getRole() {
         return role;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     public String getUsername() {
@@ -27,10 +21,6 @@ public class Employee {
 
     public int getEmployee_id() {
         return employee_id;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public void setRole(int role_id) {
