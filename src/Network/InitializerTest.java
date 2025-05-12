@@ -4,7 +4,7 @@ import Model.Employee;
 import Model.Project;
 import Model.Sprint;
 import Model.Task;
-import Network.Database.Initializer;
+import Network.Database.DAO;
 import Network.Utils.EmployeeList;
 
 import java.sql.SQLException;
@@ -13,11 +13,12 @@ import java.util.ArrayList;
 public class InitializerTest {
     public static void main(String[] args) throws SQLException {
         Initializer init = Initializer.getInstance();
+        DAO dao = DAO.getInstance();
 
         EmployeeList employees = init.getEmployees();
-//        for(Employee employee : employees.getArrayList()) {
-//            System.out.println(employee.getUsername());
-//        }
+        for(Employee employee : employees.getArrayList()) {
+            System.out.println(employee.getUsername());
+        }
 
         ArrayList<Project> projects = init.getProjects(employees);
 
@@ -34,5 +35,7 @@ public class InitializerTest {
                 }
             }
         }
+        dao.addEmployee(2, "patryk", "cipa");
+        dao.addEmployee(3, "patryk", "wieczko");
     }
 }
