@@ -45,10 +45,43 @@ public class DAO {
                 return null;
             }
         }catch (SQLException e){
+            System.out.println("failed to add a employee " + username.toUpperCase());
             return null;
         }
     }
+    public void editEmployee(Employee employee){
+        try(Connection connection = getConnection()) {
+            PreparedStatement statement = connection.prepareStatement("UPDATE employee SET role_id = ?, username = ? WHERE employee_id = ?");
+            statement.setInt(1, employee.getRole().getRole_id());
+            statement.setString(2, employee.getUsername());
+            statement.setInt(3, employee.getEmployee_id());
+            statement.executeUpdate();
+        }catch (SQLException e){
+            System.out.println("failed to edit employee: " + employee.getUsername());
+        }
+    }
 
+    public void removeEmployee(Employee employee) {
+        try(Connection connection = getConnection()) {
+            PreparedStatement statement = connection.prepareStatement("DELETE FROM employee WHERE employee_id = ?");
+            statement.setInt(1, employee.getEmployee_id());
+            statement.executeUpdate();
+        }catch (SQLException e){
+            System.out.println("failed to remove employee: " + employee.getUsername());
+        }
+    }
+
+    public void addEmployeeToProject(Project project, Employee employee) {
+        try(Connection connection = getConnection())
+        {
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO project_assignment (user_id, project_id) VALUES (?,?)");
+            statement.setInt(1, employee.getEmployee_id());
+            statement.setInt(2, project.getProject_id());
+            statement.executeUpdate();
+        }catch (SQLException e){
+            System.out.println("failed to add employee " + employee.getUsername().toUpperCase() + " to project: " + employee.getUsername());
+        }
+    }
     public Project addProject(Employee created_by, String name, String description) {
         try(Connection connection = getConnection()) {
             PreparedStatement statement = connection.prepareStatement("INSERT INTO project (created_by, name, description, status, start_date, end_date) VALUES (?, ?, ?, 'pending', NULL, NULL)", PreparedStatement.RETURN_GENERATED_KEYS);
@@ -66,6 +99,7 @@ public class DAO {
                 return null;
             }
         }catch (SQLException e){
+            System.out.println("failed to add a PROJECT" + name);
             return null;
         }
     }
@@ -78,53 +112,30 @@ public class DAO {
             project.setStatus("finished");
             project.setEnd_date(new Date(System.currentTimeMillis()));
         }catch (SQLException e){
-            System.out.println("");
+            System.out.println("failed to set status to 'finish' for a project: " + project.getName());
         }
     }
 
-    public void editEmployee(Employee employee){
-        try(Connection connection = getConnection()) {
-            PreparedStatement statement = connection.prepareStatement("UPDATE employee SET role_id = ?, username = ? WHERE employee_id = ?");
-            statement.setInt(1, employee.getRole().getRole_id());
-            statement.setString(2, employee.getUsername());
-            statement.setInt(3, employee.getEmployee_id());
-            statement.executeUpdate();
-        }catch (SQLException e){
-            System.out.println("Cos sie zesralo");
-        }
-    }
 
-    public void removeEmployee(Employee employee) {
-        try(Connection connection = getConnection()) {
-            PreparedStatement statement = connection.prepareStatement("DELETE FROM employee WHERE employee_id = ?");
-            statement.setInt(1, employee.getEmployee_id());
-            statement.executeUpdate();
-        }catch (SQLException e){
-            System.out.println("Coś się zesrało");
-        }
-    }
 
-    public void addEmployeeToProject(Project project, Employee employee) {
-        try(Connection connection = getConnection())
-        {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO project_assignment (user_id, project_id) VALUES (?,?)");
+
+    public void removeEmployeeFromProject(Project project, Employee employee){
+        try(Connection connection = getConnection()){
+            PreparedStatement statement = connection.prepareStatement("DELETE FROM task_assignment WHERE employee_id = ? AND project_id = ?");
             statement.setInt(1, employee.getEmployee_id());
             statement.setInt(2, project.getProject_id());
             statement.executeUpdate();
         }catch (SQLException e){
-            System.out.println("Failed to ");
+            System.out.println("failed to remove employee " + employee.getUsername().toUpperCase() + " from project " + project.getName().toUpperCase());
         }
+
     }
 
-    public void removeEmployeeFromProject(Project project, Employee employee){
-        // DELETE FROM task_assignment WHERE employee_id = 2;
-    }
-
-    public Task addTask(Sprint sprint, Employee createdBy, String title, String description, int priority) throws SQLException {
+    public Task addTask(Sprint sprint, Project project, String title, String description, int priority) throws SQLException {
         try(Connection connection = getConnection()) {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO task(sprint_id, created_by, project_id, title, description, status, priority) VALUES (?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO task(sprint_id, project_id, title, description, status, priority) VALUES (?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
             statement.setInt(1, sprint.getSprint_id());
-            statement.setInt(2, createdBy.getEmployee_id());
+            statement.setInt(2, project.getProject_id());
             statement.setInt(3, sprint.getProject_id());
             statement.setString(4, title);
             statement.setString(5, description);
@@ -135,30 +146,71 @@ public class DAO {
 
             if(keys.next())
             {
-                return new Task(keys.getInt(1), sprint.getSprint_id(), createdBy.getEmployee_id(), sprint.getProject_id(), title, description, "to-do", priority);
+                return new Task(keys.getInt(1), sprint.getSprint_id(), project.getProject_id(), title, description, "to-do", priority);
             }
             else
             {
                 return null;
             }
+        }catch (SQLException e){
+            System.out.println("failed to add a task: " + title);
+            return null;
         }
     }
 
     public void assignTask(Employee employee, Task task){
-
+        try(Connection connection = getConnection()){
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO task_assignment(employee_id, task_id) VALUES (?, ?)");
+            statement.setInt(1, employee.getEmployee_id());
+            statement.setInt(2, task.getTask_id());
+            statement.executeUpdate();
+        }catch (SQLException e){
+            System.out.println("failed to assign task " + task.getTitle().toUpperCase() + " to employee " + employee.getUsername().toUpperCase());
+        }
     }
 
+    public void assignPriority(Employee employee, Task task, int priority){ // employee is kinda useless here
+        try(Connection connection = getConnection()) {
+            PreparedStatement statement = connection.prepareStatement("UPDATE task SET priority = ? WHERE task_id = ?");
+            statement.setInt(1, priority);
+            statement.setInt(2, task.getTask_id());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("failed to assign priority to a task " + task.getTitle().toUpperCase());
+        }
+    }
 
+    public void changeTaskStatus(Task task, String status){
+        try (Connection connection = getConnection()){
+            PreparedStatement statement = connection.prepareStatement("UPDATE task SET status = ? WHERE task_id = ?");
+            statement.setString(1, status);
+            statement.setInt(2, task.getTask_id());
+            statement.executeUpdate();
+        }catch (SQLException e){
+            System.out.println("failed to change status of a task " + task.getTitle() );
+        }
+    }
 
-
-
-
-
-
-
-
-
-
-
-
+    public Sprint addSprint(Project project, String name, Date start_date, Date end_date){
+        try(Connection connection = getConnection()) {
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO sprint(project_id, name, start_date, end_date) VALUES (?, ?, ?, ?)");
+            statement.setInt(1, project.getProject_id());
+            statement.setString(2, name);
+            statement.setDate(3, start_date);
+            statement.setDate(4, end_date);
+            statement.executeUpdate();
+            ResultSet keys = statement.getGeneratedKeys();
+            if(keys.next())
+            {
+                return new Sprint(keys.getInt(1), project.getProject_id(), name, start_date, end_date);
+            }
+            else
+            {
+                return null;
+            }
+        }catch (SQLException e){
+            System.out.println("failed to add sprint: " + name.toUpperCase());
+            return null;
+        }
+    }
 }
