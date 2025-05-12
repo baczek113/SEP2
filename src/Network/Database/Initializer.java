@@ -74,13 +74,13 @@ public class Initializer extends DAO{
                             sprintTasksResults.getInt("priority"));
 
                         //Selects the employees assigned to the task
-                        PreparedStatement taskAssigneesStatement = connection.prepareStatement("SELECT user_id FROM task_assignment WHERE task_id = ?");
+                        PreparedStatement taskAssigneesStatement = connection.prepareStatement("SELECT employee_id FROM task_assignment WHERE task_id = ?");
                         taskAssigneesStatement.setInt(1, preparedTask.getTask_id());
                         ResultSet taskAssigneesResults = taskAssigneesStatement.executeQuery();
 
                         //Adds the employees assigned to the task to it
                         while (taskAssigneesResults.next()) {
-                            preparedTask.assignTo(employees.getEmployeeById(taskAssigneesResults.getInt("user_id")));
+                            preparedTask.assignTo(employees.getEmployeeById(taskAssigneesResults.getInt("employee_id")));
                         }
 
                         //The task is ready so it is finally added to the sprint
@@ -92,13 +92,13 @@ public class Initializer extends DAO{
                 }
 
                 //Selects the employees assigned to the project
-                PreparedStatement projectAssignees = connection.prepareStatement("SELECT user_id FROM project_assignment WHERE project_id = ?");
+                PreparedStatement projectAssignees = connection.prepareStatement("SELECT employee_id FROM project_assignment WHERE project_id = ?");
                 projectAssignees.setInt(1, projectResults.getInt("project_id"));
                 ResultSet projectAssigneesResults = projectAssignees.executeQuery();
 
                 //Adds the employees to the project
                 while (projectAssigneesResults.next()) {
-                    preparedProject.addEmployee(employees.getEmployeeById(projectAssigneesResults.getInt("user_id")));
+                    preparedProject.addEmployee(employees.getEmployeeById(projectAssigneesResults.getInt("employee_id")));
                 }
                 //Adds the complete project to the list
                 projects.add(preparedProject);
@@ -110,10 +110,10 @@ public class Initializer extends DAO{
     public EmployeeList getEmployees() throws SQLException {
         try(Connection connection = getConnection()) {
             EmployeeList employees = new EmployeeList();
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM employee");
+            PreparedStatement statement = connection.prepareStatement("SELECT employee_id, role_id, username FROM employee");
             ResultSet results = statement.executeQuery();
             while (results.next()) {
-                employees.add(new Employee(results.getInt("user_id"), results.getInt("role_id"), results.getString("username"), results.getString("password")));
+                employees.add(new Employee(results.getInt("employee_id"), results.getInt("role_id"), results.getString("username")));
             }
             return employees;
         }
