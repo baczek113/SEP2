@@ -2,15 +2,16 @@ package View;
 
 import ViewModel.LoginViewModel;
 import javafx.fxml.FXML;
+import javafx.scene.control.*;
+import javafx.scene.control.PasswordField;
 
-import java.awt.*;
 
 public class LoginViewController
 {
-    @FXML private TextField name;
-    @FXML private TextField name1;
-    @FXML private Label message;
-    @FXML private Button button;
+   @FXML private TextField name;
+   @FXML private PasswordField name1;
+   @FXML private Label message;
+   @FXML private Button button;
 
     private ViewHandler viewHandler;
     private LoginViewModel viewModel;
@@ -21,7 +22,7 @@ public class LoginViewController
         this.viewModel = viewModel;
     }
 
-    private void onLogin ()
+   @FXML public void onLogin()
     {
         String username = name.getText();
         String password = name1.getText();
@@ -34,7 +35,11 @@ public class LoginViewController
         }
         else
         {
-            message.setText("Invalid username or password.");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Login Failed");
+            alert.setHeaderText(null);
+            alert.setContentText("Invalid username or password.");
+            alert.showAndWait();
         }
 
     }

@@ -121,6 +121,13 @@ public class ViewFactory
                  ManageUsersViewController controller = loader.getController();
                  controller.init(viewHandler, viewModelFactory.getManageUsersViewModel());
              }
+             case "Backlog" -> {
+                 loader.setLocation(getClass().getResource("/View/ManageBacklog.fxml"));
+                 root = loader.load();
+                 ManageBacklogViewController controller = loader.getController();
+                 controller.init(viewHandler, viewModelFactory.getManageBacklogViewModel());
+
+             }
          }
          return new Scene(root);
      } catch (IOException e)

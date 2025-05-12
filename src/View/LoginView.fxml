@@ -6,6 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.control.PasswordField?>
 <AnchorPane prefHeight="352.0" prefWidth="492.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.LoginViewController">
     <children>
         <Label layoutX="60.0" layoutY="108.0" prefHeight="46.0" prefWidth="106.0" text="Username:">
@@ -34,10 +35,10 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <TextField fx:id="name1" layoutX="206.0" layoutY="179.0">
-         <font>
-            <Font size="19.0" />
-         </font>
-      </TextField>
+        <PasswordField fx:id="name1" layoutX="206.0" layoutY="179.0">
+            <font>
+                <Font size="19.0" />
+            </font>
+        </PasswordField>
     </children>
 </AnchorPane>
