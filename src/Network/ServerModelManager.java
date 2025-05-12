@@ -2,7 +2,10 @@ package Network;
 
 import Model.Employee;
 import Model.Project;
+import Network.Database.Initializer;
 import Network.Utils.EmployeeList;
+
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class ServerModelManager {
@@ -11,7 +14,14 @@ public class ServerModelManager {
     private EmployeeList employees;
 
     public ServerModelManager() {
-
+        try {
+            Initializer initializer = Initializer.getInstance();
+            this.employees = initializer.getEmployees();
+            this.projects = initializer.getProjects(this.employees);
+        }
+        catch (SQLException e) {
+            System.out.println("ServerModelManager initialization failed");
+        }
     }
 
     public static ServerModelManager getInstance() {
@@ -21,11 +31,11 @@ public class ServerModelManager {
         return instance;
     }
 
-    public void setProjects(ArrayList<Project> projects) {
-        this.projects = projects;
+    public ArrayList<Project> setProjects() {
+        return projects;
     }
 
-    public void setEmployees(EmployeeList employees) {
-        this.employees = employees;
+    public EmployeeList setEmployees() {
+        return employees;
     }
 }
