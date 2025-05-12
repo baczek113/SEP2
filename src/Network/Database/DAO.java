@@ -6,6 +6,7 @@ import Model.Sprint;
 import Model.Task;
 
 import java.sql.*;
+import java.util.HashMap;
 
 public class DAO {
     private static DAO instance;
@@ -211,6 +212,20 @@ public class DAO {
         }catch (SQLException e){
             System.out.println("failed to add sprint: " + name.toUpperCase());
             return null;
+        }
+    }
+
+    public HashMap<Integer, String> getAllRoles() throws SQLException
+    {
+        try(Connection connection = getConnection()) {
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM role");
+            ResultSet results = statement.executeQuery();
+            HashMap<Integer, String> roles = new HashMap<Integer, String>();
+
+            while(results.next()) {
+                roles.put(results.getInt("role_id"), results.getString("role_name"));
+            }
+            return roles;
         }
     }
 }

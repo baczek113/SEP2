@@ -12,7 +12,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ModelManager {
+public class ClientModelManager {
     private PropertyChangeSupport propertyChangeSupport;
     private List<Employee> employees;
     private List<Project> projects;
@@ -20,7 +20,7 @@ public class ModelManager {
     private List<Task> tasks;
     private Employee loggedEmployee;
 
-    public ModelManager()
+    public ClientModelManager()
     {
         propertyChangeSupport = new PropertyChangeSupport(this);
         employees = new ArrayList<>();
