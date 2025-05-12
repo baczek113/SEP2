@@ -21,7 +21,7 @@
         <TabPane fx:id="taskTabPane" layoutX="50" layoutY="70" prefHeight="500" prefWidth="700">
 
             <Tab text="To Do">
-                <TableView fx:id="todoTable" prefHeight="413.0" prefWidth="700.0">
+                <TableView fx:id="todoTable" prefHeight="486.0" prefWidth="719.0">
                     <columns>
                         <TableColumn fx:id="todoNameColumn" prefWidth="233.0" text="Name" />
                         <TableColumn fx:id="todoCreatedByColumn" prefWidth="233.0" text="Created By" />
@@ -63,12 +63,9 @@
                 </TableView>
             </Tab>
         </TabPane>
-      <Button layoutX="125.0" layoutY="589.0" mnemonicParsing="false" text="Remove" />
-      <Button layoutX="225.0" layoutY="589.0" mnemonicParsing="false" text="Add" />
-      <Button layoutX="325.0" layoutY="589.0" mnemonicParsing="false" text="Edit" />
-      <Button layoutX="425.0" layoutY="589.0" mnemonicParsing="false" text="View" />
-      <Button layoutX="525.0" layoutY="589.0" mnemonicParsing="false" text="Take task" />
-      <Button layoutX="625.0" layoutY="589.0" mnemonicParsing="false" text="Change status" />
+      <Button layoutX="195.0" layoutY="589.0" mnemonicParsing="false" text="Take task" />
+      <Button layoutX="532.0" layoutY="589.0" mnemonicParsing="false" text="Change status" />
+      <Button layoutX="354.0" layoutY="589.0" mnemonicParsing="false" text="Unassign" />
 
     </children>
 </AnchorPane>
