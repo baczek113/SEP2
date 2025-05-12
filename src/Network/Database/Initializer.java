@@ -44,6 +44,35 @@ public class Initializer extends DAO{
                                 projectResults.getDate("start_date"),
                                 projectResults.getDate("end_date"));
 
+                //Gets all the tasks in the project, adds them to a list and to the project
+                ArrayList<Task> projectTasks = new ArrayList<Task>();
+                PreparedStatement taskStatement = connection.prepareStatement("SELECT * FROM task WHERE project_id = ?");
+                taskStatement.setInt(1, preparedProject.getProject_id());
+                ResultSet taskResults = taskStatement.executeQuery();
+                while(taskResults.next()) {
+                    Task task = new Task(taskResults.getInt("task_id"),
+                            taskResults.getInt("sprint_id"),
+                            taskResults.getInt("project_id"),
+                            taskResults.getString("title"),
+                            taskResults.getString("description"),
+                            taskResults.getString("status"),
+                            taskResults.getInt("priority")
+                    );
+                    //Selects the employees assigned to the task
+                    PreparedStatement taskAssigneesStatement = connection.prepareStatement("SELECT employee_id FROM task_assignment WHERE task_id = ?");
+                    taskAssigneesStatement.setInt(1, task.getTask_id());
+                    ResultSet taskAssigneesResults = taskAssigneesStatement.executeQuery();
+
+                    //Adds the employees assigned to the task to it
+                    while (taskAssigneesResults.next()) {
+                        task.assignTo(employees.getEmployeeById(taskAssigneesResults.getInt("employee_id")));
+                    }
+
+                    projectTasks.add(task);
+                    preparedProject.addToBacklog(task);
+                }
+
+
                 //Selects sprints belonging to the project
                 PreparedStatement sprintStatement = connection.prepareStatement("SELECT * FROM sprint WHERE project_id = ?");
                 sprintStatement.setInt(1, preparedProject.getProject_id());
@@ -52,39 +81,15 @@ public class Initializer extends DAO{
 
                     //Sprint is initially prepared
                     Sprint preparedSprint = new Sprint(sprintResults.getInt("sprint_id"),
-                            preparedProject,
+                            preparedProject.getProject_id(),
                             sprintResults.getString("name"),
                             sprintResults.getDate("start_date"),
                             sprintResults.getDate("end_date"));
 
-                    //Selects the tasks that are in the sprint
-                    PreparedStatement sprintTasks = connection.prepareStatement("SELECT * FROM task WHERE sprint_id = ?");
-                    sprintTasks.setInt(1, preparedSprint.getSprint_id());
-                    ResultSet sprintTasksResults = sprintTasks.executeQuery();
-
-                    while (sprintTasksResults.next())
-                    {
-                        //Task is initially prepared
-                        Task preparedTask = new Task(sprintTasksResults.getInt("task_id"),
-                            preparedSprint,
-                            employees.getEmployeeById(sprintTasksResults.getInt("created_by")),
-                            sprintTasksResults.getString("title"),
-                            sprintTasksResults.getString("description"),
-                            sprintTasksResults.getString("status"),
-                            sprintTasksResults.getInt("priority"));
-
-                        //Selects the employees assigned to the task
-                        PreparedStatement taskAssigneesStatement = connection.prepareStatement("SELECT employee_id FROM task_assignment WHERE task_id = ?");
-                        taskAssigneesStatement.setInt(1, preparedTask.getTask_id());
-                        ResultSet taskAssigneesResults = taskAssigneesStatement.executeQuery();
-
-                        //Adds the employees assigned to the task to it
-                        while (taskAssigneesResults.next()) {
-                            preparedTask.assignTo(employees.getEmployeeById(taskAssigneesResults.getInt("employee_id")));
+                    for(Task task : projectTasks) {
+                        if(task.getSprint_id() == preparedSprint.getSprint_id()) {
+                            preparedSprint.addTask(task);
                         }
-
-                        //The task is ready so it is finally added to the sprint
-                        preparedSprint.addTask(preparedTask);
                     }
 
                     //The sprint is ready so it is finally added to the project

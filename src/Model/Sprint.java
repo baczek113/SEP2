@@ -5,15 +5,15 @@ import java.util.ArrayList;
 
 public class Sprint {
     private int sprint_id;
-    private Project project;
+    private int project_id;
     private String name;
     private Date start_date;
     private Date end_date;
     private ArrayList<Task> tasks;
 
-    public Sprint(int sprint_id, Project project, String name, Date start_date, Date end_date) {
+    public Sprint(int sprint_id, int project_id, String name, Date start_date, Date end_date) {
         this.sprint_id = sprint_id;
-        this.project = project;
+        this.project_id = project_id;
         this.name = name;
         this.start_date = start_date;
         this.end_date = end_date;
@@ -28,12 +28,12 @@ public class Sprint {
         this.sprint_id = sprint_id;
     }
 
-    public Project getProject() {
-        return project;
+    public int getProject_id() {
+        return project_id;
     }
 
-    public void setProject(Project project) {
-        this.project = project;
+    public void setProject(int project_id) {
+        this.project_id = project_id;
     }
 
     public String getName() {

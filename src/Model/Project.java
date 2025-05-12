@@ -14,6 +14,7 @@ public class Project {
     private Date end_date;
     private EmployeeList employees; //List containing all the project participants incl. the product owner
     private ArrayList<Sprint> sprints; //List containing all the project sprints
+    private ArrayList<Task> backlog;
 
     public Project(int project_id, Employee created_by, String name, String description, String status, Date start_date, Date end_date) {
         this.project_id = project_id;
@@ -25,6 +26,7 @@ public class Project {
         this.end_date = end_date;
         this.employees = new EmployeeList();
         this.sprints = new ArrayList<Sprint>();
+        this.backlog = new ArrayList<Task>();
     }
 
     public int getProject_id() {
@@ -109,5 +111,14 @@ public class Project {
 
     public EmployeeList getEmployees() {
         return employees;
+    }
+
+    public ArrayList<Task> getBacklog() {
+        return backlog;
+    }
+
+    public void addToBacklog(Task task)
+    {
+        this.backlog.add(task);
     }
 }

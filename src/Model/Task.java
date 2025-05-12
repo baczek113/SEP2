@@ -6,18 +6,18 @@ import java.util.ArrayList;
 
 public class Task {
     private int task_id;
-    private Sprint sprint;
-    private Employee created_by;
+    private int sprint_id;
+    private int project_id;
     private String title;
     private String description;
     private String status;
     private int priority;
     private EmployeeList assignedTo;
 
-    public Task(int task_id, Sprint sprint, Employee created_by, String title, String description, String status, int priority) {
+    public Task(int task_id, int sprint_id, int project_id, String title, String description, String status, int priority) {
         this.task_id = task_id;
-        this.sprint = sprint;
-        this.created_by = created_by;
+        this.sprint_id = sprint_id;
+        this.project_id = project_id;
         this.title = title;
         this.description = description;
         this.priority = priority;
@@ -33,20 +33,12 @@ public class Task {
         this.task_id = task_id;
     }
 
-    public Sprint getSprint() {
-        return sprint;
+    public int getSprint() {
+        return sprint_id;
     }
 
-    public void setSprint(Sprint sprint) {
-        this.sprint = sprint;
-    }
-
-    public Employee getCreated_by() {
-        return created_by;
-    }
-
-    public void setCreated_by(Employee created_by) {
-        this.created_by = created_by;
+    public void setSprint(int sprint_id) {
+        this.sprint_id = sprint_id;
     }
 
     public String getTitle() {
@@ -79,6 +71,26 @@ public class Task {
 
     public void setPriority(int priority) {
         this.priority = priority;
+    }
+
+    public int getSprint_id()
+    {
+        return sprint_id;
+    }
+
+    public void setSprint_id(int sprint_id)
+    {
+        this.sprint_id = sprint_id;
+    }
+
+    public int getProject_id()
+    {
+        return project_id;
+    }
+
+    public void setProject_id(int project_id)
+    {
+        this.project_id = project_id;
     }
 
     public void assignTo(Employee employee) {

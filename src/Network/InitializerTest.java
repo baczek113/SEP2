@@ -25,7 +25,12 @@ public class InitializerTest {
             for(Sprint sprint : project.getSprints()) {
                 for(Task task : sprint.getTasks())
                 {
-                    System.out.println(task.getCreated_by().getUsername());
+                    System.out.println("Title: " + task.getTitle());
+                    for(Employee employee : task.getAssignedTo().getArrayList())
+                    {
+                        System.out.println("Assignee: " + employee.getUsername());
+                    }
+                    System.out.println("");
                 }
             }
         }
