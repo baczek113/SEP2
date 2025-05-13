@@ -11,7 +11,7 @@ public class AddTaskRequest extends Request
 
   public AddTaskRequest(String action, Employee employee, Sprint sprint, String name, String description, int priority)
   {
-    super(action = "addtask", employee);
+    super("addtask", employee);
     this.sprint = sprint;
     this.name = name;
     this.description = description;

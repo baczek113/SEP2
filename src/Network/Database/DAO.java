@@ -7,6 +7,7 @@ import Model.Task;
 
 import java.sql.*;
 import java.util.HashMap;
+import java.util.List;
 
 public class DAO {
     private static DAO instance;
@@ -86,18 +87,31 @@ public class DAO {
             throw new RuntimeException(e);
         }
     }
-    public Project addProject(Employee created_by, Employee scrum_master, String name, String description) {
+    public Project addProject(Employee created_by, Employee scrum_master, String name, String description, List<Employee> participants) {
         try(Connection connection = getConnection()) {
+            connection.setAutoCommit(false);
             PreparedStatement statement = connection.prepareStatement("INSERT INTO project (created_by, scrum_master, name, description, status, start_date, end_date) VALUES (?, ?, ?, ?, 'pending', NULL, NULL)", PreparedStatement.RETURN_GENERATED_KEYS);
             statement.setInt(1, created_by.getEmployee_id());
             statement.setInt(2, scrum_master.getEmployee_id());
             statement.setString(3, name);
             statement.setString(4, description);
-
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
             if (resultSet.next()) {
-                return new Project(resultSet.getInt(1), created_by, scrum_master, name, description, "pending", null, null);
+                int project_id = resultSet.getInt(1);
+                Project preparedProject = new Project(project_id, created_by, scrum_master, name, description, "pending", null, null);
+                if(participants != null) {
+                    for (Employee employee : participants) {
+                        PreparedStatement assignEmployee = connection.prepareStatement("INSERT INTO project_assignment (employee_id, project_id) VALUES (?, ?)");
+                        assignEmployee.setInt(1, employee.getEmployee_id());
+                        assignEmployee.setInt(2, project_id);
+                        assignEmployee.executeUpdate();
+
+                        preparedProject.addEmployee(employee);
+                    }
+                }
+                connection.commit();
+                return preparedProject;
             }
             else
             {
@@ -127,7 +141,7 @@ public class DAO {
 
     public void removeEmployeeFromProject(Project project, Employee employee){
         try(Connection connection = getConnection()){
-            PreparedStatement statement = connection.prepareStatement("DELETE FROM task_assignment WHERE employee_id = ? AND project_id = ?");
+            PreparedStatement statement = connection.prepareStatement("DELETE FROM project_assignment WHERE employee_id = ? AND project_id = ?");
             statement.setInt(1, employee.getEmployee_id());
             statement.setInt(2, project.getProject_id());
             statement.executeUpdate();
@@ -138,10 +152,16 @@ public class DAO {
 
     }
 
-    public Task addTask(Sprint sprint, Project project, String title, String description, int priority) throws SQLException {
+    public Task addTask(Sprint sprint, Project project, String title, String description, int priority) {
         try(Connection connection = getConnection()) {
             PreparedStatement statement = connection.prepareStatement("INSERT INTO task(sprint_id, project_id, title, description, status, priority) VALUES (?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
-            statement.setInt(1, sprint.getSprint_id());
+            if(sprint != null) {
+                statement.setInt(1, sprint.getSprint_id());
+            }
+            else
+            {
+                statement.setInt(1, 0);
+            }
             statement.setInt(2, project.getProject_id());
             statement.setInt(3, sprint.getProject_id());
             statement.setString(4, title);
@@ -177,7 +197,7 @@ public class DAO {
         }
     }
 
-    public void assignPriority(Employee employee, Task task, int priority){ // employee is kinda useless here
+    public void assignPriority(Task task, int priority){
         try(Connection connection = getConnection()) {
             PreparedStatement statement = connection.prepareStatement("UPDATE task SET priority = ? WHERE task_id = ?");
             statement.setInt(1, priority);

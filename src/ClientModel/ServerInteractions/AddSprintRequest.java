@@ -14,7 +14,7 @@ public class AddSprintRequest extends Request
 
   public AddSprintRequest(String action, Employee employee, Project project, String name, String description, Date startDate, Date endDate)
   {
-    super(action = "addsprint", employee);
+    super("addsprint", employee);
     this.project = project;
     this.name = name;
     this.description = description;

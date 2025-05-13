@@ -1,8 +1,9 @@
 package Model;
 
+import java.io.Serializable;
 import java.sql.SQLException;
 
-public class Employee {
+public class Employee implements Serializable {
     private int employee_id;
     private Role role;
     private String username;

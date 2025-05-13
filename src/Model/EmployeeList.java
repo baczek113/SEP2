@@ -1,8 +1,9 @@
 package Model;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class EmployeeList implements List<Employee> {
+public class EmployeeList implements List<Employee>, Serializable {
     private ArrayList<Employee> employees;
 
     public EmployeeList() {
@@ -34,12 +35,11 @@ public class EmployeeList implements List<Employee> {
     }
 
     public boolean add(Employee employee) {
-        employees.add(employee);
-        return true;
+        return employees.add(employee);
     }
 
     public boolean remove(Object o) {
-        return false;
+        return employees.remove((Employee) o);
     }
 
     public boolean containsAll(Collection<?> c) {
@@ -86,7 +86,15 @@ public class EmployeeList implements List<Employee> {
 
     }
 
-    public Employee remove(int index) {
+    public Employee remove(int id) {
+        for(Employee employee : employees)
+        {
+            if(employee.getEmployee_id() == id)
+            {
+                employees.remove(employee);
+                return employee;
+            }
+        }
         return null;
     }
 

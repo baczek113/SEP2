@@ -2,10 +2,11 @@ package Model;
 
 import Network.Database.DAO;
 
+import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.HashMap;
 
-public class RoleFactory {
+public class RoleFactory implements Serializable {
     private static RoleFactory instance;
     private HashMap<Integer, String> roles;
 
