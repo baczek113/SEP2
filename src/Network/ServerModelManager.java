@@ -1,5 +1,6 @@
 package Network;
 
+import ClientModel.ServerInteractions.Request;
 import Model.Employee;
 import Model.Project;
 import Network.Database.DAO;
@@ -139,5 +140,26 @@ public class ServerModelManager {
             }
         }
         return relevantProjects;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public Response processRequest(Request request) {
+        return RequestHandler.getInstance().processRequest(request);
     }
 }
