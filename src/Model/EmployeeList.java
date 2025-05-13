@@ -1,24 +1,72 @@
 package Model;
 
-import java.util.ArrayList;
+import java.util.*;
 
-public class EmployeeList {
+public class EmployeeList implements List<Employee> {
     private ArrayList<Employee> employees;
 
     public EmployeeList() {
         employees = new ArrayList<Employee>();
     }
 
-    public void add(Employee employee) {
+    public int size() {
+        return employees.size();
+    }
+
+    public boolean isEmpty() {
+        return false;
+    }
+
+    public boolean contains(Object o) {
+        return false;
+    }
+
+    public Iterator<Employee> iterator() {
+        return employees.iterator();
+    }
+
+    public Object[] toArray() {
+        return new Object[0];
+    }
+
+    public <T> T[] toArray(T[] a) {
+        return null;
+    }
+
+    public boolean add(Employee employee) {
         employees.add(employee);
+        return true;
     }
 
-    public void remove(Employee employee) {
-        employees.remove(employee);
+    public boolean remove(Object o) {
+        return false;
     }
 
-    public Employee getEmployeeById(int id)
-    {
+    public boolean containsAll(Collection<?> c) {
+        return false;
+    }
+
+    public boolean addAll(Collection<? extends Employee> c) {
+        return false;
+    }
+
+    public boolean addAll(int index, Collection<? extends Employee> c) {
+        return false;
+    }
+
+    public boolean removeAll(Collection<?> c) {
+        return false;
+    }
+
+    public boolean retainAll(Collection<?> c) {
+        return false;
+    }
+
+    public void clear() {
+
+    }
+
+    public Employee get(int id) {
         for(Employee employee : employees)
         {
             if(employee.getEmployee_id() == id)
@@ -30,8 +78,39 @@ public class EmployeeList {
         return null;
     }
 
-    public ArrayList<Employee> getArrayList()
-    {
-        return employees;
+    public Employee set(int index, Employee element) {
+        return null;
+    }
+
+    public void add(int index, Employee element) {
+
+    }
+
+    public Employee remove(int index) {
+        return null;
+    }
+
+    public int indexOf(Object o) {
+        return 0;
+    }
+
+    public int lastIndexOf(Object o) {
+        return 0;
+    }
+
+    public ListIterator<Employee> listIterator() {
+        return employees.listIterator();
+    }
+
+    public ListIterator<Employee> listIterator(int index) {
+        return employees.listIterator(index);
+    }
+
+    public List<Employee> subList(int fromIndex, int toIndex) {
+        return List.of();
+    }
+
+    public void remove(Employee employee) {
+        employees.remove(employee);
     }
 }

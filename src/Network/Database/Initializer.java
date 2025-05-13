@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Initializer{
     private static Initializer instance;
@@ -27,7 +28,7 @@ public class Initializer{
         return instance;
     }
 
-    public ArrayList<Project> getProjects(EmployeeList employees) throws SQLException {
+    public List<Project> getProjects(List<Employee> employees) throws SQLException {
         try(Connection connection = dao.getConnection()) {
 
             //Selects all projects
@@ -38,7 +39,8 @@ public class Initializer{
 
                 //Creates a project that will be prepared to get added to the returned ArrayList<>
                 Project preparedProject = new Project(projectResults.getInt("project_id"),
-                                employees.getEmployeeById(projectResults.getInt("created_by")),
+                                employees.get(projectResults.getInt("created_by")),
+                                employees.get(projectResults.getInt("scrum_master")),
                                 projectResults.getString("name"),
                                 projectResults.getString("description"),
                                 projectResults.getString("status"),
@@ -66,7 +68,7 @@ public class Initializer{
 
                     //Adds the employees assigned to the task to it
                     while (taskAssigneesResults.next()) {
-                        task.assignTo(employees.getEmployeeById(taskAssigneesResults.getInt("employee_id")));
+                        task.assignTo(employees.get(taskAssigneesResults.getInt("employee_id")));
                     }
 
                     projectTasks.add(task);
@@ -104,7 +106,7 @@ public class Initializer{
 
                 //Adds the employees to the project
                 while (projectAssigneesResults.next()) {
-                    preparedProject.addEmployee(employees.getEmployeeById(projectAssigneesResults.getInt("employee_id")));
+                    preparedProject.addEmployee(employees.get(projectAssigneesResults.getInt("employee_id")));
                 }
                 //Adds the complete project to the list
                 projects.add(preparedProject);
@@ -113,13 +115,18 @@ public class Initializer{
         }
     }
 
-    public EmployeeList getEmployees() throws SQLException {
+    public List<Employee> getEmployees() throws SQLException {
         try(Connection connection = dao.getConnection()) {
-            EmployeeList employees = new EmployeeList();
-            PreparedStatement statement = connection.prepareStatement("SELECT employee_id, role_id, username FROM employee");
+            List<Employee> employees = new EmployeeList();
+            PreparedStatement statement = connection.prepareStatement("SELECT employee_id, role_id, username, status FROM employee");
             ResultSet results = statement.executeQuery();
             while (results.next()) {
-                employees.add(new Employee(results.getInt("employee_id"), results.getInt("role_id"), results.getString("username")));
+                Employee employee = new Employee(results.getInt("employee_id"), results.getInt("role_id"), results.getString("username"));
+                if(results.getString("status").equals("inactive"))
+                {
+                    employee.deativate();
+                }
+                employees.add(employee);
             }
             return employees;
         }

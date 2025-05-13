@@ -1,5 +1,7 @@
 package Model;
 
+import java.util.List;
+
 public class Task {
     private int task_id;
     private int sprint_id;
@@ -8,7 +10,7 @@ public class Task {
     private String description;
     private String status;
     private int priority;
-    private EmployeeList assignedTo;
+    private List<Employee> assignedTo;
 
     public Task(int task_id, int sprint_id, int project_id, String title, String description, String status, int priority) {
         this.task_id = task_id;
@@ -97,7 +99,7 @@ public class Task {
         assignedTo.remove(employee);
     }
 
-    public EmployeeList getAssignedTo() {
+    public List<Employee> getAssignedTo() {
         return assignedTo;
     }
 }
