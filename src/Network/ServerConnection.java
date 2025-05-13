@@ -1,6 +1,9 @@
 package Network;
 
 import ClientModel.ServerInteractions.Request;
+import Network.Response.EmployeeResponse;
+import Network.Response.LoginResponse;
+import Network.Response.ProjectResponse;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;

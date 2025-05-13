@@ -1,9 +1,8 @@
-package Network;
+package Network.Response;
 
 import Model.Project;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ProjectResponse extends Response implements Serializable

@@ -5,7 +5,7 @@ import Model.Employee;
 import Model.Project;
 import Model.Sprint;
 import Model.Task;
-import Network.Response;
+import Network.Response.Response;
 
 import java.beans.PropertyChangeSupport;
 import java.sql.Date;

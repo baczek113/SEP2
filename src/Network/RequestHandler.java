@@ -1,7 +1,8 @@
 package Network;
 
 import ClientModel.ServerInteractions.Request;
-import Model.Employee;
+import Network.Response.LoginResponse;
+import Network.Response.Response;
 
 public class RequestHandler {
     private static RequestHandler instance;
