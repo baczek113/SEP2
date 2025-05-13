@@ -1,10 +1,11 @@
 package Model;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Project {
+public class Project implements Serializable {
     private int project_id;
     private Employee created_by;
     private Employee scrum_master;

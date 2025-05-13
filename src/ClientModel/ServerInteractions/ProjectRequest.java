@@ -7,7 +7,7 @@ public class ProjectRequest extends Request{
     private Project project;
 
     public ProjectRequest(String action, Employee employee, Project project){
-        super(action = "projectrequest", employee);
+        super("projectrequest", employee);
         this.project = project;
     }
 

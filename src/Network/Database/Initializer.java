@@ -1,10 +1,6 @@
 package Network.Database;
 
-import Model.Employee;
-import Model.Project;
-import Model.Sprint;
-import Model.Task;
-import Model.EmployeeList;
+import Model.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -32,7 +28,7 @@ public class Initializer{
         try(Connection connection = dao.getConnection()) {
 
             //Selects all projects
-            ArrayList<Project> projects = new ArrayList<>();
+            List<Project> projects = new ProjectList();
             PreparedStatement projectStatement = connection.prepareStatement("SELECT * FROM project");
             ResultSet projectResults = projectStatement.executeQuery();
             while (projectResults.next()) {

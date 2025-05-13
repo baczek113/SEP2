@@ -10,7 +10,7 @@ public class AssignTask extends Request
 
   public AssignTask(String action, Employee employee, Task task)
   {
-    super(action = "assigntask", employee);
+    super("assigntask", employee);
     this.task = task;
   }
 

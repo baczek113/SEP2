@@ -1,8 +1,9 @@
 package Model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Task {
+public class Task implements Serializable {
     private int task_id;
     private int sprint_id;
     private int project_id;
