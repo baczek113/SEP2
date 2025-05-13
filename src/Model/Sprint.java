@@ -2,6 +2,7 @@ package Model;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Sprint {
     private int sprint_id;
@@ -9,7 +10,7 @@ public class Sprint {
     private String name;
     private Date start_date;
     private Date end_date;
-    private ArrayList<Task> tasks;
+    private List<Task> tasks;
 
     public Sprint(int sprint_id, int project_id, String name, Date start_date, Date end_date) {
         this.sprint_id = sprint_id;
@@ -68,7 +69,7 @@ public class Sprint {
         this.tasks.remove(task);
     }
 
-    public ArrayList<Task> getTasks()
+    public List<Task> getTasks()
     {
         return tasks;
     }

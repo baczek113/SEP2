@@ -2,22 +2,25 @@ package Model;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Project {
     private int project_id;
     private Employee created_by;
+    private Employee scrum_master;
     private String name;
     private String description;
     private String status;
     private Date start_date;
     private Date end_date;
-    private EmployeeList employees; //List containing all the project participants incl. the product owner
-    private ArrayList<Sprint> sprints; //List containing all the project sprints
-    private ArrayList<Task> backlog;
+    private List<Employee> employees; //List containing all the project participants incl. the product owner
+    private List<Sprint> sprints; //List containing all the project sprints
+    private List<Task> backlog;
 
-    public Project(int project_id, Employee created_by, String name, String description, String status, Date start_date, Date end_date) {
+    public Project(int project_id, Employee created_by, Employee scrum_master, String name, String description, String status, Date start_date, Date end_date) {
         this.project_id = project_id;
         this.created_by = created_by;
+        this.scrum_master = scrum_master;
         this.name = name;
         this.description = description;
         this.status = status;
@@ -103,21 +106,30 @@ public class Project {
         this.sprints.remove(sprint);
     }
 
-    public ArrayList<Sprint> getSprints()
+    public List<Sprint> getSprints()
     {
         return sprints;
     }
 
-    public EmployeeList getEmployees() {
+    public List<Employee> getEmployees() {
         return employees;
     }
 
-    public ArrayList<Task> getBacklog() {
+    public List<Task> getBacklog() {
         return backlog;
     }
 
     public void addToBacklog(Task task)
     {
         this.backlog.add(task);
+    }
+
+    public Employee getScrum_master()
+    {
+        return scrum_master;
+    }
+
+    public void setScrum_master(Employee scrum_master) {
+        this.scrum_master = scrum_master;
     }
 }

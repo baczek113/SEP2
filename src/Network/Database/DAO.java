@@ -59,6 +59,7 @@ public class DAO {
             statement.executeUpdate();
         }catch (SQLException e){
             System.out.println("failed to edit employee: " + employee.getUsername());
+            throw new RuntimeException(e);
         }
     }
 
@@ -69,6 +70,7 @@ public class DAO {
             statement.executeUpdate();
         }catch (SQLException e){
             System.out.println("failed to remove employee: " + employee.getUsername());
+            throw new RuntimeException(e);
         }
     }
 
@@ -81,19 +83,21 @@ public class DAO {
             statement.executeUpdate();
         }catch (SQLException e){
             System.out.println("failed to add employee " + employee.getUsername().toUpperCase() + " to project: " + employee.getUsername());
+            throw new RuntimeException(e);
         }
     }
-    public Project addProject(Employee created_by, String name, String description) {
+    public Project addProject(Employee created_by, Employee scrum_master, String name, String description) {
         try(Connection connection = getConnection()) {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO project (created_by, name, description, status, start_date, end_date) VALUES (?, ?, ?, 'pending', NULL, NULL)", PreparedStatement.RETURN_GENERATED_KEYS);
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO project (created_by, scrum_master, name, description, status, start_date, end_date) VALUES (?, ?, ?, ?, 'pending', NULL, NULL)", PreparedStatement.RETURN_GENERATED_KEYS);
             statement.setInt(1, created_by.getEmployee_id());
-            statement.setString(2, name);
-            statement.setString(3, description);
+            statement.setInt(2, scrum_master.getEmployee_id());
+            statement.setString(3, name);
+            statement.setString(4, description);
 
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
             if (resultSet.next()) {
-                return new Project(resultSet.getInt(1), created_by, name, description, "pending", null, null);
+                return new Project(resultSet.getInt(1), created_by, scrum_master, name, description, "pending", null, null);
             }
             else
             {
@@ -114,6 +118,7 @@ public class DAO {
             project.setEnd_date(new Date(System.currentTimeMillis()));
         }catch (SQLException e){
             System.out.println("failed to set status to 'finish' for a project: " + project.getName());
+            throw new RuntimeException(e);
         }
     }
 
@@ -128,6 +133,7 @@ public class DAO {
             statement.executeUpdate();
         }catch (SQLException e){
             System.out.println("failed to remove employee " + employee.getUsername().toUpperCase() + " from project " + project.getName().toUpperCase());
+            throw new RuntimeException(e);
         }
 
     }
@@ -167,6 +173,7 @@ public class DAO {
             statement.executeUpdate();
         }catch (SQLException e){
             System.out.println("failed to assign task " + task.getTitle().toUpperCase() + " to employee " + employee.getUsername().toUpperCase());
+            throw new RuntimeException(e);
         }
     }
 
@@ -178,6 +185,7 @@ public class DAO {
             statement.executeUpdate();
         } catch (SQLException e) {
             System.out.println("failed to assign priority to a task " + task.getTitle().toUpperCase());
+            throw new RuntimeException(e);
         }
     }
 
@@ -189,6 +197,7 @@ public class DAO {
             statement.executeUpdate();
         }catch (SQLException e){
             System.out.println("failed to change status of a task " + task.getTitle() );
+            throw new RuntimeException(e);
         }
     }
 
@@ -215,7 +224,7 @@ public class DAO {
         }
     }
 
-    public HashMap<Integer, String> getAllRoles() throws SQLException
+    public HashMap<Integer, String> getAllRoles()
     {
         try(Connection connection = getConnection()) {
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM role");
@@ -226,6 +235,60 @@ public class DAO {
                 roles.put(results.getInt("role_id"), results.getString("role_name"));
             }
             return roles;
+        } catch (SQLException e) {
+            System.out.println("Failed to retrieve roles");
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Employee login(String username, String password)
+    {
+        try(Connection connection = getConnection()) {
+            PreparedStatement statement = connection.prepareStatement("SELECT employee_id, role_id, status FROM employee WHERE username = ? AND password = ?");
+            statement.setString(1, username);
+            statement.setString(2, password);
+            ResultSet results = statement.executeQuery();
+
+            if(results.next()) {
+                Employee employee = new Employee(results.getInt("employee_id"), results.getInt("role_id"), username);
+                if(results.getString("status").equals("inactive"))
+                {
+                    employee.deativate();
+                }
+                return employee;
+            }
+            return null;
+        } catch (SQLException e) {
+            System.out.println("Login failed");
+            return null;
+        }
+    }
+
+    public void deactivateEmployee(Employee employee)
+    {
+        try(Connection connection = getConnection())
+        {
+            PreparedStatement statement = connection.prepareStatement("UPDATE employee SET status = 'inactive' WHERE employee_id = ?");
+            statement.setInt(1, employee.getEmployee_id());
+            statement.executeUpdate();
+        }
+        catch (SQLException e){
+            System.out.println("Failed to deactivate employee");
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void activateEmployee(Employee employee)
+    {
+        try(Connection connection = getConnection())
+        {
+            PreparedStatement statement = connection.prepareStatement("UPDATE employee SET status = 'active' WHERE employee_id = ?");
+            statement.setInt(1, employee.getEmployee_id());
+            statement.executeUpdate();
+        }
+        catch (SQLException e){
+            System.out.println("Failed to activate employee");
+            throw new RuntimeException(e);
         }
     }
 }

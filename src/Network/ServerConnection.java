@@ -9,13 +9,13 @@ import java.io.IOException;
 
 public  class ServerConnection implements Runnable{
     private Socket socket;
-    private ServerModelManager model;
+    private ServerModelManager modelManager;
     private ObjectInputStream inFromClient;
     private ObjectOutputStream outToClient;
 
-    public ServerConnection(Socket socket, ServerModelManager model) throws IOException {
+    public ServerConnection(Socket socket) throws IOException {
         this.socket = socket;
-        this.model = model;
+        this.modelManager = ServerModelManager.getInstance();
         this.outToClient = new ObjectOutputStream(socket.getOutputStream());
         this.outToClient.flush();
         this.inFromClient = new ObjectInputStream(socket.getInputStream());
@@ -26,28 +26,27 @@ public  class ServerConnection implements Runnable{
       try
       {
         Request loginRequest = (Request) inFromClient.readObject();
-        LoginResponse loginResponse = model.processRequest(loginRequest);
+        LoginResponse loginResponse = (LoginResponse) modelManager.processRequest(loginRequest);
         int userType = loginResponse.getEmployee().getRole().getRole_id();
 
         if (userType == 1){
-            EmployeeResponse initialResponse = new EmployeeResponse("employee", model.getEmployyes());
+            EmployeeResponse initialResponse = new EmployeeResponse("employee", modelManager.getEmployyes());
             while (true){
                 Request request = (Request) inFromClient.readObject();
-                EmployeeResponse response = model.processRequest(request);
+                EmployeeResponse response = (EmployeeResponse) modelManager.processRequest(request);
                 sendEmployeeResponse(response);
             }
 
         }else if (userType == 2 || userType == 3 || userType == 4){
-            ProjectResponse initialResponse = new ProjectResponse("project", model.getProjects());
+            ProjectResponse initialResponse = new ProjectResponse("project", modelManager.getProjects());
             while (true){
                 Request request = (Request) inFromClient.readObject();
-                ProjectResponse response = model.processRequest(request);
+                ProjectResponse response = (ProjectResponse) modelManager.processRequest(request);
                 sendProjectResponse(response);
             }
         }else {
-            String errorMessage = "Login error";
             outToClient.reset();
-            outToClient.writeObject(errorMessage);
+            outToClient.writeObject(loginResponse.getEmployee());
         }
       }
       catch (IOException | ClassNotFoundException e)
