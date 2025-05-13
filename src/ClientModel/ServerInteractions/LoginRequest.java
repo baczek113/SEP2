@@ -9,7 +9,7 @@ public class LoginRequest extends Request
 
   public LoginRequest(String action, Employee employee, String username, String password)
   {
-    super(action, employee);
+    super(action = "login", employee = null);
     this.username = username;
     this.password = password;
   }

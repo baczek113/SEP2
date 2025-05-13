@@ -10,7 +10,7 @@ public class AssignProject extends Request
 
   public AssignProject(String action, Employee employee, Project project, Employee employeeToAssign)
   {
-    super(action, employee);
+    super(action = "assignproject", employee);
     this.project = project;
     this.employeeToAssign = employeeToAssign;
   }

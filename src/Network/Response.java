@@ -3,12 +3,12 @@ package Network;
 import java.io.Serializable;
 
 public abstract class Response implements Serializable {
-    private String message;
-    public Response(String message) {
-        this.message = message;
+    private String statusMessage;
+    public Response(String statusMessage) {
+        this.statusMessage = statusMessage;
     }
 
     public String getMessage() {
-        return message;
+        return statusMessage;
     }
 }

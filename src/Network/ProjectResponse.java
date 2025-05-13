@@ -7,16 +7,11 @@ import java.util.ArrayList;
 
 public class ProjectResponse extends Response implements Serializable
 {
-  private String message;
   private ArrayList<Project> projects;
 
-  public ProjectResponse(String message, ArrayList<Project> projects){
-    super(message);
+  public ProjectResponse(String statusMessage, ArrayList<Project> projects){
+    super(statusMessage);
     this.projects = projects;
-  }
-
-  public String getMessage(){
-    return message;
   }
 
   public ArrayList<Project> getProjects(){

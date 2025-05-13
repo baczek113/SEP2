@@ -8,10 +8,9 @@ public class AssignTask extends Request
   private Employee employeeAssigned;
   private Task task;
 
-  public AssignTask(String action, Employee employee, Employee employeeAssigned, Task task)
+  public AssignTask(String action, Employee employee, Task task)
   {
-    super(action, employee);
-    this.employeeAssigned = employeeAssigned;
+    super(action = "assigntask", employee);
     this.task = task;
   }
 
