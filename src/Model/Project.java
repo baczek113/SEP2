@@ -2,7 +2,6 @@ package Model;
 
 import java.sql.Date;
 import java.util.ArrayList;
-import Network.Utils.EmployeeList;
 
 public class Project {
     private int project_id;

@@ -16,10 +16,10 @@ public class DAO {
         DriverManager.registerDriver(new org.postgresql.Driver());
     }
 
-    private Connection getConnection() throws SQLException
+    public Connection getConnection() throws SQLException
     {
         //Substitute for your own database login/password
-        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=sep_database", "postgres", "");
+        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=sep_database", "postgres", "gigakoks1");
     }
 
     public static DAO getInstance() throws SQLException

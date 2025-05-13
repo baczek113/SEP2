@@ -1,9 +1,5 @@
 package Model;
 
-import Network.Utils.EmployeeList;
-
-import java.util.ArrayList;
-
 public class Task {
     private int task_id;
     private int sprint_id;
