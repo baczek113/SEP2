@@ -9,38 +9,44 @@
 
 <AnchorPane prefHeight="569.0" prefWidth="382.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.ViewTaskViewController">
     <children>
-
-        <Label layoutX="88.0" layoutY="14.0" prefHeight="40.0" prefWidth="205.0">
-            <font><Font size="28" /></font>
-        </Label>
         <Label layoutX="13.0" layoutY="116.0" text="Description:">
             <font>
                 <Font size="20.0" />
             </font></Label>
 
-        <Label layoutX="31.0" layoutY="210.0" text="Priority:">
+        <Label layoutX="52.0" layoutY="210.0" text="Priority:">
             <font>
                 <Font size="20.0" />
             </font></Label>
 
-        <Button fx:id="saveButton" layoutX="52.0" layoutY="505.0" prefWidth="100" text="Edit" />
-        <Button fx:id="cancelButton" layoutX="218.0" layoutY="505.0" prefWidth="100" text="Cancel" />
-        <Label layoutX="152.0" layoutY="75.0" prefHeight="112.0" prefWidth="183.0">
+        <Button fx:id="editButton" layoutX="52.0" layoutY="505.0" onAction="#edit" prefWidth="100" text="Edit" />
+        <Button fx:id="cancelButton" layoutX="218.0" layoutY="505.0" onAction="#cancel" prefWidth="100" text="Cancel" />
+        <Label fx:id="descriptionLabel" layoutX="152.0" layoutY="99.0" prefHeight="78.0" prefWidth="183.0">
             <font>
                 <Font size="20.0" />
             </font>
         </Label>
-        <Label layoutX="140.0" layoutY="210.0" prefHeight="30.0" prefWidth="183.0">
+        <Label fx:id="nameLabel" layoutX="151.0" layoutY="44.0" prefHeight="30.0" prefWidth="183.0">
             <font>
                 <Font size="20.0" />
             </font>
         </Label>
-      <TableView layoutX="65.0" layoutY="339.0" prefHeight="126.0" prefWidth="250.0">
+      <TableView fx:id="assignedUsersTable" layoutX="65.0" layoutY="339.0" prefHeight="126.0" prefWidth="250.0">
         <columns>
-          <TableColumn prefWidth="249.60002746582032" text="Username" />
+          <TableColumn  fx:id="usernameColumn"  prefWidth="249.60002746582032" text="Username" />
         </columns>
       </TableView>
       <Label layoutX="122.0" layoutY="298.0" prefHeight="30.0" prefWidth="135.0" text="Assigned users">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label  layoutX="65.0" layoutY="44.0" text="Name:">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="priorityLabel" layoutX="151.0" layoutY="210.0" prefHeight="30.0" prefWidth="183.0">
          <font>
             <Font size="20.0" />
          </font>

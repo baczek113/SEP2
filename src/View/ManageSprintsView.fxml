@@ -9,9 +9,9 @@
 
 <AnchorPane prefHeight="466.0" prefWidth="681.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.ManageSprintsViewController">
     <children>
-        <Button fx:id="addProject" layoutX="60.0" layoutY="426.0" mnemonicParsing="false" onAction="#add" prefHeight="26.0" prefWidth="115.0" text="Add" />
-        <Button fx:id="editProject" layoutX="200.0" layoutY="426.0" mnemonicParsing="false" onAction="#edit" prefHeight="26.0" prefWidth="115.0" text="Edit" />
-        <Button fx:id="removeProject" layoutX="345.0" layoutY="426.0" mnemonicParsing="false" onAction="#remove" prefHeight="26.0" prefWidth="115.0" text="Remove" />
+        <Button fx:id="addSprint" layoutX="116.0" layoutY="426.0" mnemonicParsing="false" onAction="#add" prefHeight="26.0" prefWidth="115.0" text="Add" />
+        <Button fx:id="editSprint" layoutX="287.0" layoutY="426.0" mnemonicParsing="false" onAction="#edit" prefHeight="26.0" prefWidth="115.0" text="Edit" />
+        <Button fx:id="removeSprint" layoutX="465.0" layoutY="426.0" mnemonicParsing="false" onAction="#remove" prefHeight="26.0" prefWidth="115.0" text="Remove" />
         <TableView fx:id="tableView" layoutY="64.0" prefHeight="350.0" prefWidth="689.0">
             <columns>
                 <TableColumn fx:id="name" prefWidth="230.0" text="Name" />
@@ -24,6 +24,6 @@
                 <Font size="32.0" />
             </font>
         </Label>
-      <Button fx:id="addProject1" layoutX="490.0" layoutY="426.0" mnemonicParsing="false" onAction="#add" prefHeight="26.0" prefWidth="115.0" text="Backlog" />
+      <Button fx:id="goBack" layoutX="20.0" layoutY="24.0" mnemonicParsing="false" onAction="#goBack" prefHeight="8.0" prefWidth="34.0" text="←" />
     </children>
 </AnchorPane>

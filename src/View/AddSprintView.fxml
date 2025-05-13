@@ -49,28 +49,28 @@
             <font>
                 <Font size="20.0" />
             </font></Label>
-        <TableView fx:id="availableUsersTable" layoutX="450.0" layoutY="95.0" prefHeight="180" prefWidth="300">
+        <TableView fx:id="availableTasksTable" layoutX="450.0" layoutY="95.0" prefHeight="180" prefWidth="300">
             <columns>
-                <TableColumn fx:id="availableUsernameColumn" prefWidth="290" text="Tasks" />
+                <TableColumn fx:id="availableTasksColumn" prefWidth="290" text="Tasks" />
             </columns>
         </TableView>
 
-        <Button fx:id="addUserButton" layoutX="574.0" layoutY="287.0" text="Add →" />
+        <Button fx:id="addTaskButton" layoutX="574.0" layoutY="287.0" text="Add →" onAction="#add" />
 
         <Label layoutX="527.0" layoutY="319.0" text="Assigned tasks">
             <font>
                 <Font size="20.0" />
             </font></Label>
-        <TableView fx:id="assignedUsersTable" layoutX="450.0" layoutY="353.0" prefHeight="180" prefWidth="300">
+        <TableView fx:id="assignedTasksTable" layoutX="450.0" layoutY="353.0" prefHeight="180" prefWidth="300">
             <columns>
-                <TableColumn fx:id="assignedUsernameColumn" prefWidth="290" text="Tasks" />
+                <TableColumn fx:id="assignedTasksColumn" prefWidth="290" text="Tasks" />
             </columns>
         </TableView>
 
-        <Button fx:id="removeUserButton" layoutX="569.0" layoutY="550.0" text="← Remove" />
+        <Button fx:id="removeUserButton" layoutX="569.0" layoutY="550.0" text="← Remove"  onAction="#remove" />
 
-        <Button fx:id="saveButton" layoutX="63.0" layoutY="550.0" prefWidth="100" text="Save" />
-        <Button fx:id="cancelButton" layoutX="295.0" layoutY="550.0" prefWidth="100" text="Cancel" />
+        <Button fx:id="saveButton" layoutX="63.0" layoutY="550.0" prefWidth="100" text="Save" onAction="#save" />
+        <Button fx:id="cancelButton" layoutX="295.0" layoutY="550.0" prefWidth="100" text="Cancel" onAction="#cancel"/>
 
     </children>
 </AnchorPane>

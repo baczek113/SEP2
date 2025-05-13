@@ -9,16 +9,16 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="652.0" prefWidth="800" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.ManageTasksViewController">
+<AnchorPane prefHeight="601.0" prefWidth="724.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.ManageTasksViewController">
     <children>
 
 
-        <Label layoutX="366.0" layoutY="14.0" text="Tasks">
+        <Label layoutX="328.0" layoutY="14.0" text="Tasks">
             <font><Font size="28" /></font>
         </Label>
 
 
-        <TabPane fx:id="taskTabPane" layoutX="50" layoutY="70" prefHeight="500" prefWidth="700">
+        <TabPane fx:id="taskTabPane" layoutX="12.0" layoutY="57.0" prefHeight="500" prefWidth="700">
 
             <Tab text="To Do">
                 <TableView fx:id="todoTable" prefHeight="486.0" prefWidth="719.0">
@@ -34,9 +34,9 @@
             <Tab text="Doing">
                 <TableView fx:id="doingTable">
                     <columns>
-                        <TableColumn fx:id="doingNameColumn" prefWidth="200" text="Name" />
-                        <TableColumn fx:id="doingCreatedByColumn" prefWidth="200" text="Created By" />
-                        <TableColumn fx:id="doingPriorityColumn" prefWidth="200" text="Priority" />
+                        <TableColumn fx:id="doingNameColumn" prefWidth="233.0" text="Name" />
+                        <TableColumn fx:id="doingCreatedByColumn" prefWidth="233.0" text="Created By" />
+                        <TableColumn fx:id="doingPriorityColumn" prefWidth="233.0" text="Priority" />
                     </columns>
                 </TableView>
             </Tab>
@@ -45,9 +45,9 @@
             <Tab text="Done">
                 <TableView fx:id="doneTable">
                     <columns>
-                        <TableColumn fx:id="doneNameColumn" prefWidth="200" text="Name" />
-                        <TableColumn fx:id="doneCreatedByColumn" prefWidth="200" text="Created By" />
-                        <TableColumn fx:id="donePriorityColumn" prefWidth="200" text="Priority" />
+                        <TableColumn fx:id="doneNameColumn" prefWidth="233.0" text="Name" />
+                        <TableColumn fx:id="doneCreatedByColumn" prefWidth="233.0" text="Created By" />
+                        <TableColumn fx:id="donePriorityColumn" prefWidth="233.0" text="Priority" />
                     </columns>
                 </TableView>
             </Tab>
@@ -56,16 +56,17 @@
             <Tab text="Done and Checked">
                 <TableView fx:id="checkedTable">
                     <columns>
-                        <TableColumn fx:id="checkedNameColumn" prefWidth="200" text="Name" />
-                        <TableColumn fx:id="checkedCreatedByColumn" prefWidth="200" text="Created By" />
-                        <TableColumn fx:id="checkedPriorityColumn" prefWidth="200" text="Priority" />
+                        <TableColumn fx:id="checkedNameColumn" prefWidth="233.0" text="Name" />
+                        <TableColumn fx:id="checkedCreatedByColumn" prefWidth="233.0" text="Created By" />
+                        <TableColumn fx:id="checkedPriorityColumn" prefWidth="233.0" text="Priority" />
                     </columns>
                 </TableView>
             </Tab>
         </TabPane>
-      <Button layoutX="195.0" layoutY="589.0" mnemonicParsing="false" text="Take task" />
-      <Button layoutX="532.0" layoutY="589.0" mnemonicParsing="false" text="Change status" />
-      <Button layoutX="354.0" layoutY="589.0" mnemonicParsing="false" text="Unassign" />
+      <Button fx:id="takeTask" layoutX="116.0" layoutY="563.0" mnemonicParsing="false" onAction="#takeTask" text="Take task" />
+      <Button fx:id="changeStatus" layoutX="533.0" layoutY="563.0" mnemonicParsing="false" onAction="#changeStatus" text="Change status" />
+      <Button fx:id="unassign" layoutX="329.0" layoutY="563.0" mnemonicParsing="false" onAction="#unassign" text="Unassign" />
+      <Button fx:id="goBack" layoutX="50.0" layoutY="21.0" mnemonicParsing="false" onAction="#goBack" prefHeight="8.0" prefWidth="34.0" text="←" />
 
     </children>
 </AnchorPane>

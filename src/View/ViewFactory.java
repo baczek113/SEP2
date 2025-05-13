@@ -10,13 +10,15 @@ import ViewModel.ViewModelFactory;
 
 public class ViewFactory
 {
-    private final ViewHandler viewHandler;
+    private ViewHandler viewHandler;
     private final ViewModelFactory viewModelFactory;
 
-    public ViewFactory (ViewHandler viewHandler, ViewModelFactory viewModelFactory)
+    public ViewFactory (ViewModelFactory viewModelFactory)
     {
-        this.viewHandler=viewHandler;
         this.viewModelFactory=viewModelFactory;
+    }
+    public void setViewHandler(ViewHandler viewHandler) {
+        this.viewHandler = viewHandler;
     }
     public Scene load (String viewName)
     {
@@ -80,12 +82,6 @@ public class ViewFactory
                  controller.init(viewHandler, viewModelFactory.getEditSprintViewModel());
              }
 
-             case "ViewSprint" -> {
-                 loader.setLocation(getClass().getResource("/View/ViewSprintView.fxml"));
-                 root = loader.load();
-                 ViewSprintViewController controller = loader.getController();
-                 controller.init(viewHandler, viewModelFactory.getViewSprintViewModel());
-             }
 
              case "ManageTasks" -> {
                  loader.setLocation(getClass().getResource("/View/ManageTasksView.fxml"));

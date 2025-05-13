@@ -10,8 +10,9 @@ public class Test extends Application {
     @Override
     public void start(Stage stage) {
         ViewModelFactory viewModelFactory = new ViewModelFactory();
-        ViewFactory viewFactory = new ViewFactory(null, viewModelFactory);
+        ViewFactory viewFactory = new ViewFactory(viewModelFactory);
         ViewHandler viewHandler = new ViewHandler(viewFactory);
+        viewFactory.setViewHandler(viewHandler);
 
         viewHandler.start(stage);
     }
