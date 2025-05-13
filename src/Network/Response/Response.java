@@ -1,4 +1,4 @@
-package Network;
+package Network.Response;
 
 import java.io.Serializable;
 

@@ -1,20 +1,20 @@
-package Network;
+package Network.Response;
 
 import Model.Project;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.List;
 
 public class ProjectResponse extends Response implements Serializable
 {
-  private ArrayList<Project> projects;
+  private List<Project> projects;
 
-  public ProjectResponse(String statusMessage, ArrayList<Project> projects){
+  public ProjectResponse(String statusMessage, List<Project> projects){
     super(statusMessage);
     this.projects = projects;
   }
 
-  public ArrayList<Project> getProjects(){
+  public List<Project> getProjects(){
     return projects;
   }
 }
