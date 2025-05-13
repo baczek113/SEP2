@@ -1,9 +1,8 @@
 package Network;
 
-import Model.Employee;
 import Model.Project;
 import Network.Database.Initializer;
-import Network.Utils.EmployeeList;
+import Model.EmployeeList;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

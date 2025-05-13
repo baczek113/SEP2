@@ -1,6 +1,4 @@
-package Network.Utils;
-
-import Model.Employee;
+package Model;
 
 import java.util.ArrayList;
 

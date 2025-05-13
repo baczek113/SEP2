@@ -4,7 +4,7 @@ import Model.Employee;
 import Model.Project;
 import Model.Sprint;
 import Model.Task;
-import Network.Utils.EmployeeList;
+import Model.EmployeeList;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,11 +12,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class Initializer extends DAO{
+public class Initializer{
     private static Initializer instance;
+    private DAO dao;
 
     private Initializer() throws SQLException {
-        super();
+        this.dao = DAO.getInstance();
     }
 
     public static Initializer getInstance() throws SQLException {
@@ -27,7 +28,7 @@ public class Initializer extends DAO{
     }
 
     public ArrayList<Project> getProjects(EmployeeList employees) throws SQLException {
-        try(Connection connection = getConnection()) {
+        try(Connection connection = dao.getConnection()) {
 
             //Selects all projects
             ArrayList<Project> projects = new ArrayList<>();
@@ -113,7 +114,7 @@ public class Initializer extends DAO{
     }
 
     public EmployeeList getEmployees() throws SQLException {
-        try(Connection connection = getConnection()) {
+        try(Connection connection = dao.getConnection()) {
             EmployeeList employees = new EmployeeList();
             PreparedStatement statement = connection.prepareStatement("SELECT employee_id, role_id, username FROM employee");
             ResultSet results = statement.executeQuery();
