@@ -9,7 +9,7 @@ public class SprintRequest extends Request
 
   public SprintRequest(String action, Employee employee, Sprint sprint)
   {
-    super(action, employee);
+    super(action = "sprintrequest", employee);
     this.sprint = sprint;
   }
 
