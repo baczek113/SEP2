@@ -14,8 +14,8 @@ public class Project {
     private Date start_date;
     private Date end_date;
     private List<Employee> employees; //List containing all the project participants incl. the product owner
-    private ArrayList<Sprint> sprints; //List containing all the project sprints
-    private ArrayList<Task> backlog;
+    private List<Sprint> sprints; //List containing all the project sprints
+    private List<Task> backlog;
 
     public Project(int project_id, Employee created_by, Employee scrum_master, String name, String description, String status, Date start_date, Date end_date) {
         this.project_id = project_id;
@@ -106,7 +106,7 @@ public class Project {
         this.sprints.remove(sprint);
     }
 
-    public ArrayList<Sprint> getSprints()
+    public List<Sprint> getSprints()
     {
         return sprints;
     }
@@ -115,7 +115,7 @@ public class Project {
         return employees;
     }
 
-    public ArrayList<Task> getBacklog() {
+    public List<Task> getBacklog() {
         return backlog;
     }
 
