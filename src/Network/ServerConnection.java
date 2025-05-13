@@ -30,7 +30,7 @@ public  class ServerConnection implements Runnable{
         int userType = loginResponse.getEmployee().getRole().getRole_id();
 
         if (userType == 1){
-            EmployeeResponse initialResponse = new EmployeeResponse("employee", modelManager.getEmployyes());
+            EmployeeResponse initialResponse = new EmployeeResponse("employee", modelManager.getEmployees());
             while (true){
                 Request request = (Request) inFromClient.readObject();
                 EmployeeResponse response = (EmployeeResponse) modelManager.processRequest(request);

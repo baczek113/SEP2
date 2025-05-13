@@ -1,19 +1,21 @@
 package Network;
 
+import Model.Employee;
 import Model.EmployeeList;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class EmployeeResponse extends Response implements Serializable
 {
-  private EmployeeList employees;
+  private List<Employee> employees;
 
-  public EmployeeResponse(String statusMesssage, EmployeeList employeeList){
+  public EmployeeResponse(String statusMesssage, List<Employee> employeeList){
     super(statusMesssage);
     this.employees = employeeList;
   }
 
-  public EmployeeList getEmployees(){
+  public List<Employee> getEmployees(){
     return employees;
   }
 }
