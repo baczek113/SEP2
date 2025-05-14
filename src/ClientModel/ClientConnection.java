@@ -2,7 +2,9 @@ package ClientModel;
 
 import ClientModel.Requests.LoginRequest;
 import ClientModel.Requests.Request;
+import Network.Response.EmployeeResponse;
 import Network.Response.LoginResponse;
+import Network.Response.ProjectResponse;
 import Network.Response.Response;
 
 import java.io.IOException;
@@ -38,9 +40,13 @@ public class ClientConnection implements Runnable{
           Response response = (Response) inFromServer.readObject();
 
           clientModelManager.handleServerResponse(response);
-          System.out.println(((LoginResponse) response).getEmployee().getRole().getRole_name());
-
-          System.out.println("Client handled server response.");
+          if (response instanceof LoginResponse) {
+            System.out.println("Role from LoginResponse: " + ((LoginResponse) response).getEmployee().getRole().getRole_name());
+          } else if (response instanceof ProjectResponse){
+            System.out.println("Received project response from server." + ((ProjectResponse) response).getProjects());
+          } else {
+            System.out.println("Received employee response" + ((EmployeeResponse) response).getEmployees());
+          }
         }
       } catch (IOException | ClassNotFoundException e) {
         throw new RuntimeException(e);
