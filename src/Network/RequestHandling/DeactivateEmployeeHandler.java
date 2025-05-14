@@ -9,7 +9,7 @@ public class DeactivateEmployeeHandler implements RequestHandlerStrategy{
     public void processRequest(Request request, ServerModelManager modelManager) {
         if(modelManager.deactivateEmployee(((EmployeeRequest) request).getEmployeeToSend().getEmployee_id()))
         {
-            // broadcast stuff
+            // broadcast stuff 1
         }
     }
 }
