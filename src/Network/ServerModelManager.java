@@ -1,13 +1,16 @@
 package Network;
 
-import ClientModel.ServerInteractions.Request;
+import ClientModel.Requests.LoginRequest;
+import ClientModel.Requests.Request;
 import Model.*;
 import Network.Database.DAO;
 import Network.Database.Initializer;
-import Network.RequestHandling.LoginRequestHandler;
+import Network.RequestHandling.CreateEmployeeHandler;
 import Network.RequestHandling.RequestHandlerStrategy;
+import Network.Response.LoginResponse;
 import Network.Response.Response;
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +28,7 @@ public class ServerModelManager {
             this.employees = initializer.getEmployees();
             this.projects = initializer.getProjects(this.employees);
             this.dao = DAO.getInstance();
-            this.requestHandler = new LoginRequestHandler();
+            this.requestHandler = null;
         }
         catch (SQLException e) {
             System.out.println("ServerModelManager initialization failed");
@@ -149,14 +152,14 @@ public class ServerModelManager {
         return relevantProjects;
     }
 
-    public boolean addProject(Employee created_by, Employee scrum_master, String name, String description, List<Employee> participants)
+    public boolean addProject(Employee created_by, Employee scrum_master, String name, String description, Date startDate, Date endDate, List<Employee> participants)
     {
         List<Employee> participantsServerReflection = new EmployeeList();
         for(Employee employee : participants)
         {
             participantsServerReflection.add(employees.get(employee.getEmployee_id()));
         }
-        Project addedProject = dao.addProject(employees.get(created_by.getEmployee_id()), employees.get(scrum_master.getEmployee_id()), name, description, participantsServerReflection);
+        Project addedProject = dao.addProject(employees.get(created_by.getEmployee_id()), employees.get(scrum_master.getEmployee_id()), name, description, startDate, endDate, participantsServerReflection);
         if(addedProject != null)
         {
             projects.add(addedProject);
@@ -258,13 +261,164 @@ public class ServerModelManager {
         return false;
     }
 
-    
-
-    public void setRequestHandler(RequestHandlerStrategy requestHandler) {
-        this.requestHandler = requestHandler;
+    public boolean assignTask(Employee employee, Task task)
+    {
+        try{
+            for(Task taskReflection : projects.get(task.getProject_id()).getBacklog())
+            {
+                if(taskReflection.getTask_id() == task.getTask_id())
+                {
+                    dao.assignTask(employee, task);
+                    taskReflection.assignTo(employee);
+                    return true;
+                }
+            }
+            return false;
+        }
+        catch (RuntimeException e) {
+            return false;
+        }
     }
 
-    public Response processRequest(Request request) {
-        return requestHandler.processRequest(request, this);
+    public boolean unAssignTask(Employee employee, Task task)
+    {
+        try{
+            for(Task taskReflection : projects.get(task.getProject_id()).getBacklog())
+            {
+                if(taskReflection.getTask_id() == task.getTask_id())
+                {
+                    dao.unAssignTask(employee, task);
+                    taskReflection.unassignTo(employee);
+                    return true;
+                }
+            }
+            return false;
+        }
+        catch (RuntimeException e) {
+            return false;
+        }
+    }
+
+    public boolean changeTaskStatus(Task task, String status)
+    {
+        try
+        {
+            dao.changeTaskStatus(task, status);
+            for(Task taskReflection : projects.get(task.getProject_id()).getBacklog())
+            {
+                if(taskReflection.getTask_id() == task.getTask_id())
+                {
+                    taskReflection.setStatus(status);
+                    return true;
+                }
+            }
+            return false;
+        }
+        catch (RuntimeException e) {
+            return false;
+        }
+    }
+
+    public boolean addSprint(Project project, String name, Date startDate, Date endDate)
+    {
+        Sprint newSprint = dao.addSprint(project, name, startDate, endDate);
+        if(newSprint != null)
+        {
+            projects.get(newSprint.getProject_id()).addSprint(newSprint);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean addTaskToSprint(Task task, Sprint sprint)
+    {
+        try
+        {
+            dao.addTaskToSprint(task, sprint);
+            for(Sprint sprintReflection : projects.get(sprint.getProject_id()).getSprints())
+            {
+                if(sprintReflection.getSprint_id() == sprint.getSprint_id())
+                {
+                    for(Task taskReflection : projects.get(task.getProject_id()).getBacklog())
+                    {
+                        if(taskReflection.getTask_id() == task.getTask_id())
+                        {
+                            sprintReflection.addTask(taskReflection);
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+        catch (RuntimeException e) {
+            return false;
+        }
+    }
+
+    public boolean editTask(Task task)
+    {
+        try
+        {
+            dao.editTask(task);
+            for(Task taskReflection : projects.get(task.getProject_id()).getBacklog())
+            {
+                if(taskReflection.getTask_id() == task.getTask_id())
+                {
+                    taskReflection.setTitle(task.getTitle());
+                    taskReflection.setDescription(task.getDescription());
+                    return true;
+                }
+            }
+            return false;
+        }
+        catch (RuntimeException e) {
+            return false;
+        }
+    }
+
+    public boolean editSprint(Sprint sprint)
+    {
+        try{
+            dao.editSprint(sprint);
+            for(Sprint sprintReflection : projects.get(sprint.getProject_id()).getSprints())
+            {
+                if(sprintReflection.getSprint_id() == sprint.getSprint_id())
+                {
+                    sprintReflection.setName(sprint.getName());
+                    sprintReflection.setStart_date(sprint.getStart_date());
+                    sprintReflection.setEnd_date(sprint.getEnd_date());
+                    return true;
+                }
+            }
+            return false;
+        }
+        catch (RuntimeException e) {
+            return false;
+        }
+    }
+
+    public void processRequest(Request request) {
+        switch(request.getAction()){
+            case "createEmployee":
+                requestHandler = new CreateEmployeeHandler();
+                break;
+            default:
+                requestHandler = null;
+                break;
+        }
+        if(requestHandler != null) {
+            requestHandler.processRequest(request, this);
+        }
+    }
+
+    public Response processLogin(Request request)
+    {
+        LoginRequest loginRequest = (LoginRequest) request;
+        Employee loggedEmployee = this.login(loginRequest.getUsername(), loginRequest.getPassword());
+        if(loggedEmployee != null) {
+            return new LoginResponse("loginSuccess", loggedEmployee);
+        }
+        return new LoginResponse("loginFailure", null);
     }
 }

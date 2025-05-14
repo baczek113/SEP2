@@ -1,9 +1,10 @@
 package Network;
 
-import ClientModel.ServerInteractions.Request;
+import ClientModel.Requests.Request;
 import Network.Response.EmployeeResponse;
 import Network.Response.LoginResponse;
 import Network.Response.ProjectResponse;
+import Network.Response.Response;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -29,23 +30,31 @@ public  class ServerConnection implements Runnable{
       try
       {
         Request loginRequest = (Request) inFromClient.readObject();
-        LoginResponse loginResponse = (LoginResponse) modelManager.processRequest(loginRequest);
+        LoginResponse loginResponse = (LoginResponse) modelManager.processLogin(loginRequest);
         int userType = loginResponse.getEmployee().getRole().getRole_id();
 
         if (userType == 1){
             EmployeeResponse initialResponse = new EmployeeResponse("employee", modelManager.getEmployees());
+            sendResponse(initialResponse);
             while (true){
                 Request request = (Request) inFromClient.readObject();
-                EmployeeResponse response = (EmployeeResponse) modelManager.processRequest(request);
-                sendEmployeeResponse(response);
+                modelManager.processRequest(request);
             }
-
-        }else if (userType == 2 || userType == 3 || userType == 4){
-            ProjectResponse initialResponse = new ProjectResponse("project", modelManager.getProjects());
+        }else if (userType == 3 || userType == 4){
+            ProjectResponse initialResponse = new ProjectResponse("project", modelManager.getProjects(loginResponse.getEmployee().getEmployee_id()));
+            sendResponse(initialResponse);
             while (true){
                 Request request = (Request) inFromClient.readObject();
-                ProjectResponse response = (ProjectResponse) modelManager.processRequest(request);
-                sendProjectResponse(response);
+                modelManager.processRequest(request);
+            }
+        }else if (userType == 2){
+            ProjectResponse initialResponse = new ProjectResponse("project", modelManager.getProjects(loginResponse.getEmployee().getEmployee_id()));
+            sendResponse(initialResponse);
+            EmployeeResponse initialResponse2 = new EmployeeResponse("employee", modelManager.getEmployees());
+            sendResponse(initialResponse2);
+            while (true){
+                Request request = (Request) inFromClient.readObject();
+                modelManager.processRequest(request);
             }
         }else {
             outToClient.reset();
@@ -58,13 +67,7 @@ public  class ServerConnection implements Runnable{
       }
     }
 
-    private void sendEmployeeResponse(EmployeeResponse response) throws IOException
-    {
-        outToClient.reset();
-        outToClient.writeObject(response);
-        outToClient.flush();
-    }
-    private void sendProjectResponse(ProjectResponse response) throws IOException
+    private void sendResponse(Response response) throws IOException
     {
         outToClient.reset();
         outToClient.writeObject(response);
