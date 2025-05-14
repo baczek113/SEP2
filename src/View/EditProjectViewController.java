@@ -14,7 +14,6 @@ public class EditProjectViewController {
     @FXML private DatePicker startDatePicker;
     @FXML private DatePicker endDatePicker;
     @FXML private ComboBox<String> statusComboBox;
-    @FXML private ComboBox<String> statusComboBox1; // Scrum Master ComboBox
 
     @FXML private TableView<String> availableUsersTable;
     @FXML private TableColumn<String, String> availableUsernameColumn;
@@ -50,7 +49,6 @@ public class EditProjectViewController {
 
         // Status and Scrum Master choices (can be fetched from model later)
         statusComboBox.setItems(FXCollections.observableArrayList("Planning", "Active", "Completed"));
-        statusComboBox1.setItems(FXCollections.observableArrayList("scrum1", "scrum2")); // Scrum Masters
 
         // Action buttons
         addUserButton.setOnAction(e -> assignUser());
@@ -81,7 +79,6 @@ public class EditProjectViewController {
         System.out.println("Title: " + titleField.getText());
         System.out.println("Description: " + descriptionField.getText());
         System.out.println("Status: " + statusComboBox.getValue());
-        System.out.println("SCRUM Master: " + statusComboBox1.getValue());
         System.out.println("Start: " + startDatePicker.getValue());
         System.out.println("End: " + endDatePicker.getValue());
         System.out.println("Assigned Users: " + assignedUsers);

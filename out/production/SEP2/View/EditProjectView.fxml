@@ -26,11 +26,11 @@
         <TextField fx:id="titleField" layoutX="170.0" layoutY="93.0" prefWidth="250" />
 
         <!-- Description -->
-        <Label layoutX="51.0" layoutY="196.0" text="Description:">
+        <Label layoutX="51.0" layoutY="260.0" text="Description:">
             <font>
                 <Font size="20.0" />
             </font></Label>
-        <TextArea fx:id="descriptionField" layoutX="170.0" layoutY="148.0" prefHeight="127.0" prefWidth="250" />
+        <TextArea fx:id="descriptionField" layoutX="170.0" layoutY="148.0" prefHeight="225.0" prefWidth="250" />
 
         <!-- Dates -->
         <Label layoutX="59.0" layoutY="441.0" text="Start Date:">
@@ -46,11 +46,11 @@
         <DatePicker fx:id="endDatePicker" layoutX="170.0" layoutY="507.0" prefWidth="250.0" />
 
         <!-- Status -->
-        <Label layoutX="93.0" layoutY="302.0" prefHeight="40.0" prefWidth="63.0" text="Status:">
+        <Label layoutX="92.0" layoutY="386.0" prefHeight="40.0" prefWidth="63.0" text="Status:">
             <font>
                 <Font size="20.0" />
             </font></Label>
-        <ComboBox fx:id="statusComboBox" layoutX="169.0" layoutY="309.0" prefWidth="250" />
+        <ComboBox fx:id="statusComboBox" layoutX="169.0" layoutY="393.0" prefWidth="250" />
 
         <!-- User Tables -->
         <Label layoutX="514.0" layoutY="64.0" text="Available developers">
@@ -80,12 +80,6 @@
         <!-- Save / Cancel -->
         <Button fx:id="saveButton" layoutX="63.0" layoutY="550.0" prefWidth="100" text="Save" />
         <Button fx:id="cancelButton" layoutX="295.0" layoutY="550.0" prefWidth="100" text="Cancel" />
-        <Label layoutX="20.0" layoutY="365.0" prefHeight="40.0" prefWidth="145.0" text="SCRUM Master:">
-            <font>
-                <Font size="20.0" />
-            </font>
-        </Label>
-        <ComboBox fx:id="statusComboBox1" layoutX="169.0" layoutY="376.0" prefWidth="250" />
 
     </children>
 </AnchorPane>

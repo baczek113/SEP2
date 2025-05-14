@@ -14,7 +14,7 @@
     <children>
 
         <!-- Title -->
-        <Label layoutX="328.0" layoutY="14.0" text="Add Sprint">
+        <Label layoutX="331.0" layoutY="14.0" text="Edit Sprint">
             <font><Font size="28" /></font>
         </Label>
 

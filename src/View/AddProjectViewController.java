@@ -46,9 +46,9 @@ public class AddProjectViewController {
         assignedUsersTable.setItems(assignedUsers);
 
         // Dummy user data
-        User u1 = new User("dev1", "Developer");
-        User u2 = new User("dev2", "Developer");
-        User u3 = new User("scrum", "Scrum Master");
+        User u1 = new User("dev1", "Developer", "Active");
+        User u2 = new User("dev2", "Developer", "Active");
+        User u3 = new User("scrum", "Scrum Master", "Active");
 
         availableUsers.addAll(u1, u2, u3);
 
