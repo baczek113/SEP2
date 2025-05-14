@@ -1,7 +1,7 @@
 package Network.RequestHandling;
 
-import ClientModel.Requests.EmployeeRequest;
-import ClientModel.Requests.Request;
+import ClientModel.ServerInteractions.EmployeeRequest;
+import ClientModel.ServerInteractions.Request;
 import Network.ServerModelManager;
 
 public class DeactivateEmployeeHandler implements RequestHandlerStrategy{

@@ -1,7 +1,7 @@
 package Network.RequestHandling;
 
-import ClientModel.Requests.ProjectRequest;
-import ClientModel.Requests.Request;
+import ClientModel.ServerInteractions.ProjectRequest;
+import ClientModel.ServerInteractions.Request;
 import Network.ServerModelManager;
 
 public class EndProjectHandler implements RequestHandlerStrategy{

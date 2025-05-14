@@ -1,6 +1,8 @@
 package ClientModel;
 
+import ClientModel.ServerInteractions.LoginRequest;
 import ClientModel.ServerInteractions.Request;
+import Network.Response.LoginResponse;
 import Network.Response.Response;
 
 import java.io.IOException;
@@ -30,11 +32,13 @@ public class ClientConnection implements Runnable{
   @Override public void run()
   {
       try {
+        Request request = new LoginRequest("login", null, "damianczina", "2137");
+        outToServer.writeObject(request);
         while (true) {
           Response response = (Response) inFromServer.readObject();
 
           clientModelManager.handleServerResponse(response);
-          System.out.println("clientconnection");
+          System.out.println(((LoginResponse) response).getEmployee().getRole().getRole_name());
 
           System.out.println("Client handled server response.");
         }

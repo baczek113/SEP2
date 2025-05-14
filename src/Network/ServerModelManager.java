@@ -1,7 +1,7 @@
 package Network;
 
-import ClientModel.Requests.LoginRequest;
-import ClientModel.Requests.Request;
+import ClientModel.ServerInteractions.LoginRequest;
+import ClientModel.ServerInteractions.Request;
 import Model.*;
 import Network.Database.DAO;
 import Network.Database.Initializer;

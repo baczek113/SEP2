@@ -1,5 +1,6 @@
-package ClientModel.Requests;
+package ClientModel.ServerInteractions;
 
+import ClientModel.ServerInteractions.Request;
 import Model.Employee;
 
 import java.sql.Date;
