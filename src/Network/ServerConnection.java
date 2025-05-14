@@ -1,6 +1,6 @@
 package Network;
 
-import ClientModel.ServerInteractions.Request;
+import ClientModel.Requests.Request;
 import Network.Response.EmployeeResponse;
 import Network.Response.LoginResponse;
 import Network.Response.ProjectResponse;

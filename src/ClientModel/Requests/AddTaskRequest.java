@@ -1,4 +1,4 @@
-package ClientModel.ServerInteractions;
+package ClientModel.Requests;
 
 import Model.Employee;
 import Model.Sprint;
@@ -9,9 +9,9 @@ public class AddTaskRequest extends Request
   private String name, description;
   private int priority;
 
-  public AddTaskRequest(String action, Employee employee, Sprint sprint, String name, String description, int priority)
+  public AddTaskRequest(Employee employee, Sprint sprint, String name, String description, int priority)
   {
-    super("addtask", employee);
+    super("addTask", employee);
     this.sprint = sprint;
     this.name = name;
     this.description = description;

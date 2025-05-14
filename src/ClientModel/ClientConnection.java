@@ -1,7 +1,7 @@
 package ClientModel;
 
-import ClientModel.ServerInteractions.LoginRequest;
-import ClientModel.ServerInteractions.Request;
+import ClientModel.Requests.LoginRequest;
+import ClientModel.Requests.Request;
 import Network.Response.LoginResponse;
 import Network.Response.Response;
 

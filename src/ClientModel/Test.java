@@ -1,6 +1,5 @@
 package ClientModel;
-import ClientModel.ServerInteractions.LoginRequest;
-import ClientModel.ServerInteractions.Request;
+
 public class Test
 {
   public static void main(String[] args)

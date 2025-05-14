@@ -1,7 +1,6 @@
 package Network.RequestHandling;
 
-import ClientModel.ServerInteractions.Request;
-import Network.Response.Response;
+import ClientModel.Requests.Request;
 import Network.ServerModelManager;
 
 public interface RequestHandlerStrategy {

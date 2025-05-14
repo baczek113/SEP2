@@ -1,8 +1,7 @@
 package Network.RequestHandling;
 
-import ClientModel.ServerInteractions.CreateEmployeeRequest;
-import ClientModel.ServerInteractions.Request;
-import Network.Response.Response;
+import ClientModel.Requests.CreateEmployeeRequest;
+import ClientModel.Requests.Request;
 import Network.ServerModelManager;
 
 public class CreateEmployeeHandler implements RequestHandlerStrategy{

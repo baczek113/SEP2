@@ -184,6 +184,15 @@ public class DAO {
             statement.setInt(1, employee.getEmployee_id());
             statement.setInt(2, project.getProject_id());
             statement.executeUpdate();
+
+            for(Task task : project.getBacklog()) {
+                if(task.getAssignedTo().get(employee.getEmployee_id()) != null) {
+                    PreparedStatement removeFromTasks = connection.prepareStatement("DELETE FROM task_assignment WHERE task_id = ? AND employee_id = ?");
+                    removeFromTasks.setInt(1, task.getTask_id());
+                    removeFromTasks.setInt(2, employee.getEmployee_id());
+                    removeFromTasks.executeUpdate();
+                }
+            }
         }catch (SQLException e){
             System.out.println("failed to remove employee " + employee.getUsername().toUpperCase() + " from project " + project.getName().toUpperCase());
             throw new RuntimeException(e);
@@ -370,6 +379,19 @@ public class DAO {
             PreparedStatement statement = connection.prepareStatement("UPDATE task SET sprint_id = ? WHERE task_id = ?");
             statement.setInt(1, sprint.getSprint_id());
             statement.setInt(2, task.getTask_id());
+            statement.executeUpdate();
+        }
+        catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void removeTaskFromSprint(Task task, Sprint sprint)
+    {
+        try(Connection connection = getConnection())
+        {
+            PreparedStatement statement = connection.prepareStatement("UPDATE task SET sprint_id = 0 WHERE task_id = ?");
+            statement.setInt(1, task.getTask_id());
             statement.executeUpdate();
         }
         catch (SQLException e){

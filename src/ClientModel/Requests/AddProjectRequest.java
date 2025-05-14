@@ -1,10 +1,8 @@
-package ClientModel.ServerInteractions;
+package ClientModel.Requests;
 
-import ClientModel.ServerInteractions.Request;
 import Model.Employee;
 
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
 
 public class AddProjectRequest extends Request {
@@ -13,8 +11,8 @@ public class AddProjectRequest extends Request {
     private Date start_date, end_date;
     private List<Employee> assignees;
 
-    public AddProjectRequest(String action, Employee employee, Employee scrum_master, String name, String description, Date start_date, Date end_date, List<Employee> assignees) {
-        super(action, employee);
+    public AddProjectRequest(Employee employee, Employee scrum_master, String name, String description, Date start_date, Date end_date, List<Employee> assignees) {
+        super("addProject", employee);
         this.scrum_master = scrum_master;
         this.name = name;
         this.description = description;

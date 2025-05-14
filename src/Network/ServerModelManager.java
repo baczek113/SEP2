@@ -1,7 +1,7 @@
 package Network;
 
-import ClientModel.ServerInteractions.LoginRequest;
-import ClientModel.ServerInteractions.Request;
+import ClientModel.Requests.LoginRequest;
+import ClientModel.Requests.Request;
 import Model.*;
 import Network.Database.DAO;
 import Network.Database.Initializer;
@@ -226,6 +226,10 @@ public class ServerModelManager {
             {
                 dao.removeEmployeeFromProject(project, employee);
                 if(projectReflection.removeEmployee(employees.get(employee.getEmployee_id()))) {
+                    for(Task task : projectReflection.getBacklog())
+                    {
+                        task.getAssignedTo().remove(employees.get(employee.getEmployee_id()));
+                    }
                     return true;
                 }
             }
@@ -373,6 +377,32 @@ public class ServerModelManager {
         }
     }
 
+    public boolean removeTaskFromSprint(Task task, Sprint sprint)
+    {
+        try
+        {
+            dao.removeTaskFromSprint(task, sprint);
+            for(Sprint sprintReflection : projects.get(sprint.getProject_id()).getSprints())
+            {
+                if(sprintReflection.getSprint_id() == sprint.getSprint_id())
+                {
+                    for(Task taskReflection : projects.get(task.getProject_id()).getBacklog())
+                    {
+                        if(taskReflection.getTask_id() == task.getTask_id())
+                        {
+                            sprintReflection.removeTask(taskReflection);
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+        catch (RuntimeException e) {
+            return false;
+        }
+    }
+
     public boolean editTask(Task task)
     {
         try
@@ -438,12 +468,52 @@ public class ServerModelManager {
             case "startProject":
                 requestHandler = new StartProjectHandler();
                 break;
+            case "addEmployeeToProject":
+                requestHandler = new AddEmployeeToProjectHandler();
+                break;
+            case "removeEmployeeFromProject":
+                requestHandler = new RemoveEmployeeFromProjectHandler();
+                break;
+            case "assignTaskPriority":
+                requestHandler = new AssignPriorityHandler();
+                break;
+            case "addTask":
+                requestHandler = new AddTaskRequestHandler();
+                break;
+            case "assignTask":
+                requestHandler = new AssignTaskHandler();
+                break;
+            case "unassignTask":
+                requestHandler = new UnassignTaskHandler();
+                break;
+            case "changeTaskStatus":
+                requestHandler = new ChangeTaskStatusHandler();
+                break;
+            case "addSprint":
+                requestHandler = new AddSprintHandler();
+                break;
+            case "addTaskToSprint":
+                requestHandler = new AddTaskToSprintHandler();
+                break;
+            case "removeTaskFromSprint":
+                requestHandler = new RemoveTaskFromSprintHandler();
+                break;
+            case "editTask":
+                requestHandler = new EditTaskHandler();
+                break;
+            case "editSprint":
+                requestHandler = new EditSprintHandler();
+                break;
             default:
                 requestHandler = null;
                 break;
         }
         if(requestHandler != null) {
             requestHandler.processRequest(request, this);
+        }
+        else
+        {
+            System.out.println("No handler found for action: " + request.getAction());
         }
     }
 
