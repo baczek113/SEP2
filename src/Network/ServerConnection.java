@@ -49,7 +49,7 @@ public  class ServerConnection implements Runnable{
             }
         }else {
             outToClient.reset();
-            outToClient.writeObject(loginResponse.getEmployee());
+            outToClient.writeObject(loginResponse);
         }
       }
       catch (IOException | ClassNotFoundException e)

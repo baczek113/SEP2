@@ -18,13 +18,16 @@ public class ClientModelManager {
     private Employee loggedEmployee;
     private ClientConnection client;
 
-    public ClientModelManager(ClientConnection client)
+    public ClientModelManager()
     {
         propertyChangeSupport = new PropertyChangeSupport(this);
         employees = new EmployeeList();
         projects = new ProjectList();
         loggedEmployee = null;
-        this.client = client;
+    }
+
+    public void setConnection(ClientConnection clientConnection){
+        this.client = clientConnection;
     }
 
     public void handleServerResponse(Response response)
@@ -93,4 +96,15 @@ public class ClientModelManager {
         Request request = new LoginRequest("login", loggedEmployee, username, password);
         client.sendRequest(request);
     }
+
+    public void assignTask(Employee employee, Task task){
+        Request request = new AssignTask("assignTask", employee, task);
+        client.sendRequest(request);
+    }
+
+    public void assignProject(Employee employee, Project project, Employee employeeToAssign){
+        Request request = new AssignProject("assignProject", employee, project, employeeToAssign);
+        client.sendRequest(request);
+    }
+    // Add create user method
 }
