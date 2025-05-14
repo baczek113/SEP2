@@ -32,6 +32,8 @@ public  class ServerConnection implements Runnable{
             Request loginRequest = (Request) inFromClient.readObject();
             LoginResponse loginResponse = (LoginResponse) modelManager.processLogin(loginRequest);
             int userType = loginResponse.getEmployee().getRole().getRole_id();
+            outToClient.reset();
+            outToClient.writeObject(loginResponse);
 
             if (userType == 1){
                 EmployeeResponse initialResponse = new EmployeeResponse("employee", modelManager.getEmployees());
@@ -56,9 +58,6 @@ public  class ServerConnection implements Runnable{
                     Request request = (Request) inFromClient.readObject();
                     modelManager.processRequest(request);
                 }
-            }else {
-                outToClient.reset();
-                outToClient.writeObject(loginResponse);
             }
         }
         catch (IOException | ClassNotFoundException e)
