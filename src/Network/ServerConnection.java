@@ -41,21 +41,21 @@ public  class ServerConnection implements Runnable{
                 modelManager.processRequest(request);
             }
         }else if (userType == 3 || userType == 4){
-            ProjectResponse initialResponse = new ProjectResponse("project", modelManager.getProjects());
+            ProjectResponse initialResponse = new ProjectResponse("project", modelManager.getProjects(loginResponse.getEmployee().getEmployee_id()));
             sendResponse(initialResponse);
             while (true){
                 Request request = (Request) inFromClient.readObject();
                 modelManager.processRequest(request);
             }
-
         }else if (userType == 2){
-            ProjectResponse initialResponse = new ProjectResponse("project", modelManager.getProjects());
+            ProjectResponse initialResponse = new ProjectResponse("project", modelManager.getProjects(loginResponse.getEmployee().getEmployee_id()));
             sendResponse(initialResponse);
+            EmployeeResponse initialResponse2 = new EmployeeResponse("employee", modelManager.getEmployees());
+            sendResponse(initialResponse2);
             while (true){
                 Request request = (Request) inFromClient.readObject();
                 modelManager.processRequest(request);
             }
-
         }else {
             outToClient.reset();
             outToClient.writeObject(loginResponse);

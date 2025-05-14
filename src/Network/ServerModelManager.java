@@ -6,7 +6,6 @@ import Model.*;
 import Network.Database.DAO;
 import Network.Database.Initializer;
 import Network.RequestHandling.CreateEmployeeHandler;
-import Network.RequestHandling.LoginHandler;
 import Network.RequestHandling.RequestHandlerStrategy;
 import Network.Response.LoginResponse;
 import Network.Response.Response;
@@ -29,7 +28,7 @@ public class ServerModelManager {
             this.employees = initializer.getEmployees();
             this.projects = initializer.getProjects(this.employees);
             this.dao = DAO.getInstance();
-            this.requestHandler = new LoginHandler();
+            this.requestHandler = null;
         }
         catch (SQLException e) {
             System.out.println("ServerModelManager initialization failed");
@@ -401,14 +400,16 @@ public class ServerModelManager {
 
     public void processRequest(Request request) {
         switch(request.getAction()){
-            case "login":
-                requestHandler = new LoginHandler();
-                break;
             case "createEmployee":
                 requestHandler = new CreateEmployeeHandler();
                 break;
+            default:
+                requestHandler = null;
+                break;
         }
-        requestHandler.processRequest(request, this);
+        if(requestHandler != null) {
+            requestHandler.processRequest(request, this);
+        }
     }
 
     public Response processLogin(Request request)
