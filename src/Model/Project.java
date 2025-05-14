@@ -3,139 +3,134 @@ package Model;
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Project implements Serializable {
-  private int project_id;
-  private int created_by;
-  private String name;
-  private String description;
-  private String status;
-  private Date start_date;
-  private Date end_date;
-  private ArrayList<Task> tasks;
-  private ArrayList<Sprint> sprints;
-  private ProjectState currentState;
+    private int project_id;
+    private Employee created_by;
+    private Employee scrum_master;
+    private String name;
+    private String description;
+    private String status;
+    private Date start_date;
+    private Date end_date;
+    private List<Employee> employees; //List containing all the project participants incl. the product owner
+    private List<Sprint> sprints; //List containing all the project sprints
+    private List<Task> backlog;
 
+    public Project(int project_id, Employee created_by, Employee scrum_master, String name, String description, String status, Date start_date, Date end_date) {
+        this.project_id = project_id;
+        this.created_by = created_by;
+        this.scrum_master = scrum_master;
+        this.name = name;
+        this.description = description;
+        this.status = status;
+        this.start_date = start_date;
+        this.end_date = end_date;
+        this.employees = new EmployeeList();
+        this.sprints = new ArrayList<Sprint>();
+        this.backlog = new ArrayList<Task>();
+    }
 
-  public Project(int project_id, int created_by, String name, String description,
-      String status, Date start_date, Date end_date) {
-    this.project_id = project_id;
-    this.created_by = created_by;
-    this.name = name;
-    this.description = description;
-    this.status = status;
-    this.start_date = start_date;
-    this.end_date = end_date;
-    this.tasks = new ArrayList<>();
-    this.sprints = new ArrayList<>();
-    this.currentState = new PendingState();
-  }
+    public int getProject_id() {
+        return project_id;
+    }
 
-  public Project() {
-    this.tasks = new ArrayList<>();
-    this.sprints = new ArrayList<>();
-    this.currentState = new PendingState();
-  }
+    public void setProject_id(int project_id) {
+        this.project_id = project_id;
+    }
 
-  public boolean onPending(int employeeId) {
-    return currentState.onPending(this, employeeId);
-  }
+    public Date getEnd_date() {
+        return end_date;
+    }
 
-  public boolean onOngoing(int employeeId) {
-    return currentState.onOngoing(this, employeeId);
-  }
+    public Date getStart_date() {
+        return start_date;
+    }
 
-  public boolean onLate(int employeeId) {
-    return currentState.onLate(this, employeeId);
-  }
+    public Employee getCreated_by() {
+        return created_by;
+    }
 
-  public boolean onFinished(int employeeId) {
-    return currentState.onFinished(this, employeeId);
-  }
+    public String getDescription() {
+        return description;
+    }
 
+    public String getName() {
+        return name;
+    }
 
-  public String getState() {
-    return currentState.getState();
-  }
+    public String getStatus() {
+        return status;
+    }
 
-  public String getStateDescription() {
-    return currentState.getStateDescription();
-  }
+    public void setCreated_by(Employee created_by) {
+        this.created_by = created_by;
+    }
 
-  void setState(ProjectState newState) {
-    this.currentState = newState;
-  }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
+    public void setEnd_date(Date end_date) {
+        this.end_date = end_date;
+    }
 
-  public int getProject_id() {
-    return project_id;
-  }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-  public int getCreated_by() {
-    return created_by;
-  }
+    public void setStart_date(Date start_date) {
+        this.start_date = start_date;
+    }
 
-  public String getName() {
-    return name;
-  }
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
-  public String getDescription() {
-    return description;
-  }
+    public void addEmployee(Employee employee) {
+        this.employees.add(employee);
+    }
 
-  public String getStatus() {
-    return status;
-  }
+    public void addSprint(Sprint sprint)
+    {
+        this.sprints.add(sprint);
+    }
 
-  public Date getStart_date() {
-    return start_date;
-  }
+    public void removeEmployee(Employee employee)
+    {
+        this.employees.remove(employee);
+    }
 
-  public Date getEnd_date() {
-    return end_date;
-  }
+    public void removeSprint(Sprint sprint)
+    {
+        this.sprints.remove(sprint);
+    }
 
-  public ArrayList<Task> getTasks() {
-    return tasks;
-  }
+    public List<Sprint> getSprints()
+    {
+        return sprints;
+    }
 
-  public ArrayList<Sprint> getSprints() {
-    return sprints;
-  }
+    public List<Employee> getEmployees() {
+        return employees;
+    }
 
-  public void setProject_id(int project_id) {
-    this.project_id = project_id;
-  }
+    public List<Task> getBacklog() {
+        return backlog;
+    }
 
-  public void setCreated_by(int created_by) {
-    this.created_by = created_by;
-  }
+    public void addToBacklog(Task task)
+    {
+        this.backlog.add(task);
+    }
 
-  public void setName(String name) {
-    this.name = name;
-  }
+    public Employee getScrum_master()
+    {
+        return scrum_master;
+    }
 
-  public void setDescription(String description) {
-    this.description = description;
-  }
-
-  public void setStatus(String status) {
-    this.status = status;
-  }
-
-  public void setStart_date(Date start_date) {
-    this.start_date = start_date;
-  }
-
-  public void setEnd_date(Date end_date) {
-    this.end_date = end_date;
-  }
-
-  public void setTasks(ArrayList<Task> tasks) {
-    this.tasks = tasks;
-  }
-
-  public void setSprints(ArrayList<Sprint> sprints) {
-    this.sprints = sprints;
-  }
+    public void setScrum_master(Employee scrum_master) {
+        this.scrum_master = scrum_master;
+    }
 }
