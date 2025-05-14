@@ -1,6 +1,6 @@
 package ClientModel;
 
-import ClientModel.ServerInteractions.*;
+import ClientModel.Requests.*;
 import Model.*;
 import Network.Response.Response;
 

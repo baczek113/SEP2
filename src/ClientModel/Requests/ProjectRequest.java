@@ -1,4 +1,4 @@
-package ClientModel.ServerInteractions;
+package ClientModel.Requests;
 
 import Model.Employee;
 import Model.Project;

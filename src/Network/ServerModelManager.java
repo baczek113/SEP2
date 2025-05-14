@@ -1,11 +1,14 @@
 package Network;
 
-import ClientModel.ServerInteractions.Request;
+import ClientModel.Requests.LoginRequest;
+import ClientModel.Requests.Request;
 import Model.*;
 import Network.Database.DAO;
 import Network.Database.Initializer;
-import Network.RequestHandling.LoginRequestHandler;
+import Network.RequestHandling.CreateEmployeeHandler;
+import Network.RequestHandling.LoginHandler;
 import Network.RequestHandling.RequestHandlerStrategy;
+import Network.Response.LoginResponse;
 import Network.Response.Response;
 
 import java.sql.Date;
@@ -26,7 +29,7 @@ public class ServerModelManager {
             this.employees = initializer.getEmployees();
             this.projects = initializer.getProjects(this.employees);
             this.dao = DAO.getInstance();
-            this.requestHandler = new LoginRequestHandler();
+            this.requestHandler = new LoginHandler();
         }
         catch (SQLException e) {
             System.out.println("ServerModelManager initialization failed");
@@ -396,11 +399,25 @@ public class ServerModelManager {
         }
     }
 
-    public void setRequestHandler(RequestHandlerStrategy requestHandler) {
-        this.requestHandler = requestHandler;
+    public void processRequest(Request request) {
+        switch(request.getAction()){
+            case "login":
+                requestHandler = new LoginHandler();
+                break;
+            case "createEmployee":
+                requestHandler = new CreateEmployeeHandler();
+                break;
+        }
+        requestHandler.processRequest(request, this);
     }
 
-    public Response processRequest(Request request) {
-        return requestHandler.processRequest(request, this);
+    public Response processLogin(Request request)
+    {
+        LoginRequest loginRequest = (LoginRequest) request;
+        Employee loggedEmployee = this.login(loginRequest.getUsername(), loginRequest.getPassword());
+        if(loggedEmployee != null) {
+            return new LoginResponse("loginSuccess", loggedEmployee);
+        }
+        return new LoginResponse("loginFailure", null);
     }
 }
