@@ -13,6 +13,8 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class ServerModelManager {
     private static ServerModelManager instance;
@@ -20,6 +22,11 @@ public class ServerModelManager {
     private List<Employee> employees;
     private DAO dao;
     private RequestHandlerStrategy requestHandler;
+    
+    //synchronization, writers priority
+    private final ReadWriteLock lock = new ReentrantReadWriteLock(true); 
+    private final Object writerLock = new Object();
+    private int waitingWriters = 0;
 
     private ServerModelManager() {
         try {
@@ -42,11 +49,43 @@ public class ServerModelManager {
     }
 
     public List<Project> getProjects() {
-        return projects;
+        synchronized(writerLock) {
+            while (waitingWriters > 0) {
+                try {
+                    writerLock.wait();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    return null;
+                }
+            }
+        }
+        
+        lock.readLock().lock();
+        try {
+            return new ArrayList<>(projects); 
+        } finally {
+            lock.readLock().unlock();
+        }
     }
 
     public List<Employee> getEmployees() {
-        return employees;
+        synchronized(writerLock) {
+            while (waitingWriters > 0) {
+                try {
+                    writerLock.wait();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    return null;
+                }
+            }
+        }
+        
+        lock.readLock().lock();
+        try {
+            return new ArrayList<>(employees); 
+        } finally {
+            lock.readLock().unlock();
+        }
     }
 
     public Employee login (String username, String password)
@@ -54,67 +93,102 @@ public class ServerModelManager {
         return dao.login(username, password);
     }
 
-    public boolean createEmployee(int role_id, String username, String password)
-    {
-        Employee employee = dao.addEmployee(role_id, username, password);
-        if(employee != null) {
-            employees.add(employee);
-            return true;
+    public boolean createEmployee(int role_id, String username, String password) {
+        synchronized(writerLock) {
+            waitingWriters++;
         }
-        return false;
+        
+        lock.writeLock().lock();
+        try {
+            Employee employee = dao.addEmployee(role_id, username, password);
+            if(employee != null) {
+                employees.add(employee);
+                return true;
+            }
+            return false;
+        } finally {
+            lock.writeLock().unlock();
+            synchronized(writerLock) {
+                waitingWriters--;
+                writerLock.notifyAll();
+            }
+        }
     }
 
-    public boolean deactivateEmployee(int employee_id)
-    {
-        try
-        {
+    public boolean deactivateEmployee(int employee_id) {
+        synchronized(writerLock) {
+            waitingWriters++;
+        }
+        
+        lock.writeLock().lock();
+        try {
             Employee employee = employees.get(employee_id);
             if(checkIfEmployeeTaken(employee))
                 return false;
             dao.deactivateEmployee(employee);
             employee.deativate();
             return true;
-        }
-        catch (RuntimeException e)
-        {
+        } catch (RuntimeException e) {
             return false;
+        } finally {
+            lock.writeLock().unlock();
+            synchronized(writerLock) {
+                waitingWriters--;
+                writerLock.notifyAll();
+            }
         }
     }
 
-    public boolean activateEmployee(int employee_id)
-    {
-        try
-        {
+    public boolean activateEmployee(int employee_id) {
+        synchronized(writerLock) {
+            waitingWriters++;
+        }
+        
+        lock.writeLock().lock();
+        try {
             Employee employee = employees.get(employee_id);
             dao.activateEmployee(employee);
             employee.activate();
             return true;
-        }
-        catch (RuntimeException e)
-        {
+        } catch (RuntimeException e) {
             return false;
+        } finally {
+            lock.writeLock().unlock();
+            synchronized(writerLock) {
+                waitingWriters--;
+                writerLock.notifyAll();
+            }
         }
     }
 
-    public boolean updateEmployee(Employee employee)
-    {
-        Employee proxyReflection = employees.get(employee.getEmployee_id());
-        if(proxyReflection == null)
-        {
-            return false;
+    public boolean updateEmployee(Employee employee) {
+        synchronized(writerLock) {
+            waitingWriters++;
         }
-        if(!proxyReflection.getRole().equals(employee.getRole()) && checkIfEmployeeTaken(proxyReflection)) {
-            return false;
-        }
-        try{
-            dao.editEmployee(employee);
-            proxyReflection.setRole(employee.getRole());
-            proxyReflection.setUsername(employee.getUsername());
-            return true;
-        }
-        catch (RuntimeException e)
-        {
-            return false;
+        
+        lock.writeLock().lock();
+        try {
+            Employee proxyReflection = employees.get(employee.getEmployee_id());
+            if(proxyReflection == null) {
+                return false;
+            }
+            if(!proxyReflection.getRole().equals(employee.getRole()) && checkIfEmployeeTaken(proxyReflection)) {
+                return false;
+            }
+            try {
+                dao.editEmployee(employee);
+                proxyReflection.setRole(employee.getRole());
+                proxyReflection.setUsername(employee.getUsername());
+                return true;
+            } catch (RuntimeException e) {
+                return false;
+            }
+        } finally {
+            lock.writeLock().unlock();
+            synchronized(writerLock) {
+                waitingWriters--;
+                writerLock.notifyAll();
+            }
         }
     }
 
@@ -151,79 +225,119 @@ public class ServerModelManager {
         return relevantProjects;
     }
 
-    public boolean addProject(Employee created_by, Employee scrum_master, String name, String description, Date startDate, Date endDate, List<Employee> participants)
-    {
-        List<Employee> participantsServerReflection = new EmployeeList();
-        for(Employee employee : participants)
-        {
-            participantsServerReflection.add(employees.get(employee.getEmployee_id()));
+    public boolean addProject(Employee created_by, Employee scrum_master, String name, String description, Date startDate, Date endDate, List<Employee> participants) {
+        synchronized(writerLock) {
+            waitingWriters++;
         }
-        Project addedProject = dao.addProject(employees.get(created_by.getEmployee_id()), employees.get(scrum_master.getEmployee_id()), name, description, startDate, endDate, participantsServerReflection);
-        if(addedProject != null)
-        {
-            projects.add(addedProject);
-            return true;
+        
+        lock.writeLock().lock();
+        try {
+            List<Employee> participantsServerReflection = new EmployeeList();
+            for(Employee employee : participants) {
+                participantsServerReflection.add(employees.get(employee.getEmployee_id()));
+            }
+            Project addedProject = dao.addProject(employees.get(created_by.getEmployee_id()), 
+                                                employees.get(scrum_master.getEmployee_id()), 
+                                                name, description, startDate, endDate, 
+                                                participantsServerReflection);
+            if(addedProject != null) {
+                projects.add(addedProject);
+                return true;
+            }
+            return false;
+        } finally {
+            lock.writeLock().unlock();
+            synchronized(writerLock) {
+                waitingWriters--;
+                writerLock.notifyAll();
+            }
         }
-        return false;
     }
 
-    public boolean endProject(Project project)
-    {
+    public boolean endProject(Project project) {
+        synchronized(writerLock) {
+            waitingWriters++;
+        }
+        
+        lock.writeLock().lock();
         try {
             dao.endProject(project);
             Project projectReflection = projects.get(project.getProject_id());
-            if(projectReflection != null)
-            {
+            if(projectReflection != null) {
                 projectReflection.setStatus("finished");
                 return true;
             }
             return false;
-        }
-        catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             return false;
+        } finally {
+            lock.writeLock().unlock();
+            synchronized(writerLock) {
+                waitingWriters--;
+                writerLock.notifyAll();
+            }
         }
     }
 
-    public boolean startProject(Project project)
-    {
+    public boolean startProject(Project project) {
+        synchronized(writerLock) {
+            waitingWriters++;
+        }
+        
+        lock.writeLock().lock();
         try {
             dao.startProject(project);
             Project projectReflection = projects.get(project.getProject_id());
-            if(projectReflection != null)
-            {
+            if(projectReflection != null) {
                 projectReflection.setStatus("ongoing");
                 return true;
             }
             return false;
-        }
-        catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             return false;
+        } finally {
+            lock.writeLock().unlock();
+            synchronized(writerLock) {
+                waitingWriters--;
+                writerLock.notifyAll();
+            }
         }
     }
 
-    public boolean addEmployeeToProject(Project project, Employee employee)
-    {
-        try{
+    public boolean addEmployeeToProject(Project project, Employee employee) {
+        synchronized(writerLock) {
+            waitingWriters++;
+        }
+        
+        lock.writeLock().lock();
+        try {
             Project projectReflection = projects.get(project.getProject_id());
-            if(projectReflection != null)
-            {
+            if(projectReflection != null) {
                 dao.addEmployeeToProject(project, employee);
                 projectReflection.addEmployee(employees.get(employee.getEmployee_id()));
                 return true;
             }
             return false;
-        }
-        catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             return false;
+        } finally {
+            lock.writeLock().unlock();
+            synchronized(writerLock) {
+                waitingWriters--;
+                writerLock.notifyAll();
+            }
         }
     }
 
-    public boolean removeEmployeeFromProject(Project project, Employee employee)
-    {
-        try{
+    public boolean removeEmployeeFromProject(Project project, Employee employee) {
+        synchronized(writerLock) {
+            waitingWriters++;
+        }
+        
+        lock.writeLock().lock();
+        try {
             Project projectReflection = projects.get(project.getProject_id());
-            if(projectReflection != null)
-            {
+            if(projectReflection != null) {
                 dao.removeEmployeeFromProject(project, employee);
                 if(projectReflection.removeEmployee(employees.get(employee.getEmployee_id()))) {
                     for(Task task : projectReflection.getBacklog())
@@ -234,136 +348,185 @@ public class ServerModelManager {
                 }
             }
             return false;
-        }
-        catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             return false;
+        } finally {
+            lock.writeLock().unlock();
+            synchronized(writerLock) {
+                waitingWriters--;
+                writerLock.notifyAll();
+            }
         }
     }
 
-    public boolean assignPriority(Task task, int priority)
-    {
-        try
-        {
+    public boolean assignPriority(Task task, int priority) {
+        synchronized(writerLock) {
+            waitingWriters++;
+        }
+        
+        lock.writeLock().lock();
+        try {
             dao.assignPriority(task, priority);
-            for(Task taskReflection : projects.get(task.getProject_id()).getBacklog())
-            {
-                if(taskReflection.getTask_id() == task.getTask_id())
-                {
+            for(Task taskReflection : projects.get(task.getProject_id()).getBacklog()) {
+                if(taskReflection.getTask_id() == task.getTask_id()) {
                     taskReflection.setPriority(priority);
                     return true;
                 }
             }
             return false;
-        }
-        catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             return false;
+        } finally {
+            lock.writeLock().unlock();
+            synchronized(writerLock) {
+                waitingWriters--;
+                writerLock.notifyAll();
+            }
         }
     }
 
-    public boolean addTask(Sprint sprint, Project project, String title, String description, int priority)
-    {
-        Task newTask = dao.addTask(sprint, project, title, description, priority);
-        if(newTask != null)
-        {
-            Project relevantProject = projects.get(project.getProject_id());
-            relevantProject.addToBacklog(newTask);
-            if(sprint != null)
-            {
-                for(Sprint sprintReflection : relevantProject.getSprints())
-                {
-                    if(sprintReflection.getSprint_id() == sprint.getSprint_id())
-                    {
-                        sprintReflection.addTask(newTask);
+    public boolean addTask(Sprint sprint, Project project, String title, String description, int priority) {
+        synchronized(writerLock) {
+            waitingWriters++;
+        }
+        
+        lock.writeLock().lock();
+        try {
+            Task newTask = dao.addTask(sprint, project, title, description, priority);
+            if(newTask != null) {
+                Project relevantProject = projects.get(project.getProject_id());
+                relevantProject.addToBacklog(newTask);
+                if(sprint != null) {
+                    for(Sprint sprintReflection : relevantProject.getSprints()) {
+                        if(sprintReflection.getSprint_id() == sprint.getSprint_id()) {
+                            sprintReflection.addTask(newTask);
+                        }
                     }
                 }
+                return true;
             }
-            return true;
+            return false;
+        } finally {
+            lock.writeLock().unlock();
+            synchronized(writerLock) {
+                waitingWriters--;
+                writerLock.notifyAll();
+            }
         }
-        return false;
     }
 
-    public boolean assignTask(Employee employee, Task task)
-    {
-        try{
-            for(Task taskReflection : projects.get(task.getProject_id()).getBacklog())
-            {
-                if(taskReflection.getTask_id() == task.getTask_id())
-                {
+    public boolean assignTask(Employee employee, Task task) {
+        synchronized(writerLock) {
+            waitingWriters++;
+        }
+        
+        lock.writeLock().lock();
+        try {
+            for(Task taskReflection : projects.get(task.getProject_id()).getBacklog()) {
+                if(taskReflection.getTask_id() == task.getTask_id()) {
                     dao.assignTask(employee, task);
                     taskReflection.assignTo(employee);
                     return true;
                 }
             }
             return false;
-        }
-        catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             return false;
+        } finally {
+            lock.writeLock().unlock();
+            synchronized(writerLock) {
+                waitingWriters--;
+                writerLock.notifyAll();
+            }
         }
     }
 
-    public boolean unAssignTask(Employee employee, Task task)
-    {
-        try{
-            for(Task taskReflection : projects.get(task.getProject_id()).getBacklog())
-            {
-                if(taskReflection.getTask_id() == task.getTask_id())
-                {
+    public boolean unAssignTask(Employee employee, Task task) {
+        synchronized(writerLock) {
+            waitingWriters++;
+        }
+        
+        lock.writeLock().lock();
+        try {
+            for(Task taskReflection : projects.get(task.getProject_id()).getBacklog()) {
+                if(taskReflection.getTask_id() == task.getTask_id()) {
                     dao.unAssignTask(employee, task);
                     taskReflection.unassignTo(employee);
                     return true;
                 }
             }
             return false;
-        }
-        catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             return false;
+        } finally {
+            lock.writeLock().unlock();
+            synchronized(writerLock) {
+                waitingWriters--;
+                writerLock.notifyAll();
+            }
         }
     }
 
-    public boolean changeTaskStatus(Task task, String status)
-    {
-        try
-        {
+    public boolean changeTaskStatus(Task task, String status) {
+        synchronized(writerLock) {
+            waitingWriters++;
+        }
+        
+        lock.writeLock().lock();
+        try {
             dao.changeTaskStatus(task, status);
-            for(Task taskReflection : projects.get(task.getProject_id()).getBacklog())
-            {
-                if(taskReflection.getTask_id() == task.getTask_id())
-                {
+            for(Task taskReflection : projects.get(task.getProject_id()).getBacklog()) {
+                if(taskReflection.getTask_id() == task.getTask_id()) {
                     taskReflection.setStatus(status);
                     return true;
                 }
             }
             return false;
-        }
-        catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             return false;
+        } finally {
+            lock.writeLock().unlock();
+            synchronized(writerLock) {
+                waitingWriters--;
+                writerLock.notifyAll();
+            }
         }
     }
 
-    public boolean addSprint(Project project, String name, Date startDate, Date endDate)
-    {
-        Sprint newSprint = dao.addSprint(project, name, startDate, endDate);
-        if(newSprint != null)
-        {
-            projects.get(newSprint.getProject_id()).addSprint(newSprint);
-            return true;
+    public boolean addSprint(Project project, String name, Date startDate, Date endDate) {
+        synchronized(writerLock) {
+            waitingWriters++;
         }
-        return false;
+        
+        lock.writeLock().lock();
+        try {
+            Sprint newSprint = dao.addSprint(project, name, startDate, endDate);
+            if(newSprint != null) {
+                projects.get(newSprint.getProject_id()).addSprint(newSprint);
+                return true;
+            }
+            return false;
+        } finally {
+            lock.writeLock().unlock();
+            synchronized(writerLock) {
+                waitingWriters--;
+                writerLock.notifyAll();
+            }
+        }
     }
 
-    public boolean addTaskToSprint(Task task, Sprint sprint)
-    {
-        try
-        {
+    public boolean addTaskToSprint(Task task, Sprint sprint) {
+        synchronized(writerLock) {
+            waitingWriters++;
+        }
+        
+        lock.writeLock().lock();
+        try {
             dao.addTaskToSprint(task, sprint);
-            for(Sprint sprintReflection : projects.get(sprint.getProject_id()).getSprints())
-            {
-                if(sprintReflection.getSprint_id() == sprint.getSprint_id())
-                {
-                    for(Task taskReflection : projects.get(task.getProject_id()).getBacklog())
-                    {
-                        if(taskReflection.getTask_id() == task.getTask_id())
-                        {
+            for(Sprint sprintReflection : projects.get(sprint.getProject_id()).getSprints()) {
+                if(sprintReflection.getSprint_id() == sprint.getSprint_id()) {
+                    for(Task taskReflection : projects.get(task.getProject_id()).getBacklog()) {
+                        if(taskReflection.getTask_id() == task.getTask_id()) {
                             sprintReflection.addTask(taskReflection);
                             return true;
                         }
@@ -371,12 +534,26 @@ public class ServerModelManager {
                 }
             }
             return false;
-        }
-        catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             return false;
+        } finally {
+            lock.writeLock().unlock();
+            synchronized(writerLock) {
+                waitingWriters--;
+                writerLock.notifyAll();
+            }
         }
     }
 
+<<<<<<< HEAD
+    public boolean editTask(Task task) {
+        synchronized(writerLock) {
+            waitingWriters++;
+        }
+        
+        lock.writeLock().lock();
+        try {
+=======
     public boolean removeTaskFromSprint(Task task, Sprint sprint)
     {
         try
@@ -407,31 +584,37 @@ public class ServerModelManager {
     {
         try
         {
+>>>>>>> server
             dao.editTask(task);
-            for(Task taskReflection : projects.get(task.getProject_id()).getBacklog())
-            {
-                if(taskReflection.getTask_id() == task.getTask_id())
-                {
+            for(Task taskReflection : projects.get(task.getProject_id()).getBacklog()) {
+                if(taskReflection.getTask_id() == task.getTask_id()) {
                     taskReflection.setTitle(task.getTitle());
                     taskReflection.setDescription(task.getDescription());
                     return true;
                 }
             }
             return false;
-        }
-        catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             return false;
+        } finally {
+            lock.writeLock().unlock();
+            synchronized(writerLock) {
+                waitingWriters--;
+                writerLock.notifyAll();
+            }
         }
     }
 
-    public boolean editSprint(Sprint sprint)
-    {
-        try{
+    public boolean editSprint(Sprint sprint) {
+        synchronized(writerLock) {
+            waitingWriters++;
+        }
+        
+        lock.writeLock().lock();
+        try {
             dao.editSprint(sprint);
-            for(Sprint sprintReflection : projects.get(sprint.getProject_id()).getSprints())
-            {
-                if(sprintReflection.getSprint_id() == sprint.getSprint_id())
-                {
+            for(Sprint sprintReflection : projects.get(sprint.getProject_id()).getSprints()) {
+                if(sprintReflection.getSprint_id() == sprint.getSprint_id()) {
                     sprintReflection.setName(sprint.getName());
                     sprintReflection.setStart_date(sprint.getStart_date());
                     sprintReflection.setEnd_date(sprint.getEnd_date());
@@ -439,9 +622,14 @@ public class ServerModelManager {
                 }
             }
             return false;
-        }
-        catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             return false;
+        } finally {
+            lock.writeLock().unlock();
+            synchronized(writerLock) {
+                waitingWriters--;
+                writerLock.notifyAll();
+            }
         }
     }
 
