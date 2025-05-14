@@ -11,7 +11,7 @@
 
 <AnchorPane prefHeight="420.0" prefWidth="681.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.ManageUsersViewController">
     <children>
-        <Button fx:id="removeVinyl" layoutX="208.0" layoutY="383.0" mnemonicParsing="false" onAction="#removeUser" prefHeight="26.0" prefWidth="115.0" text="Remove" />
+        <Button fx:id="removeUser" layoutX="208.0" layoutY="383.0" mnemonicParsing="false" onAction="#removeUser" prefHeight="26.0" prefWidth="115.0" text="Remove" />
         <TableView fx:id="tableView" layoutX="14.0" layoutY="56.0" prefHeight="310.0" prefWidth="350.0">
             <columns>
                 <TableColumn fx:id="title" prefWidth="175.0" text="Username" />
@@ -24,8 +24,8 @@
             </font>
         </Label>
         <Button fx:id="addUser" layoutX="40.0" layoutY="383.0" mnemonicParsing="false" onAction="#add" prefHeight="26.0" prefWidth="115.0" text="Add" />
-      <TextField layoutX="517.0" layoutY="100.0" />
-      <TextField layoutX="516.0" layoutY="149.0" />
+      <TextField fx:id="usernameField" layoutX="517.0" layoutY="100.0" />
+      <TextField fx:id="passwordField" layoutX="516.0" layoutY="149.0" />
       <Label layoutX="387.0" layoutY="93.0" prefHeight="38.0" prefWidth="129.0" text="Username:" textAlignment="CENTER">
          <font>
             <Font size="20.0" />
@@ -42,6 +42,7 @@
          </font>
       </Label>
       <Button fx:id="saveUser" layoutX="459.0" layoutY="254.0" mnemonicParsing="false" onAction="#save" prefHeight="26.0" prefWidth="115.0" text="Save" />
-      <ComboBox layoutX="516.0" layoutY="198.0" prefWidth="150.0" />
+      <ComboBox fx:id="roleComboBox" layoutX="516.0" layoutY="198.0" prefWidth="150.0" />
+      <Button fx:id="logout" onAction="#logOut" layoutX="551.0" layoutY="383.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="115.0" text="Log out" />
     </children>
 </AnchorPane>

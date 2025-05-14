@@ -78,8 +78,8 @@
         </TableView>
 
         <!-- Action buttons -->
-        <Button fx:id="backButton" layoutX="181.0" layoutY="469.0" prefWidth="150" text="← Back to Projects" />
-        <Button fx:id="editButton" layoutX="483.0" layoutY="469.0" prefWidth="150" text="Edit Project" />
+        <Button fx:id="backButton"  onAction="#backToProject" layoutX="181.0" layoutY="469.0" prefWidth="150" text="← Back to Projects" />
+        <Button fx:id="editButton"  onAction="#editProject" layoutX="483.0" layoutY="469.0" prefWidth="150" text="Edit Project" />
 
     </children>
 </AnchorPane>
