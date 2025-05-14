@@ -1,4 +1,4 @@
-package ClientModel.Requests;
+package ClientModel.ServerInteractions;
 
 import Model.Sprint;
 import Model.Employee;

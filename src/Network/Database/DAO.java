@@ -87,17 +87,14 @@ public class DAO {
             throw new RuntimeException(e);
         }
     }
-
-    public Project addProject(Employee created_by, Employee scrum_master, String name, String description, Date startDate, Date endDate, List<Employee> participants) {
+    public Project addProject(Employee created_by, Employee scrum_master, String name, String description, List<Employee> participants) {
         try(Connection connection = getConnection()) {
             connection.setAutoCommit(false);
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO project (created_by, scrum_master, name, description, status, start_date, end_date) VALUES (?, ?, ?, ?, 'pending', ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO project (created_by, scrum_master, name, description, status, start_date, end_date) VALUES (?, ?, ?, ?, 'pending', NULL, NULL)", PreparedStatement.RETURN_GENERATED_KEYS);
             statement.setInt(1, created_by.getEmployee_id());
             statement.setInt(2, scrum_master.getEmployee_id());
             statement.setString(3, name);
             statement.setString(4, description);
-            statement.setDate(5, startDate);
-            statement.setDate(6, endDate);
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
             if (resultSet.next()) {
@@ -126,19 +123,6 @@ public class DAO {
         }
     }
 
-    public void editProject(Project project)
-    {
-        try(Connection connection = getConnection()) {
-            PreparedStatement statement = connection.prepareStatement("UPDATE project SET name = ?, description = ? WHERE project_id = ?");
-            statement.setString(1, project.getName());
-            statement.setString(2, project.getDescription());
-            statement.executeUpdate();
-        }
-        catch (SQLException e){
-            throw new RuntimeException(e);
-        }
-    }
-
     public void endProject(Project project) {
         try(Connection connection = getConnection()) {
             PreparedStatement statement = connection.prepareStatement("UPDATE project SET status = 'finished', end_date = NOW() WHERE project_id = ?");
@@ -152,18 +136,8 @@ public class DAO {
         }
     }
 
-    public void editTask(Task task) {
-        try(Connection connection = getConnection()) {
-            PreparedStatement statement = connection.prepareStatement("UPDATE task SET description = ?, title = ? WHERE task_id = ?");
-            statement.setString(1, task.getDescription());
-            statement.setString(2, task.getTitle());
-            statement.setInt(3, task.getTask_id());
-            statement.executeUpdate();
-        }
-        catch (SQLException e){
-            throw new RuntimeException(e);
-        }
-    }
+
+
 
     public void removeEmployeeFromProject(Project project, Employee employee){
         try(Connection connection = getConnection()){
@@ -219,18 +193,6 @@ public class DAO {
             statement.executeUpdate();
         }catch (SQLException e){
             System.out.println("failed to assign task " + task.getTitle().toUpperCase() + " to employee " + employee.getUsername().toUpperCase());
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void unAssignTask(Employee employee, Task task){
-        try(Connection connection = getConnection()){
-            PreparedStatement statement = connection.prepareStatement("DELETE FROM task_assignment WHERE employee_id = ? AND task_id = ?");
-            statement.setInt(1, employee.getEmployee_id());
-            statement.setInt(2, task.getTask_id());
-            statement.executeUpdate();
-        }catch (SQLException e){
-            System.out.println("failed to unassign task " + task.getTitle().toUpperCase() + " to employee " + employee.getUsername().toUpperCase());
             throw new RuntimeException(e);
         }
     }
@@ -346,36 +308,6 @@ public class DAO {
         }
         catch (SQLException e){
             System.out.println("Failed to activate employee");
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void addTaskToSprint(Task task, Sprint sprint)
-    {
-        try(Connection connection = getConnection())
-        {
-            PreparedStatement statement = connection.prepareStatement("UPDATE task SET sprint_id = ? WHERE task_id = ?");
-            statement.setInt(1, sprint.getSprint_id());
-            statement.setInt(2, task.getTask_id());
-            statement.executeUpdate();
-        }
-        catch (SQLException e){
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void editSprint(Sprint sprint)
-    {
-        try(Connection connection = getConnection())
-        {
-            PreparedStatement statement = connection.prepareStatement("UPDATE sprint SET name = ?, start_date = ?, end_date = ? WHERE sprint_id = ?");
-            statement.setString(1, sprint.getName());
-            statement.setDate(2, sprint.getStart_date());
-            statement.setDate(3, sprint.getEnd_date());
-            statement.setInt(4, sprint.getSprint_id());
-            statement.executeUpdate();
-        }
-        catch (SQLException e){
             throw new RuntimeException(e);
         }
     }
