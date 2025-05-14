@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="539.0" prefWidth="800" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.ViewProjectViewController">
+    <children>
+
+        <!-- Title -->
+        <Label layoutX="330.0" layoutY="20.0" text="View Project">
+            <font><Font size="28" /></font>
+        </Label>
+
+        <!-- Left-side project info (labels only) -->
+        <Label layoutX="100.0" layoutY="98.0" text="Title:">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+        <Label fx:id="titleLabel" layoutX="185.0" layoutY="104.0" prefHeight="30.0" prefWidth="182.0">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+
+        <Label layoutX="37.0" layoutY="155.0" text="Description:">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+        <Label fx:id="descriptionLabel" layoutX="185.0" layoutY="130.0" prefHeight="80" prefWidth="200" wrapText="true" />
+
+        <Label layoutX="82.0" layoutY="208.0" text="Status:">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+        <Label fx:id="statusLabel" layoutX="190.0" layoutY="208.0" prefHeight="30.0" prefWidth="182.0">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+
+        <Label layoutX="4.0" layoutY="265.0" text="SCRUM Master:">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+        <Label fx:id="scrumMasterLabel" layoutX="190.0" layoutY="265.0" prefHeight="30.0" prefWidth="182.0">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+
+        <Label layoutX="54.0" layoutY="332.0" text="Start Date:">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+        <Label fx:id="startDateLabel" layoutX="190.0" layoutY="332.0" prefHeight="30.0" prefWidth="182.0">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+
+        <Label layoutX="58.0" layoutY="389.0" text="End Date:">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+        <Label fx:id="endDateLabel" layoutX="181.0" layoutY="389.0" prefHeight="30.0" prefWidth="189.0">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+
+        <!-- Right-side assigned users table -->
+        <Label layoutX="500.0" layoutY="80.0" text="Assigned developers">
+            <font><Font size="20.0" /></font>
+        </Label>
+        <TableView fx:id="assignedUsersTable" layoutX="441.0" layoutY="111.0" prefHeight="318.0" prefWidth="300">
+            <columns>
+                <TableColumn fx:id="assignedUsernameColumn" prefWidth="290" text="Username" />
+            </columns>
+        </TableView>
+
+        <!-- Action buttons -->
+        <Button fx:id="backButton"  onAction="#backToProject" layoutX="181.0" layoutY="469.0" prefWidth="150" text="← Back to Projects" />
+        <Button fx:id="editButton"  onAction="#editProject" layoutX="483.0" layoutY="469.0" prefWidth="150" text="Edit Project" />
+
+    </children>
+</AnchorPane>

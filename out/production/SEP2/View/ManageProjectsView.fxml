@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="466.0" prefWidth="681.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.ManageProjectsViewController">
+    <children>
+        <Button fx:id="addProject" layoutX="146.0" layoutY="427.0" mnemonicParsing="false" onAction="#add" prefHeight="26.0" prefWidth="115.0" text="Add" />
+        <Button fx:id="editProject" layoutX="287.0" layoutY="427.0" mnemonicParsing="false" onAction="#edit" prefHeight="26.0" prefWidth="115.0" text="Edit" />
+        <Button fx:id="removeProject" layoutX="423.0" layoutY="427.0" mnemonicParsing="false" onAction="#remove" prefHeight="26.0" prefWidth="115.0" text="Remove" />
+        <TableView fx:id="tableView" layoutY="64.0" prefHeight="350.0" prefWidth="689.0">
+            <columns>
+                <TableColumn fx:id="name" prefWidth="170.0" text="Name" />
+                <TableColumn fx:id="status" prefWidth="170.0" text="Status" />
+                <TableColumn fx:id="startDate" prefWidth="170.0" text="Start date" />
+                <TableColumn fx:id="endDate" prefWidth="170.0" text="End date" />
+            </columns>
+        </TableView>
+        <Button fx:id="infoProject" layoutX="560.0" layoutY="427.0" mnemonicParsing="false" onAction="#info" prefHeight="26.0" prefWidth="115.0" text="View" />
+        <Label layoutX="220.0" layoutY="14.0" prefHeight="47.0" prefWidth="240.0" text="Manage Projects" textAlignment="CENTER">
+            <font>
+                <Font size="32.0" />
+            </font>
+        </Label>
+      <Button fx:id="backlog" layoutX="14.0" layoutY="427.0" mnemonicParsing="false" onAction="#backlog" prefHeight="26.0" prefWidth="115.0" text="Backlog" />
+      <Button fx:id="goBack" layoutX="30.0" layoutY="25.0" mnemonicParsing="false" onAction="#goBack" prefHeight="8.0" prefWidth="34.0" text="←" />
+    </children>
+</AnchorPane>
