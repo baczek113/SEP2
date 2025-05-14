@@ -78,7 +78,7 @@ public class DAO {
     public void addEmployeeToProject(Project project, Employee employee) {
         try(Connection connection = getConnection())
         {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO project_assignment (user_id, project_id) VALUES (?,?)");
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO project_assignment (employee_id, project_id) VALUES (?,?)");
             statement.setInt(1, employee.getEmployee_id());
             statement.setInt(2, project.getProject_id());
             statement.executeUpdate();
@@ -139,6 +139,19 @@ public class DAO {
         }
     }
 
+    public void startProject(Project project) {
+        try(Connection connection = getConnection()) {
+            PreparedStatement statement = connection.prepareStatement("UPDATE project SET status = 'ongoing', end_date = NOW() WHERE project_id = ?");
+            statement.setInt(1, project.getProject_id());
+            statement.executeUpdate();
+            project.setStatus("ongoing");
+            project.setEnd_date(new Date(System.currentTimeMillis()));
+        }catch (SQLException e){
+            System.out.println("failed to set status to 'ongoing' for a project: " + project.getName());
+            throw new RuntimeException(e);
+        }
+    }
+
     public void endProject(Project project) {
         try(Connection connection = getConnection()) {
             PreparedStatement statement = connection.prepareStatement("UPDATE project SET status = 'finished', end_date = NOW() WHERE project_id = ?");
@@ -192,7 +205,7 @@ public class DAO {
             statement.setInt(3, sprint.getProject_id());
             statement.setString(4, title);
             statement.setString(5, description);
-            statement.setString(6, "pending");
+            statement.setString(6, "to-do");
             statement.setInt(7, priority);
             statement.executeUpdate();
             ResultSet keys = statement.getGeneratedKeys();

@@ -11,7 +11,7 @@ public class CreateEmployeeHandler implements RequestHandlerStrategy{
         CreateEmployeeRequest createEmployeeRequest = (CreateEmployeeRequest) request;
         if(modelManager.createEmployee(createEmployeeRequest.getRole_id(), createEmployeeRequest.getUsername(), createEmployeeRequest.getPassword()))
         {
-
+            //broadcast stuff
         }
     }
 }

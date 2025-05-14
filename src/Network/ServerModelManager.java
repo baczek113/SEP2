@@ -5,8 +5,7 @@ import ClientModel.Requests.Request;
 import Model.*;
 import Network.Database.DAO;
 import Network.Database.Initializer;
-import Network.RequestHandling.CreateEmployeeHandler;
-import Network.RequestHandling.RequestHandlerStrategy;
+import Network.RequestHandling.*;
 import Network.Response.LoginResponse;
 import Network.Response.Response;
 
@@ -175,7 +174,24 @@ public class ServerModelManager {
             Project projectReflection = projects.get(project.getProject_id());
             if(projectReflection != null)
             {
-                projects.remove(projectReflection);
+                projectReflection.setStatus("finished");
+                return true;
+            }
+            return false;
+        }
+        catch (RuntimeException e) {
+            return false;
+        }
+    }
+
+    public boolean startProject(Project project)
+    {
+        try {
+            dao.startProject(project);
+            Project projectReflection = projects.get(project.getProject_id());
+            if(projectReflection != null)
+            {
+                projectReflection.setStatus("ongoing");
                 return true;
             }
             return false;
@@ -209,8 +225,9 @@ public class ServerModelManager {
             if(projectReflection != null)
             {
                 dao.removeEmployeeFromProject(project, employee);
-                projectReflection.removeEmployee(employees.get(employee.getEmployee_id()));
-                return true;
+                if(projectReflection.removeEmployee(employees.get(employee.getEmployee_id()))) {
+                    return true;
+                }
             }
             return false;
         }
@@ -402,6 +419,24 @@ public class ServerModelManager {
         switch(request.getAction()){
             case "createEmployee":
                 requestHandler = new CreateEmployeeHandler();
+                break;
+            case "deactivateEmployee":
+                requestHandler = new DeactivateEmployeeHandler();
+                break;
+            case "activateEmployee":
+                requestHandler = new ActivateEmployeeHandler();
+                break;
+            case "updateEmployee":
+                requestHandler = new UpdateEmployeeHandler();
+                break;
+            case "addProject":
+                requestHandler = new AddProjectHandler();
+                break;
+            case "endProject":
+                requestHandler = new EndProjectHandler();
+                break;
+            case "startProject":
+                requestHandler = new StartProjectHandler();
                 break;
             default:
                 requestHandler = null;

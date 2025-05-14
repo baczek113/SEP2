@@ -10,7 +10,8 @@ public class ModelManagerTest {
     public static void main(String[] args) {
         ServerModelManager manager = ServerModelManager.getInstance();
 
-        manager.activateEmployee(4);
+        manager.addEmployeeToProject(manager.getProjects().get(4), manager.getEmployees().get(5));
+
         for(Project project : manager.getProjects())
         {
             if(project.getProject_id() == 4)
