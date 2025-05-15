@@ -66,7 +66,7 @@ public  class ServerConnection implements Runnable{
         }
         catch (IOException | ClassNotFoundException e)
         {
-            throw new RuntimeException(e);
+            modelManager.getConnectionPool().removeConnection(this);
         }
     }
 

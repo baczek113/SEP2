@@ -456,7 +456,7 @@ public class ServerSideDirectTest {
 
         Employee damian = performLoginAs("damianczina", "2137");
         if (damian != null) {
-            List<Project> damianProjects = serverModelManager.getProjects(damian.getEmployee_id());
+            List<Project> damianProjects = serverModelManager.getProjectsForEmployee(damian.getEmployee_id());
             System.out.println("Projects retrieved for user: " + damian.getUsername() + " (ID: " + damian.getEmployee_id() + ")");
             if (damianProjects != null) {
                 System.out.println("Number of projects found: " + damianProjects.size());
@@ -473,7 +473,7 @@ public class ServerSideDirectTest {
 
         Employee jcob = performLoginAs("jcob23", "1234");
         if (jcob != null) {
-            List<Project> jcobProjects = serverModelManager.getProjects(jcob.getEmployee_id());
+            List<Project> jcobProjects = serverModelManager.getProjectsForEmployee(jcob.getEmployee_id());
             System.out.println("Projects retrieved for user: " + jcob.getUsername() + " (ID: " + jcob.getEmployee_id() + ")");
             if (jcobProjects != null) {
                 System.out.println("Number of projects found: " + jcobProjects.size());
@@ -508,7 +508,7 @@ public class ServerSideDirectTest {
 
         Employee admin = performLoginAs("admin", "admin");
         if (admin != null) {
-            List<Project> adminProjects = serverModelManager.getProjects(admin.getEmployee_id());
+            List<Project> adminProjects = serverModelManager.getProjectsForEmployee(admin.getEmployee_id());
             System.out.println("Projects retrieved for user: " + admin.getUsername() + " (ID: " + admin.getEmployee_id() + ")");
             if (adminProjects != null) {
                 System.out.println("Number of projects found: " + adminProjects.size());

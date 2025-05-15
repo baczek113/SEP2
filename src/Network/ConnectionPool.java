@@ -81,4 +81,9 @@ public class ConnectionPool {
             }
         }
     }
+
+    public void removeConnection(ServerConnection connection)
+    {
+        connections.remove(connection);
+    }
 }

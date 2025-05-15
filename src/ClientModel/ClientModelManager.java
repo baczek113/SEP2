@@ -37,26 +37,40 @@ public class ClientModelManager {
         switch (message)
         {
             case "login":
+                System.out.println("Login response received");
                 LoginResponse loginResponse = (LoginResponse) response;
                 if (loginResponse.getEmployee() == null)
                 {
-                    propertyChangeSupport.firePropertyChange("loginFailed", null, null);
+                    propertyChangeSupport.firePropertyChange("login", null, null);
                 }
                 else
                 {
-                    propertyChangeSupport.firePropertyChange("loginSuccessful", null, loginResponse.getEmployee());
                     loggedEmployee = loginResponse.getEmployee();
+                    propertyChangeSupport.firePropertyChange("login", null, loggedEmployee);
                 }
                 break;
             case "project":
+                System.out.println("Project response received");
                 ProjectResponse projectResponse = (ProjectResponse) response;
-                projects = projectResponse.getProjects();
+                for(Project project : projectResponse.getProjects())
+                {
+                    if(projects.get(project.getProject_id()) == null)
+                    {
+                        projects.add(project);
+                    }
+                    else
+                    {
+                        projects.set(project.getProject_id(), project);
+                    }
+                }
                 propertyChangeSupport.firePropertyChange("projects", null, projects);
                 break;
             case "employee":
+                System.out.println("Employee response received");
                 EmployeeResponse employeeResponse = (EmployeeResponse) response;
                 employees = employeeResponse.getEmployees();
                 propertyChangeSupport.firePropertyChange("employees", null, employees);
+                break;
         }
     }
 

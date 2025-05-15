@@ -33,7 +33,7 @@ public class DAO {
 
     public Employee addEmployee(int role_id, String username, String password) {
         try(Connection connection = getConnection()) {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO employee(role_id, username, password) VALUES (?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO employee(role_id, username, password, status) VALUES (?,?,?,'active')", PreparedStatement.RETURN_GENERATED_KEYS);
             statement.setInt(1, role_id);
             statement.setString(2, username);
             statement.setString(3, password);
