@@ -62,7 +62,7 @@ public class ServerModelManager {
         
         lock.readLock().lock();
         try {
-            return new ArrayList<>(projects); 
+            return projects;
         } finally {
             lock.readLock().unlock();
         }
@@ -79,10 +79,10 @@ public class ServerModelManager {
                 }
             }
         }
-        
+
         lock.readLock().lock();
         try {
-            return new ArrayList<>(employees); 
+            return employees;
         } finally {
             lock.readLock().unlock();
         }
@@ -215,14 +215,30 @@ public class ServerModelManager {
 
     public List<Project> getProjects(int employee_id)
     {
-        List<Project> relevantProjects = new ArrayList<Project>();
-        for (Project project : projects) {
-            if(project.getEmployees().get(employee_id) != null)
-            {
-                relevantProjects.add(project);
+        synchronized(writerLock) {
+            while (waitingWriters > 0) {
+                try {
+                    writerLock.wait();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    return null;
+                }
             }
         }
-        return relevantProjects;
+
+        lock.readLock().lock();
+        try {
+            List<Project> relevantProjects = new ProjectList();
+            for (Project project : projects) {
+                if(project.getEmployees().get(employee_id) != null)
+                {
+                    relevantProjects.add(project);
+                }
+            }
+            return relevantProjects;
+        } finally {
+            lock.readLock().unlock();
+        }
     }
 
     public boolean addProject(Employee created_by, Employee scrum_master, String name, String description, Date startDate, Date endDate, List<Employee> participants) {
@@ -545,17 +561,13 @@ public class ServerModelManager {
         }
     }
 
-<<<<<<< HEAD
-    public boolean editTask(Task task) {
+    public boolean removeTaskFromSprint(Task task, Sprint sprint)
+    {
         synchronized(writerLock) {
             waitingWriters++;
         }
-        
+
         lock.writeLock().lock();
-        try {
-=======
-    public boolean removeTaskFromSprint(Task task, Sprint sprint)
-    {
         try
         {
             dao.removeTaskFromSprint(task, sprint);
@@ -577,14 +589,24 @@ public class ServerModelManager {
         }
         catch (RuntimeException e) {
             return false;
+        } finally {
+            lock.writeLock().unlock();
+            synchronized(writerLock) {
+                waitingWriters--;
+                writerLock.notifyAll();
+            }
         }
     }
 
     public boolean editTask(Task task)
     {
+        synchronized(writerLock) {
+            waitingWriters++;
+        }
+
+        lock.writeLock().lock();
         try
         {
->>>>>>> server
             dao.editTask(task);
             for(Task taskReflection : projects.get(task.getProject_id()).getBacklog()) {
                 if(taskReflection.getTask_id() == task.getTask_id()) {
