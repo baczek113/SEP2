@@ -12,15 +12,25 @@ import java.util.List;
 public class DAO {
     private static DAO instance;
 
-    private DAO() throws SQLException
-    {
-        DriverManager.registerDriver(new org.postgresql.Driver());
+    private DAO() throws SQLException {
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new SQLException("PostgreSQL JDBC Driver not found.", e);
+        }
     }
 
-    public Connection getConnection() throws SQLException
-    {
-        //Substitute for your own database login/password
-        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=sep_database", "postgres", "dupa123");
+    public Connection getConnection() throws SQLException {
+        try {
+            return DriverManager.getConnection(
+                "jdbc:postgresql://localhost:5432/postgres?currentSchema=sep_database",
+                "postgres",
+                "dupa123"
+            );
+        } catch (SQLException e) {
+            System.err.println("Database connection failed: " + e.getMessage());
+            throw e;
+        }
     }
 
     public static DAO getInstance() throws SQLException

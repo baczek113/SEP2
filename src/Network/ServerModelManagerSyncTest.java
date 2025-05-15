@@ -20,6 +20,15 @@ public class ServerModelManagerSyncTest {
     public static void main(String[] args) {
         manager = ServerModelManager.getInstance();
         
+        // Create test employees first
+        Employee testEmployee1 = manager.createEmployee(1, "test1", "pass1");
+        Employee testEmployee2 = manager.createEmployee(2, "test2", "pass2");
+        
+        if (testEmployee1 == null || testEmployee2 == null) {
+            System.err.println("Failed to create test employees. Check database connection.");
+            return;
+        }
+        
         // Run all tests
         testMultipleReaders();
         testWritersBlockReaders();
@@ -196,16 +205,19 @@ public class ServerModelManagerSyncTest {
             new Thread(() -> {
                 try {
                     startLatch.await();
-                    Employee testEmployee = new Employee(threadId, 1, "test" + threadId);
-                    List<Employee> participants = new ArrayList<>();
-                    participants.add(testEmployee);
-                    boolean result = manager.addProject(testEmployee, testEmployee, 
-                        "Test Project " + threadId, "Description " + threadId, 
-                        new Date(System.currentTimeMillis()), 
-                        new Date(System.currentTimeMillis() + 86400000), 
-                        participants);
-                    if (result) {
-                        successCount.incrementAndGet();
+                    // Create a test employee for this thread
+                    Employee testEmployee = manager.createEmployee(1, "test" + threadId, "pass" + threadId);
+                    if (testEmployee != null) {
+                        List<Employee> participants = new ArrayList<>();
+                        participants.add(testEmployee);
+                        boolean result = manager.addProject(testEmployee, testEmployee, 
+                            "Test Project " + threadId, "Description " + threadId, 
+                            new Date(System.currentTimeMillis()), 
+                            new Date(System.currentTimeMillis() + 86400000), 
+                            participants);
+                        if (result) {
+                            successCount.incrementAndGet();
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

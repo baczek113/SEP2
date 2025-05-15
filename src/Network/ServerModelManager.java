@@ -22,9 +22,9 @@ public class ServerModelManager {
     private List<Employee> employees;
     private DAO dao;
     private RequestHandlerStrategy requestHandler;
-    
-    //synchronization, writers priority
-    private final ReadWriteLock lock = new ReentrantReadWriteLock(true); 
+
+    //synchronization, writers priority with fair ordering for waiting threads.
+    private final ReadWriteLock lock = new ReentrantReadWriteLock(true);
     private final Object writerLock = new Object();
     private int waitingWriters = 0;
 
@@ -59,10 +59,10 @@ public class ServerModelManager {
                 }
             }
         }
-        
+
         lock.readLock().lock();
         try {
-            return new ArrayList<>(projects); 
+            return new ArrayList<>(projects);
         } finally {
             lock.readLock().unlock();
         }
@@ -79,10 +79,10 @@ public class ServerModelManager {
                 }
             }
         }
-        
+
         lock.readLock().lock();
         try {
-            return new ArrayList<>(employees); 
+            return new ArrayList<>(employees);
         } finally {
             lock.readLock().unlock();
         }
@@ -97,7 +97,7 @@ public class ServerModelManager {
         synchronized(writerLock) {
             waitingWriters++;
         }
-        
+
         lock.writeLock().lock();
         try {
             Employee employee = dao.addEmployee(role_id, username, password);
@@ -119,7 +119,7 @@ public class ServerModelManager {
         synchronized(writerLock) {
             waitingWriters++;
         }
-        
+
         lock.writeLock().lock();
         try {
             Employee employee = employees.get(employee_id);
@@ -143,7 +143,7 @@ public class ServerModelManager {
         synchronized(writerLock) {
             waitingWriters++;
         }
-        
+
         lock.writeLock().lock();
         try {
             Employee employee = employees.get(employee_id);
@@ -165,7 +165,7 @@ public class ServerModelManager {
         synchronized(writerLock) {
             waitingWriters++;
         }
-        
+
         lock.writeLock().lock();
         try {
             Employee proxyReflection = employees.get(employee.getEmployee_id());
@@ -197,7 +197,7 @@ public class ServerModelManager {
         if (employee.getRole().getRole_name().equals("product_owner")) {
             for (Project project : projects) {
                 if (project.getCreated_by().getEmployee_id() == employee.getEmployee_id()
-                        && (project.getStatus().equals("ongoing") || project.getStatus().equals("pending"))) {
+                    && (project.getStatus().equals("ongoing") || project.getStatus().equals("pending"))) {
                     return true;
                 }
             }
@@ -205,7 +205,7 @@ public class ServerModelManager {
         if (employee.getRole().getRole_name().equals("scrum_master")) {
             for (Project project : projects) {
                 if (project.getScrum_master().getEmployee_id() == employee.getEmployee_id()
-                        && (project.getStatus().equals("ongoing") || project.getStatus().equals("pending"))) {
+                    && (project.getStatus().equals("ongoing") || project.getStatus().equals("pending"))) {
                     return true;
                 }
             }
@@ -229,17 +229,17 @@ public class ServerModelManager {
         synchronized(writerLock) {
             waitingWriters++;
         }
-        
+
         lock.writeLock().lock();
         try {
             List<Employee> participantsServerReflection = new EmployeeList();
             for(Employee employee : participants) {
                 participantsServerReflection.add(employees.get(employee.getEmployee_id()));
             }
-            Project addedProject = dao.addProject(employees.get(created_by.getEmployee_id()), 
-                                                employees.get(scrum_master.getEmployee_id()), 
-                                                name, description, startDate, endDate, 
-                                                participantsServerReflection);
+            Project addedProject = dao.addProject(employees.get(created_by.getEmployee_id()),
+                employees.get(scrum_master.getEmployee_id()),
+                name, description, startDate, endDate,
+                participantsServerReflection);
             if(addedProject != null) {
                 projects.add(addedProject);
                 return true;
@@ -258,7 +258,7 @@ public class ServerModelManager {
         synchronized(writerLock) {
             waitingWriters++;
         }
-        
+
         lock.writeLock().lock();
         try {
             dao.endProject(project);
@@ -283,7 +283,7 @@ public class ServerModelManager {
         synchronized(writerLock) {
             waitingWriters++;
         }
-        
+
         lock.writeLock().lock();
         try {
             dao.startProject(project);
@@ -308,7 +308,7 @@ public class ServerModelManager {
         synchronized(writerLock) {
             waitingWriters++;
         }
-        
+
         lock.writeLock().lock();
         try {
             Project projectReflection = projects.get(project.getProject_id());
@@ -333,17 +333,13 @@ public class ServerModelManager {
         synchronized(writerLock) {
             waitingWriters++;
         }
-        
+
         lock.writeLock().lock();
         try {
             Project projectReflection = projects.get(project.getProject_id());
             if(projectReflection != null) {
                 dao.removeEmployeeFromProject(project, employee);
                 if(projectReflection.removeEmployee(employees.get(employee.getEmployee_id()))) {
-                    for(Task task : projectReflection.getBacklog())
-                    {
-                        task.getAssignedTo().remove(employees.get(employee.getEmployee_id()));
-                    }
                     return true;
                 }
             }
@@ -363,7 +359,7 @@ public class ServerModelManager {
         synchronized(writerLock) {
             waitingWriters++;
         }
-        
+
         lock.writeLock().lock();
         try {
             dao.assignPriority(task, priority);
@@ -389,7 +385,7 @@ public class ServerModelManager {
         synchronized(writerLock) {
             waitingWriters++;
         }
-        
+
         lock.writeLock().lock();
         try {
             Task newTask = dao.addTask(sprint, project, title, description, priority);
@@ -419,7 +415,7 @@ public class ServerModelManager {
         synchronized(writerLock) {
             waitingWriters++;
         }
-        
+
         lock.writeLock().lock();
         try {
             for(Task taskReflection : projects.get(task.getProject_id()).getBacklog()) {
@@ -445,7 +441,7 @@ public class ServerModelManager {
         synchronized(writerLock) {
             waitingWriters++;
         }
-        
+
         lock.writeLock().lock();
         try {
             for(Task taskReflection : projects.get(task.getProject_id()).getBacklog()) {
@@ -471,7 +467,7 @@ public class ServerModelManager {
         synchronized(writerLock) {
             waitingWriters++;
         }
-        
+
         lock.writeLock().lock();
         try {
             dao.changeTaskStatus(task, status);
@@ -497,7 +493,7 @@ public class ServerModelManager {
         synchronized(writerLock) {
             waitingWriters++;
         }
-        
+
         lock.writeLock().lock();
         try {
             Sprint newSprint = dao.addSprint(project, name, startDate, endDate);
@@ -519,7 +515,7 @@ public class ServerModelManager {
         synchronized(writerLock) {
             waitingWriters++;
         }
-        
+
         lock.writeLock().lock();
         try {
             dao.addTaskToSprint(task, sprint);
@@ -545,46 +541,13 @@ public class ServerModelManager {
         }
     }
 
-<<<<<<< HEAD
     public boolean editTask(Task task) {
         synchronized(writerLock) {
             waitingWriters++;
         }
-        
+
         lock.writeLock().lock();
         try {
-=======
-    public boolean removeTaskFromSprint(Task task, Sprint sprint)
-    {
-        try
-        {
-            dao.removeTaskFromSprint(task, sprint);
-            for(Sprint sprintReflection : projects.get(sprint.getProject_id()).getSprints())
-            {
-                if(sprintReflection.getSprint_id() == sprint.getSprint_id())
-                {
-                    for(Task taskReflection : projects.get(task.getProject_id()).getBacklog())
-                    {
-                        if(taskReflection.getTask_id() == task.getTask_id())
-                        {
-                            sprintReflection.removeTask(taskReflection);
-                            return true;
-                        }
-                    }
-                }
-            }
-            return false;
-        }
-        catch (RuntimeException e) {
-            return false;
-        }
-    }
-
-    public boolean editTask(Task task)
-    {
-        try
-        {
->>>>>>> server
             dao.editTask(task);
             for(Task taskReflection : projects.get(task.getProject_id()).getBacklog()) {
                 if(taskReflection.getTask_id() == task.getTask_id()) {
@@ -609,7 +572,7 @@ public class ServerModelManager {
         synchronized(writerLock) {
             waitingWriters++;
         }
-        
+
         lock.writeLock().lock();
         try {
             dao.editSprint(sprint);
@@ -656,52 +619,12 @@ public class ServerModelManager {
             case "startProject":
                 requestHandler = new StartProjectHandler();
                 break;
-            case "addEmployeeToProject":
-                requestHandler = new AddEmployeeToProjectHandler();
-                break;
-            case "removeEmployeeFromProject":
-                requestHandler = new RemoveEmployeeFromProjectHandler();
-                break;
-            case "assignTaskPriority":
-                requestHandler = new AssignPriorityHandler();
-                break;
-            case "addTask":
-                requestHandler = new AddTaskRequestHandler();
-                break;
-            case "assignTask":
-                requestHandler = new AssignTaskHandler();
-                break;
-            case "unassignTask":
-                requestHandler = new UnassignTaskHandler();
-                break;
-            case "changeTaskStatus":
-                requestHandler = new ChangeTaskStatusHandler();
-                break;
-            case "addSprint":
-                requestHandler = new AddSprintHandler();
-                break;
-            case "addTaskToSprint":
-                requestHandler = new AddTaskToSprintHandler();
-                break;
-            case "removeTaskFromSprint":
-                requestHandler = new RemoveTaskFromSprintHandler();
-                break;
-            case "editTask":
-                requestHandler = new EditTaskHandler();
-                break;
-            case "editSprint":
-                requestHandler = new EditSprintHandler();
-                break;
             default:
                 requestHandler = null;
                 break;
         }
         if(requestHandler != null) {
             requestHandler.processRequest(request, this);
-        }
-        else
-        {
-            System.out.println("No handler found for action: " + request.getAction());
         }
     }
 
