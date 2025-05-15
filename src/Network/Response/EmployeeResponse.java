@@ -9,8 +9,8 @@ public class EmployeeResponse extends Response implements Serializable
 {
   private List<Employee> employees;
 
-  public EmployeeResponse(String statusMesssage, List<Employee> employeeList){
-    super(statusMesssage);
+  public EmployeeResponse(List<Employee> employeeList){
+    super("employee");
     this.employees = employeeList;
   }
 

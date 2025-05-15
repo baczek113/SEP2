@@ -16,7 +16,7 @@ public class AddProjectHandler implements RequestHandlerStrategy{
                 addProjectRequest.getEnd_date(),
                 addProjectRequest.getAssignees()))
         {
-            //broadcast stuff
+            modelManager.getConnectionPool().broadcastProjects(addProjectRequest.getAssignees());
         }
     }
 }

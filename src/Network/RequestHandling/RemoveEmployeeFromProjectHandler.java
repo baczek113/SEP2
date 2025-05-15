@@ -10,6 +10,7 @@ public class RemoveEmployeeFromProjectHandler implements RequestHandlerStrategy{
         ProjectEmployeeRequest projectEmployeeRequest = (ProjectEmployeeRequest) request;
         if(modelManager.removeEmployeeFromProject(projectEmployeeRequest.getProject(), projectEmployeeRequest.getEmployeeToAdd())){
             // Broadcast
+            modelManager.getConnectionPool().broadcastProject(modelManager.getProjects().get(projectEmployeeRequest.getProject().getProject_id()));
         }
     }
 }

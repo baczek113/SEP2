@@ -9,8 +9,8 @@ public class ProjectResponse extends Response implements Serializable
 {
   private List<Project> projects;
 
-  public ProjectResponse(String statusMessage, List<Project> projects){
-    super(statusMessage);
+  public ProjectResponse(List<Project> projects){
+    super("project");
     this.projects = projects;
   }
 

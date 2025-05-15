@@ -11,6 +11,7 @@ public class AddTaskToSprintHandler implements RequestHandlerStrategy{
         TaskSprintRequest taskSprintRequest = (TaskSprintRequest) request;
         if(modelManager.addTaskToSprint(taskSprintRequest.getTask(), taskSprintRequest.getSprint())){
             // broadcast
+            modelManager.getConnectionPool().broadcastProject(modelManager.getProjects().get(taskSprintRequest.getSprint().getProject_id()));
         }
     }
 }

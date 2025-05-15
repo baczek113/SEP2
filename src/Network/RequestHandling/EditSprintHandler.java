@@ -11,6 +11,7 @@ public class EditSprintHandler implements RequestHandlerStrategy{
         if(modelManager.editSprint(editSprintRequest.getSprint()))
         {
             // broadcast
+            modelManager.getConnectionPool().broadcastProject(modelManager.getProjects().get(editSprintRequest.getSprint().getProject_id()));
         }
     }
 }

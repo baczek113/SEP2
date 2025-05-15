@@ -11,7 +11,6 @@ public class AddTaskRequestHandler implements RequestHandlerStrategy {
     @Override
     public void processRequest(Request request, ServerModelManager modelManager) {
         AddTaskRequest addTaskRequest = (AddTaskRequest) request;
-
         Sprint sprint = addTaskRequest.getSprint(); // This can be null for backlog tasks
         Project project = addTaskRequest.getProject(); // <-- Get the project directly from the request
 
@@ -33,6 +32,7 @@ public class AddTaskRequestHandler implements RequestHandlerStrategy {
         {
             System.out.println("AddTaskRequestHandler: Task '" + addTaskRequest.getName() + "' successfully processed by modelManager.");
             // Potentially broadcast updates here if your architecture requires it
+          modelManager.getConnectionPool().broadcastProject(modelManager.getProjects().get(addTaskRequest.getSprint().getProject_id()));
         } else {
             System.err.println("AddTaskRequestHandler: modelManager.addTask call returned false for task '" + addTaskRequest.getName() + "'.");
         }

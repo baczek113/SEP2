@@ -4,10 +4,11 @@ import Model.Employee;
 import Model.EmployeeList;
 import Model.Project;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class ModelManagerTest {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         ServerModelManager manager = ServerModelManager.getInstance();
 
         manager.addEmployeeToProject(manager.getProjects().get(4), manager.getEmployees().get(5));

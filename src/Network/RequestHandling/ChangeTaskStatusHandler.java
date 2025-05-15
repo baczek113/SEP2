@@ -11,6 +11,7 @@ public class ChangeTaskStatusHandler implements RequestHandlerStrategy{
         ChangeTaskStatusRequest changeTaskStatusRequest = (ChangeTaskStatusRequest) request;
         if(modelManager.changeTaskStatus(changeTaskStatusRequest.getTask(), changeTaskStatusRequest.getStatus())){
             // broadcast
+            modelManager.getConnectionPool().broadcastProject(modelManager.getProjects().get(changeTaskStatusRequest.getTask().getProject_id()));
         }
     }
 }

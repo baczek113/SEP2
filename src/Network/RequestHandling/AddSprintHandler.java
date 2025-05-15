@@ -11,7 +11,8 @@ public class AddSprintHandler implements RequestHandlerStrategy{
         AddSprintRequest addSprintRequest = (AddSprintRequest) request;
         if(modelManager.addSprint(addSprintRequest.getProject(), addSprintRequest.getName(), addSprintRequest.getStartDate(), addSprintRequest.getEndDate()))
         {
-
+            // broadcast stuff
+            modelManager.getConnectionPool().broadcastProject(modelManager.getProjects().get(addSprintRequest.getProject().getProject_id()));
         }
     }
 }

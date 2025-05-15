@@ -11,7 +11,6 @@ import Network.Response.Response;
 
 import java.sql.Date;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -27,6 +26,7 @@ public class ServerModelManager {
     private final ReadWriteLock lock = new ReentrantReadWriteLock(true); 
     private final Object writerLock = new Object();
     private int waitingWriters = 0;
+    private ConnectionPool connectionPool;
 
     private ServerModelManager() {
         try {
@@ -46,6 +46,14 @@ public class ServerModelManager {
             instance = new ServerModelManager();
         }
         return instance;
+    }
+
+    public ConnectionPool getConnectionPool() {
+        return connectionPool;
+    }
+
+    public void setConnectionPool(ConnectionPool connectionPool) {
+        this.connectionPool = connectionPool;
     }
 
     public List<Project> getProjects() {
@@ -213,7 +221,7 @@ public class ServerModelManager {
         return false;
     }
 
-    public List<Project> getProjects(int employee_id)
+    public List<Project> getProjectsForEmployee(int employee_id)
     {
         synchronized(writerLock) {
             while (waitingWriters > 0) {

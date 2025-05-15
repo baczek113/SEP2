@@ -12,6 +12,7 @@ public class EditTaskHandler implements RequestHandlerStrategy{
         if(modelManager.editTask(editTaskRequest.getTask()))
         {
             //broadcast
+            modelManager.getConnectionPool().broadcastProject(modelManager.getProjects().get(editTaskRequest.getTask().getProject_id()));
         }
     }
 }

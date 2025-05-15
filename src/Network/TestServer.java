@@ -10,6 +10,8 @@ public class TestServer
     ServerSocket serverSocket = new ServerSocket(2137);
     System.out.println("Server started on port 2137");
     ServerModelManager manager = ServerModelManager.getInstance();
+    ConnectionPool connectionPool = new ConnectionPool(manager);
+    manager.setConnectionPool(connectionPool);
     while (true) {
 
       Socket clientSocket = serverSocket.accept();
@@ -17,6 +19,8 @@ public class TestServer
       System.out.println("New client connected: " + clientSocket.getInetAddress().getHostAddress());
 
       ServerConnection newConnection = new ServerConnection(clientSocket);
+
+      connectionPool.addConnection(newConnection);
 
       new Thread(newConnection).start();
 
