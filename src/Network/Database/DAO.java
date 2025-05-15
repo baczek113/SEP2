@@ -20,7 +20,7 @@ public class DAO {
     public Connection getConnection() throws SQLException
     {
         //Substitute for your own database login/password
-        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=sep_database", "postgres", "dupa123");
+        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=sep_database", "postgres", "gigakoks1");
     }
 
     public static DAO getInstance() throws SQLException
@@ -141,11 +141,11 @@ public class DAO {
 
     public void startProject(Project project) {
         try(Connection connection = getConnection()) {
-            PreparedStatement statement = connection.prepareStatement("UPDATE project SET status = 'ongoing', end_date = NOW() WHERE project_id = ?");
+            PreparedStatement statement = connection.prepareStatement("UPDATE project SET status = 'ongoing', start_date = NOW() WHERE project_id = ?");
             statement.setInt(1, project.getProject_id());
             statement.executeUpdate();
             project.setStatus("ongoing");
-            project.setEnd_date(new Date(System.currentTimeMillis()));
+            project.setStart_date(new Date(System.currentTimeMillis()));
         }catch (SQLException e){
             System.out.println("failed to set status to 'ongoing' for a project: " + project.getName());
             throw new RuntimeException(e);

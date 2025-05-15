@@ -11,6 +11,7 @@ public class EndProjectHandler implements RequestHandlerStrategy{
         if(modelManager.endProject(projectRequest.getProject()))
         {
             //broadcast here
+            modelManager.getConnectionPool().broadcastProject(modelManager.getProjects().get(projectRequest.getProject().getProject_id()));
         }
     }
 }

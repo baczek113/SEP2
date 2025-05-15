@@ -9,7 +9,8 @@ public class AddEmployeeToProjectHandler implements RequestHandlerStrategy{
     public void processRequest(Request request, ServerModelManager modelManager) {
         ProjectEmployeeRequest projectEmployeeRequest = (ProjectEmployeeRequest) request;
         if(modelManager.addEmployeeToProject(projectEmployeeRequest.getProject(), projectEmployeeRequest.getEmployeeToAdd())){
-            // Broadcast
+            // broadcast stuff
+            modelManager.getConnectionPool().broadcastProject(modelManager.getProjects().get(projectEmployeeRequest.getProject().getProject_id()));
         }
     }
 }

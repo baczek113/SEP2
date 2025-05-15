@@ -11,6 +11,7 @@ public class AssignTaskHandler implements RequestHandlerStrategy{
         AssignTaskRequest assignTaskRequest = (AssignTaskRequest) request;
         if(modelManager.assignTask(assignTaskRequest.getEmployee(), assignTaskRequest.getTask())){
             // broadcast
+            modelManager.getConnectionPool().broadcastProject(modelManager.getProjects().get(assignTaskRequest.getTask().getProject_id()));
         }
     }
 }

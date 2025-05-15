@@ -11,6 +11,7 @@ public class StartProjectHandler implements RequestHandlerStrategy{
         if(modelManager.startProject(projectRequest.getProject()))
         {
             //broadcast here
+            modelManager.getConnectionPool().broadcastProject(modelManager.getProjects().get(projectRequest.getProject().getProject_id()));
         }
     }
 }

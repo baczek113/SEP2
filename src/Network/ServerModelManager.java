@@ -11,7 +11,6 @@ import Network.Response.Response;
 
 import java.sql.Date;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ServerModelManager {
@@ -20,6 +19,7 @@ public class ServerModelManager {
     private List<Employee> employees;
     private DAO dao;
     private RequestHandlerStrategy requestHandler;
+    private ConnectionPool connectionPool;
 
     private ServerModelManager() {
         try {
@@ -39,6 +39,14 @@ public class ServerModelManager {
             instance = new ServerModelManager();
         }
         return instance;
+    }
+
+    public ConnectionPool getConnectionPool() {
+        return connectionPool;
+    }
+
+    public void setConnectionPool(ConnectionPool connectionPool) {
+        this.connectionPool = connectionPool;
     }
 
     public List<Project> getProjects() {
@@ -139,9 +147,9 @@ public class ServerModelManager {
         return false;
     }
 
-    public List<Project> getProjects(int employee_id)
+    public List<Project> getProjectsForEmployee(int employee_id)
     {
-        List<Project> relevantProjects = new ArrayList<Project>();
+        List<Project> relevantProjects = new ProjectList();
         for (Project project : projects) {
             if(project.getEmployees().get(employee_id) != null)
             {

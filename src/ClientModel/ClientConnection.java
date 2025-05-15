@@ -1,11 +1,13 @@
 package ClientModel;
 
 import ClientModel.Requests.LoginRequest;
+import ClientModel.Requests.ProjectRequest;
 import ClientModel.Requests.Request;
 import Network.Response.EmployeeResponse;
 import Network.Response.LoginResponse;
 import Network.Response.ProjectResponse;
 import Network.Response.Response;
+import Model.Project;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -35,10 +37,9 @@ public class ClientConnection implements Runnable{
   {
       try {
         Request request = new LoginRequest("login", null, "damianczina", "2137");
-        outToServer.writeObject(request);
+        sendRequest(request);
         while (true) {
           Response response = (Response) inFromServer.readObject();
-
           clientModelManager.handleServerResponse(response);
           if (response instanceof LoginResponse) {
             System.out.println("Role from LoginResponse: " + ((LoginResponse) response).getEmployee().getRole().getRole_name());
@@ -57,7 +58,6 @@ public class ClientConnection implements Runnable{
     try {
       outToServer.writeObject(request);
       outToServer.flush();
-      System.out.println("works");
     } catch (IOException e) {
       e.printStackTrace();
     }

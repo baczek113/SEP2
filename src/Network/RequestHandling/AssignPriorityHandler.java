@@ -10,6 +10,7 @@ public class AssignPriorityHandler implements RequestHandlerStrategy{
         AssignPriorityRequest assignPriorityRequest = (AssignPriorityRequest) request;
         if(modelManager.assignPriority(assignPriorityRequest.getTask(), assignPriorityRequest.getPriority())){
             // broadcast
+            modelManager.getConnectionPool().broadcastProject(modelManager.getProjects().get(assignPriorityRequest.getTask().getProject_id()));
         }
     }
 }
