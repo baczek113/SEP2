@@ -37,6 +37,7 @@ public class ClientModelManager {
         switch (message)
         {
             case "login":
+                System.out.println("Login response received");
                 LoginResponse loginResponse = (LoginResponse) response;
                 if (loginResponse.getEmployee() == null)
                 {
@@ -49,6 +50,7 @@ public class ClientModelManager {
                 }
                 break;
             case "project":
+                System.out.println("Project response received");
                 ProjectResponse projectResponse = (ProjectResponse) response;
                 for(Project project : projectResponse.getProjects())
                 {
@@ -64,6 +66,7 @@ public class ClientModelManager {
                 propertyChangeSupport.firePropertyChange("projects", null, projects);
                 break;
             case "employee":
+                System.out.println("Employee response received");
                 EmployeeResponse employeeResponse = (EmployeeResponse) response;
                 employees = employeeResponse.getEmployees();
                 propertyChangeSupport.firePropertyChange("employees", null, employees);
