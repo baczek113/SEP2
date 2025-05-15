@@ -17,17 +17,17 @@ public class ClientModelManager {
     private List<Project> projects;
     private Employee loggedEmployee;
     private ClientConnection client;
+    private String host;
+    private int port;
 
-    public ClientModelManager()
+    public ClientModelManager(String host, int port)
     {
         propertyChangeSupport = new PropertyChangeSupport(this);
         employees = new EmployeeList();
         projects = new ProjectList();
         loggedEmployee = null;
-    }
-
-    public void setConnection(ClientConnection clientConnection){
-        this.client = clientConnection;
+        this.host = host;
+        this.port = port;
     }
 
     public void handleServerResponse(Response response)
@@ -76,7 +76,8 @@ public class ClientModelManager {
 
     public void login(String username, String password){
         LoginRequest loginRequest = new LoginRequest("login", null, username, password);
-        client.sendRequest(loginRequest);
+        client = new ClientConnection(host, port, this, loginRequest);
+        (new Thread(client)).start();
     }
 
     public void createEmployee(String username, String password, int role_id){

@@ -6,13 +6,8 @@ public class Test
 {
   public static void main(String[] args) throws SQLException {
 
-    ClientModelManager manager = new ClientModelManager();
-
-    ClientConnection client = new ClientConnection("localhost", 2137, manager);
-
-    manager.setConnection(client);
-
-    new Thread(client).start();
+    ClientModelManager manager = new ClientModelManager("localhost", 2137);
+    manager.login("damianczina", "2137");
   }
 
 }
