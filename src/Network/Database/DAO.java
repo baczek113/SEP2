@@ -202,26 +202,29 @@ public class DAO {
 
     public Task addTask(Sprint sprint, Project project, String title, String description, int priority) {
         try(Connection connection = getConnection()) {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO task(sprint_id, project_id, title, description, status, priority) VALUES (?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO task(sprint_id, project_id, title, description, status, priority) VALUES (?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
             if(sprint != null) {
                 statement.setInt(1, sprint.getSprint_id());
             }
             else
             {
-                statement.setInt(1, 0);
+                statement.setInt(1, java.sql.Types.INTEGER);
             }
             statement.setInt(2, project.getProject_id());
-            statement.setInt(3, sprint.getProject_id());
-            statement.setString(4, title);
-            statement.setString(5, description);
-            statement.setString(6, "to-do");
-            statement.setInt(7, priority);
+            statement.setString(3, title);
+            statement.setString(4, description);
+            statement.setString(5, "to-do");
+            statement.setInt(6, priority);
             statement.executeUpdate();
             ResultSet keys = statement.getGeneratedKeys();
 
             if(keys.next())
             {
-                return new Task(keys.getInt(1), sprint.getSprint_id(), project.getProject_id(), title, description, "to-do", priority);
+                int sprintIdForModel = 0; // Or whatever your Task model uses for "no sprint"
+                if (sprint != null) {
+                    sprintIdForModel = sprint.getSprint_id();
+                }
+                return new Task(keys.getInt(1), sprintIdForModel, project.getProject_id(), title, description, "to-do", priority);
             }
             else
             {
@@ -283,7 +286,7 @@ public class DAO {
 
     public Sprint addSprint(Project project, String name, Date start_date, Date end_date){
         try(Connection connection = getConnection()) {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO sprint(project_id, name, start_date, end_date) VALUES (?, ?, ?, ?)");
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO sprint(project_id, name, start_date, end_date) VALUES (?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
             statement.setInt(1, project.getProject_id());
             statement.setString(2, name);
             statement.setDate(3, start_date);
