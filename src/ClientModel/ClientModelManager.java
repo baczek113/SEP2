@@ -45,6 +45,7 @@ public class ClientModelManager {
                 else
                 {
                     propertyChangeSupport.firePropertyChange("loginSuccessful", null, loginResponse.getEmployee());
+                    loggedEmployee = loginResponse.getEmployee();
                 }
                 break;
             case "project":
@@ -59,52 +60,63 @@ public class ClientModelManager {
         }
     }
 
-//    public void addSprint(Project project, String name, Date startDate, Date endDate)
-//    {
-//        Request request = new AddSprintRequest("addSprint", loggedEmployee, project, name, startDate, endDate);
-//        client.sendRequest(request);
-//    }
-//
-//    public void addTask(Sprint sprint, String name, String description, int priority)
-//    {
-//        Request request = new AddTaskRequest("addTask", loggedEmployee, sprint, name, description, priority);
-//        client.sendRequest(request);
-//    }
-//
-//    public void reloadTasks(Sprint sprint)
-//    {
-//        Request request = new SprintRequest("getTasks", loggedEmployee, sprint);
-//        client.sendRequest(request);
-//        //Send request and update ArrayList<> :PPP
-//    }
-//
-//    public void reloadProjects()
-//    {
-//        Request request = new Request("getProjects", loggedEmployee);
-//        client.sendRequest(request);
-//        //Send request and update ArrayList<> :PPP
-//    }
-//
-//    public void reloadSprints(Project project)
-//    {
-//        Request request = new ProjectRequest("getSprints", loggedEmployee, project);
-//        client.sendRequest(request);
-//        //Send request and update ArrayList<> :PPP
-//    }
-//
-//    public void login(String username, String password){
-//        Request request = new LoginRequest("login", loggedEmployee, username, password);
-//        client.sendRequest(request);
-//    }
-//
-//    public void assignTask(Employee employee, Task task){
-//        Request request = new AssignTaskRequest("assignTask", employee, task);
-//        client.sendRequest(request);
-//    }
-//
-//    public void assignProject(Employee employee, Project project, Employee employeeToAssign){
-//        Request request = new AssignProject("assignProject", employee, project, employeeToAssign);
-//        client.sendRequest(request);
-//    }
-//    // Add create user method
+    public void login(String username, String password){
+        LoginRequest loginRequest = new LoginRequest("login", null, username, password);
+        client.sendRequest(loginRequest);
+    }
+
+    public void createEmployee(String username, String password, int role_id){
+        CreateEmployeeRequest createEmployee = new CreateEmployeeRequest(loggedEmployee, username, password, role_id);
+        client.sendRequest(createEmployee);
+    }
+
+    public void addProject(Employee scrum_master, String name, String desc, Date start_date, Date end_date, List<Employee> assignees){
+        AddProjectRequest addProject = new AddProjectRequest(loggedEmployee, scrum_master, name, desc, start_date, end_date, assignees);
+        client.sendRequest(addProject);
+    }
+
+    public void addSprint(Project project, String name, Date startDate, Date endDate){
+        AddSprintRequest addSprint = new AddSprintRequest(loggedEmployee, project, name, startDate, endDate);
+        client.sendRequest(addSprint);
+    }
+    public void addTask(Project project, Sprint sprint, String name, String desc, int priority){
+        AddTaskRequest addTask = new AddTaskRequest(loggedEmployee, project, sprint, name, desc, priority);
+        client.sendRequest(addTask);
+    }
+    public void assignPriority(Task task, int priority){
+        AssignPriorityRequest assignPriority = new AssignPriorityRequest(loggedEmployee, task, priority);
+        client.sendRequest(assignPriority);
+    }
+    public void assignTask(String action, Task task){
+        AssignTaskRequest assignTask = new AssignTaskRequest(action, loggedEmployee, task);
+        client.sendRequest(assignTask);
+    }
+    public void ChangeTaskStatus(Task task, String status){
+        ChangeTaskStatusRequest changeStatus = new ChangeTaskStatusRequest(loggedEmployee, task, status);
+        client.sendRequest(changeStatus);
+    }
+    public void editSprint(Sprint sprint){
+        EditSprintRequest editSprint = new EditSprintRequest(loggedEmployee, sprint);
+        client.sendRequest(editSprint);
+    }
+    public void editTask(Task task){
+        EditTaskRequest editTask = new EditTaskRequest(loggedEmployee, task);
+        client.sendRequest(editTask);
+    }
+    public void sendEmployee(String action, Employee employeeToSend){
+        EmployeeRequest sendEmployee = new EmployeeRequest(action, loggedEmployee, employeeToSend);
+        client.sendRequest(sendEmployee);
+    }
+    public void addEmployeeToProject(String action, Project project, Employee employeeToAdd){
+        ProjectEmployeeRequest employeeToProject = new ProjectEmployeeRequest(action, loggedEmployee, project, employeeToAdd);
+        client.sendRequest(employeeToProject);
+    }
+    public void sendProject(String action, Project project){
+        ProjectRequest sendProject = new ProjectRequest(action, loggedEmployee, project);
+        client.sendRequest(sendProject);
+    }
+    public void addTaskToSprint(String action, Sprint sprint, Task task){
+        TaskSprintRequest addTaskToSprint = new TaskSprintRequest(action, loggedEmployee, task, sprint);
+        client.sendRequest(addTaskToSprint);
+    }
 }
