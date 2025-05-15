@@ -1,17 +1,21 @@
 package Network;
 
-import ClientModel.ServerInteractions.Request;
+import ClientModel.Requests.Request;
+import Model.Employee;
 import Network.Response.EmployeeResponse;
 import Network.Response.LoginResponse;
 import Network.Response.ProjectResponse;
+import Network.Response.Response;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.io.IOException;
+import java.sql.SQLException;
 
 public  class ServerConnection implements Runnable{
     private Socket socket;
+    private Employee employee;
     private ServerModelManager modelManager;
     private ObjectInputStream inFromClient;
     private ObjectOutputStream outToClient;
@@ -26,45 +30,51 @@ public  class ServerConnection implements Runnable{
 
     @Override public void run()
     {
-      try
-      {
-        Request loginRequest = (Request) inFromClient.readObject();
-        LoginResponse loginResponse = (LoginResponse) modelManager.processRequest(loginRequest);
-        int userType = loginResponse.getEmployee().getRole().getRole_id();
-
-        if (userType == 1){
-            EmployeeResponse initialResponse = new EmployeeResponse("employee", modelManager.getEmployees());
-            while (true){
-                Request request = (Request) inFromClient.readObject();
-                EmployeeResponse response = (EmployeeResponse) modelManager.processRequest(request);
-                sendEmployeeResponse(response);
-            }
-
-        }else if (userType == 2 || userType == 3 || userType == 4){
-            ProjectResponse initialResponse = new ProjectResponse("project", modelManager.getProjects());
-            while (true){
-                Request request = (Request) inFromClient.readObject();
-                ProjectResponse response = (ProjectResponse) modelManager.processRequest(request);
-                sendProjectResponse(response);
-            }
-        }else {
+        try
+        {
+            Request loginRequest = (Request) inFromClient.readObject();
+            LoginResponse loginResponse = (LoginResponse) modelManager.processLogin(loginRequest);
+            this.employee = loginResponse.getEmployee();
+            int userType = loginResponse.getEmployee().getRole().getRole_id();
             outToClient.reset();
-            outToClient.writeObject(loginResponse.getEmployee());
+            outToClient.writeObject(loginResponse);
+
+            if (userType == 1){
+                EmployeeResponse initialResponse = new EmployeeResponse(modelManager.getEmployees());
+                sendResponse(initialResponse);
+                while (true){
+                    Request request = (Request) inFromClient.readObject();
+                    modelManager.processRequest(request);
+                }
+            }else if (userType == 3 || userType == 4){
+                ProjectResponse initialResponse = new ProjectResponse(modelManager.getProjectsForEmployee(loginResponse.getEmployee().getEmployee_id()));
+                sendResponse(initialResponse);
+                while (true){
+                    Request request = (Request) inFromClient.readObject();
+                    modelManager.processRequest(request);
+                }
+            }else if (userType == 2){
+                ProjectResponse initialResponse = new ProjectResponse(modelManager.getProjectsForEmployee(loginResponse.getEmployee().getEmployee_id()));
+                sendResponse(initialResponse);
+                EmployeeResponse initialResponse2 = new EmployeeResponse(modelManager.getEmployees());
+                sendResponse(initialResponse2);
+                while (true){
+                    Request request = (Request) inFromClient.readObject();
+                    modelManager.processRequest(request);
+                }
+            }
         }
-      }
-      catch (IOException | ClassNotFoundException e)
-      {
-        throw new RuntimeException(e);
-      }
+        catch (IOException | ClassNotFoundException e)
+        {
+            modelManager.getConnectionPool().removeConnection(this);
+        }
     }
 
-    private void sendEmployeeResponse(EmployeeResponse response) throws IOException
-    {
-        outToClient.reset();
-        outToClient.writeObject(response);
-        outToClient.flush();
+    public Employee getEmployee() {
+        return employee;
     }
-    private void sendProjectResponse(ProjectResponse response) throws IOException
+
+    public void sendResponse(Response response) throws IOException
     {
         outToClient.reset();
         outToClient.writeObject(response);

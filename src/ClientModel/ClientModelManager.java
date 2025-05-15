@@ -1,7 +1,10 @@
 package ClientModel;
 
-import ClientModel.ServerInteractions.*;
+import ClientModel.Requests.*;
 import Model.*;
+import Network.Response.EmployeeResponse;
+import Network.Response.LoginResponse;
+import Network.Response.ProjectResponse;
 import Network.Response.Response;
 
 import java.beans.PropertyChangeSupport;
@@ -13,6 +16,7 @@ public class ClientModelManager {
     private List<Employee> employees;
     private List<Project> projects;
     private Employee loggedEmployee;
+    private ClientConnection client;
 
     public ClientModelManager()
     {
@@ -22,48 +26,111 @@ public class ClientModelManager {
         loggedEmployee = null;
     }
 
+    public void setConnection(ClientConnection clientConnection){
+        this.client = clientConnection;
+    }
+
     public void handleServerResponse(Response response)
     {
         String message = response.getMessage();
 
         switch (message)
         {
-
+            case "login":
+                System.out.println("Login response received");
+                LoginResponse loginResponse = (LoginResponse) response;
+                if (loginResponse.getEmployee() == null)
+                {
+                    propertyChangeSupport.firePropertyChange("login", null, null);
+                }
+                else
+                {
+                    loggedEmployee = loginResponse.getEmployee();
+                    propertyChangeSupport.firePropertyChange("login", null, loggedEmployee);
+                }
+                break;
+            case "project":
+                System.out.println("Project response received");
+                ProjectResponse projectResponse = (ProjectResponse) response;
+                for(Project project : projectResponse.getProjects())
+                {
+                    if(projects.get(project.getProject_id()) == null)
+                    {
+                        projects.add(project);
+                    }
+                    else
+                    {
+                        projects.set(project.getProject_id(), project);
+                    }
+                }
+                propertyChangeSupport.firePropertyChange("projects", null, projects);
+                break;
+            case "employee":
+                System.out.println("Employee response received");
+                EmployeeResponse employeeResponse = (EmployeeResponse) response;
+                employees = employeeResponse.getEmployees();
+                propertyChangeSupport.firePropertyChange("employees", null, employees);
+                break;
         }
     }
 
-    public void addSprint(Project project, String name, String description, Date startDate, Date endDate)
-    {
-        Request request = new AddSprintRequest("addSprint", loggedEmployee, project, name, description, startDate, endDate);
-
-        //Send request :PPP
+    public void login(String username, String password){
+        LoginRequest loginRequest = new LoginRequest("login", null, username, password);
+        client.sendRequest(loginRequest);
     }
 
-    public void addTask(Sprint sprint, String name, String description, int priority)
-    {
-        Request request = new AddTaskRequest("addTask", loggedEmployee, sprint, name, description, priority);
-
-        //Send request :PPP
+    public void createEmployee(String username, String password, int role_id){
+        CreateEmployeeRequest createEmployee = new CreateEmployeeRequest(loggedEmployee, username, password, role_id);
+        client.sendRequest(createEmployee);
     }
 
-    public void reloadTasks(Sprint sprint)
-    {
-        Request request = new SprintRequest("getTasks", loggedEmployee, sprint);
-
-        //Send request and update ArrayList<> :PPP
+    public void addProject(Employee scrum_master, String name, String desc, Date start_date, Date end_date, List<Employee> assignees){
+        AddProjectRequest addProject = new AddProjectRequest(loggedEmployee, scrum_master, name, desc, start_date, end_date, assignees);
+        client.sendRequest(addProject);
     }
 
-    public void reloadProjects()
-    {
-        Request request = new Request("getProjects", loggedEmployee);
-
-        //Send request and update ArrayList<> :PPP
+    public void addSprint(Project project, String name, Date startDate, Date endDate){
+        AddSprintRequest addSprint = new AddSprintRequest(loggedEmployee, project, name, startDate, endDate);
+        client.sendRequest(addSprint);
     }
-
-    public void reloadSprints(Project project)
-    {
-        Request request = new ProjectRequest("getSprints", loggedEmployee, project);
-
-        //Send request and update ArrayList<> :PPP
+    public void addTask(Project project, Sprint sprint, String name, String desc, int priority){
+        AddTaskRequest addTask = new AddTaskRequest(loggedEmployee, project, sprint, name, desc, priority);
+        client.sendRequest(addTask);
+    }
+    public void assignPriority(Task task, int priority){
+        AssignPriorityRequest assignPriority = new AssignPriorityRequest(loggedEmployee, task, priority);
+        client.sendRequest(assignPriority);
+    }
+    public void assignTask(String action, Task task){
+        AssignTaskRequest assignTask = new AssignTaskRequest(action, loggedEmployee, task);
+        client.sendRequest(assignTask);
+    }
+    public void ChangeTaskStatus(Task task, String status){
+        ChangeTaskStatusRequest changeStatus = new ChangeTaskStatusRequest(loggedEmployee, task, status);
+        client.sendRequest(changeStatus);
+    }
+    public void editSprint(Sprint sprint){
+        EditSprintRequest editSprint = new EditSprintRequest(loggedEmployee, sprint);
+        client.sendRequest(editSprint);
+    }
+    public void editTask(Task task){
+        EditTaskRequest editTask = new EditTaskRequest(loggedEmployee, task);
+        client.sendRequest(editTask);
+    }
+    public void sendEmployee(String action, Employee employeeToSend){
+        EmployeeRequest sendEmployee = new EmployeeRequest(action, loggedEmployee, employeeToSend);
+        client.sendRequest(sendEmployee);
+    }
+    public void addEmployeeToProject(String action, Project project, Employee employeeToAdd){
+        ProjectEmployeeRequest employeeToProject = new ProjectEmployeeRequest(action, loggedEmployee, project, employeeToAdd);
+        client.sendRequest(employeeToProject);
+    }
+    public void sendProject(String action, Project project){
+        ProjectRequest sendProject = new ProjectRequest(action, loggedEmployee, project);
+        client.sendRequest(sendProject);
+    }
+    public void addTaskToSprint(String action, Sprint sprint, Task task){
+        TaskSprintRequest addTaskToSprint = new TaskSprintRequest(action, loggedEmployee, task, sprint);
+        client.sendRequest(addTaskToSprint);
     }
 }

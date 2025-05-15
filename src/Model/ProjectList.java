@@ -78,7 +78,17 @@ public class ProjectList implements List<Project>, Serializable {
         return null;
     }
 
-    public Project set(int index, Project element) {
+    public Project set(int id, Project element) {
+        int index = 0;
+        for(Project project : projects)
+        {
+            if(project.getProject_id() == id)
+            {
+                projects.set(index, element);
+                return project;
+            }
+            index++;
+        }
         return null;
     }
 
