@@ -1,16 +1,17 @@
 package View;
 
+import ViewModel.ViewModelFactory;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class ViewHandler
 {
     private Stage stage;
-    private final ViewFactory viewFactory;
+    private final ViewModelFactory viewModelFactory;
 
-    public  ViewHandler (ViewFactory viewFactory)
+    public  ViewHandler (ViewModelFactory viewModelFactory)
     {
-        this.viewFactory=viewFactory;
+        this.viewModelFactory = viewModelFactory;
     }
 
     public void start (Stage stage)
@@ -21,7 +22,7 @@ public class ViewHandler
 
     public void openView (String viewName)
     {
-        Scene scene = viewFactory.load(viewName);
+        Scene scene = viewModelFactory.load(viewName);
         stage.setTitle(viewName);
         stage.setScene(scene);
         stage.show();

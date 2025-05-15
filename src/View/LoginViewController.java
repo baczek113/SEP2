@@ -5,7 +5,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.PasswordField;
 
-
 public class LoginViewController
 {
    @FXML private TextField name;
@@ -20,6 +19,8 @@ public class LoginViewController
     {
         this.viewHandler = viewHandler;
         this.viewModel = viewModel;
+
+        message.textProperty().bind(viewModel.messageProperty());
     }
 
    @FXML public void onLogin()
@@ -27,21 +28,7 @@ public class LoginViewController
         String username = name.getText();
         String password = name1.getText();
 
-        if (username.equals("admin")&&password.equals("admin"))
-        {
-            viewHandler.openView("ManageUsers");
-        } else if (username.equals("user")&&password.equals("user")) {
-            viewHandler.openView("ManageProjects");
-        }
-        else
-        {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Login Failed");
-            alert.setHeaderText(null);
-            alert.setContentText("Invalid username or password.");
-            alert.showAndWait();
-        }
-
+        viewModel.login(username, password);
     }
 
 

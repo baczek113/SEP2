@@ -30,6 +30,10 @@ public class ClientModelManager {
         this.port = port;
     }
 
+    public void setClientConnection(ClientConnection client) {
+        this.client = client;
+    }
+
     public synchronized void handleServerResponse(Response response)
     {
         String message = response.getMessage();

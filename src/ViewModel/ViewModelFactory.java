@@ -1,5 +1,8 @@
 package ViewModel;
 
+import ClientModel.ClientModelManager;
+import javafx.scene.Scene;
+
 public class ViewModelFactory {
     private LoginViewModel loginViewModel;
 
@@ -20,6 +23,10 @@ public class ViewModelFactory {
 
     private ManageUsersViewModel manageUsersViewModel;
     private ManageBacklogViewModel manageBacklogViewModel;
+
+    public ViewModelFactory(ClientModelManager model)
+    {
+    }
 
     public LoginViewModel getLoginViewModel() {
         if (loginViewModel == null) loginViewModel = new LoginViewModel();
@@ -95,4 +102,5 @@ public class ViewModelFactory {
         if (manageBacklogViewModel == null) manageBacklogViewModel = new ManageBacklogViewModel();
         return manageBacklogViewModel;
     }
+
 }
