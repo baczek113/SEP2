@@ -17,37 +17,33 @@ public class ClientModelManager {
     private List<Project> projects;
     private Employee loggedEmployee;
     private ClientConnection client;
+    private String host;
+    private int port;
 
-    public ClientModelManager()
+    public ClientModelManager(String host, int port)
     {
         propertyChangeSupport = new PropertyChangeSupport(this);
         employees = new EmployeeList();
         projects = new ProjectList();
         loggedEmployee = null;
+        this.host = host;
+        this.port = port;
     }
 
-    public void setConnection(ClientConnection clientConnection){
-        this.client = clientConnection;
-    }
-
-    public void handleServerResponse(Response response)
+    public synchronized void handleServerResponse(Response response)
     {
         String message = response.getMessage();
 
         switch (message)
         {
-            case "login":
-                System.out.println("Login response received");
-                LoginResponse loginResponse = (LoginResponse) response;
-                if (loginResponse.getEmployee() == null)
-                {
-                    propertyChangeSupport.firePropertyChange("login", null, null);
-                }
-                else
-                {
-                    loggedEmployee = loginResponse.getEmployee();
-                    propertyChangeSupport.firePropertyChange("login", null, loggedEmployee);
-                }
+            case "loginSuccess":
+                System.out.println("Login successful");
+                loggedEmployee = ((LoginResponse) response).getEmployee();
+                propertyChangeSupport.firePropertyChange("login", null, loggedEmployee);
+                break;
+            case "loginFailure":
+                System.out.println("Login failed");
+                client = null;
                 break;
             case "project":
                 System.out.println("Project response received");
@@ -74,9 +70,12 @@ public class ClientModelManager {
         }
     }
 
-    public void login(String username, String password){
-        LoginRequest loginRequest = new LoginRequest("login", null, username, password);
-        client.sendRequest(loginRequest);
+    public synchronized void login(String username, String password){
+        if(loggedEmployee == null) {
+            LoginRequest loginRequest = new LoginRequest("login", null, username, password);
+            client = new ClientConnection(host, port, this, loginRequest);
+            (new Thread(client)).start();
+        }
     }
 
     public void createEmployee(String username, String password, int role_id){

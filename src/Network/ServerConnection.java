@@ -34,8 +34,15 @@ public  class ServerConnection implements Runnable{
         {
             Request loginRequest = (Request) inFromClient.readObject();
             LoginResponse loginResponse = (LoginResponse) modelManager.processLogin(loginRequest);
-            this.employee = loginResponse.getEmployee();
-            int userType = loginResponse.getEmployee().getRole().getRole_id();
+            int userType = -1;
+            if(!loginResponse.getMessage().equals("loginFailure")) {
+                this.employee = loginResponse.getEmployee();
+                userType = loginResponse.getEmployee().getRole().getRole_id();
+            }
+            else
+            {
+                modelManager.getConnectionPool().removeConnection(this);
+            }
             outToClient.reset();
             outToClient.writeObject(loginResponse);
 

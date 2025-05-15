@@ -20,10 +20,9 @@ public class TestServer
 
       ServerConnection newConnection = new ServerConnection(clientSocket);
 
-      connectionPool.addConnection(newConnection);
-
       new Thread(newConnection).start();
 
+      connectionPool.addConnection(newConnection);
     }
 
   }

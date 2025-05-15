@@ -21,7 +21,7 @@ public class ConnectionPool {
         this.serverModelManager = modelManager;
     }
 
-    public void addConnection(ServerConnection connection)
+    public synchronized void addConnection(ServerConnection connection)
     {
         connections.add(connection);
     }
@@ -82,7 +82,7 @@ public class ConnectionPool {
         }
     }
 
-    public void removeConnection(ServerConnection connection)
+    public synchronized void removeConnection(ServerConnection connection)
     {
         connections.remove(connection);
     }
