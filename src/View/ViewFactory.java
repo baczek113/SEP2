@@ -20,7 +20,7 @@ public class ViewFactory
     public void setViewHandler(ViewHandler viewHandler) {
         this.viewHandler = viewHandler;
     }
-    public Scene load (String viewName)
+    public Scene load (String viewName, Object obj)
     {
      try{
          FXMLLoader loader = new FXMLLoader();
@@ -117,13 +117,13 @@ public class ViewFactory
 //                 ManageUsersViewController controller = loader.getController();
 //                 controller.init(viewHandler, viewModelFactory.getManageUsersViewModel());
 //             }
-//             case "Backlog" -> {
-//                 loader.setLocation(getClass().getResource("/View/ManageBacklog.fxml"));
-//                 root = loader.load();
-//                 ManageBacklogViewController controller = loader.getController();
-//                 controller.init(viewHandler, viewModelFactory.getManageBacklogViewModel());
-//
-//             }
+             case "Backlog" -> {
+                 loader.setLocation(getClass().getResource("/View/ManageBacklog.fxml"));
+                 root = loader.load();
+                 ManageBacklogViewController controller = loader.getController();
+                 controller.init(viewHandler, viewModelFactory.getManageBacklogViewModel(), obj);
+
+             }
          }
          if(root == null)
          {
