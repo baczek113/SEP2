@@ -109,7 +109,7 @@ public class ManageProjectsViewController
         Project selected = tableView.getSelectionModel().getSelectedItem();
         if (selected != null) {
             // TODO: Pass selected sprint to ViewModel or ViewState
-            viewHandler.openView("Backlog");
+            viewHandler.openView("Backlog", selected);
         } else {
             showAlert("Please select a project to view its backlog.");
         }
