@@ -7,6 +7,7 @@ import Network.Response.LoginResponse;
 import Network.Response.ProjectResponse;
 import Network.Response.Response;
 
+import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.sql.Date;
 import java.util.List;
@@ -30,6 +31,15 @@ public class ClientModelManager {
         this.port = port;
     }
 
+    public void addListener(PropertyChangeListener listener) {
+        propertyChangeSupport.addPropertyChangeListener(listener);
+    }
+
+    public void addListener(String name, PropertyChangeListener listener)
+    {
+        propertyChangeSupport.addPropertyChangeListener(name, listener);
+    }
+
     public synchronized void handleServerResponse(Response response)
     {
         String message = response.getMessage();
@@ -44,6 +54,7 @@ public class ClientModelManager {
             case "loginFailure":
                 System.out.println("Login failed");
                 client = null;
+                propertyChangeSupport.firePropertyChange("login", null, null);
                 break;
             case "project":
                 System.out.println("Project response received");
@@ -131,5 +142,8 @@ public class ClientModelManager {
     public void addTaskToSprint(String action, Sprint sprint, Task task){
         TaskSprintRequest addTaskToSprint = new TaskSprintRequest(action, loggedEmployee, task, sprint);
         client.sendRequest(addTaskToSprint);
+    }
+    public Employee getLoggedEmployee(){
+        return loggedEmployee;
     }
 }

@@ -1,9 +1,12 @@
 package View;
 
+import Model.Employee;
 import ViewModel.LoginViewModel;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.PasswordField;
+
+import java.beans.PropertyChangeEvent;
 
 
 public class LoginViewController
@@ -20,6 +23,7 @@ public class LoginViewController
     {
         this.viewHandler = viewHandler;
         this.viewModel = viewModel;
+        viewModel.addListener("login", this::handleLoginResponse);
     }
 
    @FXML public void onLogin()
@@ -27,13 +31,12 @@ public class LoginViewController
         String username = name.getText();
         String password = name1.getText();
 
-        if (username.equals("admin")&&password.equals("admin"))
-        {
-            viewHandler.openView("ManageUsers");
-        } else if (username.equals("user")&&password.equals("user")) {
-            viewHandler.openView("ManageProjects");
-        }
-        else
+        viewModel.login(username, password);
+    }
+
+    public void handleLoginResponse(PropertyChangeEvent event)
+    {
+        if(event.getNewValue() == null)
         {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Login Failed");
@@ -41,7 +44,10 @@ public class LoginViewController
             alert.setContentText("Invalid username or password.");
             alert.showAndWait();
         }
-
+        else
+        {
+            System.out.println(((Employee) event.getNewValue()).getRole().getRole_name());
+        }
     }
 
 

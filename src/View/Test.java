@@ -1,5 +1,6 @@
 package View;
 
+import ClientModel.ClientModelManager;
 import View.ViewFactory;
 import View.ViewHandler;
 import ViewModel.ViewModelFactory;
@@ -9,7 +10,8 @@ import javafx.stage.Stage;
 public class Test extends Application {
     @Override
     public void start(Stage stage) {
-        ViewModelFactory viewModelFactory = new ViewModelFactory();
+        ClientModelManager manager = new ClientModelManager("localhost", 2137);
+        ViewModelFactory viewModelFactory = new ViewModelFactory(manager);
         ViewFactory viewFactory = new ViewFactory(viewModelFactory);
         ViewHandler viewHandler = new ViewHandler(viewFactory);
         viewFactory.setViewHandler(viewHandler);

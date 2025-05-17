@@ -1,5 +1,8 @@
 package ViewModel;
 
+import ClientModel.ClientModelManager;
+import Network.ServerModelManager;
+
 public class ViewModelFactory {
     private LoginViewModel loginViewModel;
 
@@ -21,8 +24,14 @@ public class ViewModelFactory {
     private ManageUsersViewModel manageUsersViewModel;
     private ManageBacklogViewModel manageBacklogViewModel;
 
+    private final ClientModelManager clientModelManager;
+
+    public ViewModelFactory(ClientModelManager clientModelManager) {
+        this.clientModelManager = clientModelManager;
+    }
+
     public LoginViewModel getLoginViewModel() {
-        if (loginViewModel == null) loginViewModel = new LoginViewModel();
+        if (loginViewModel == null) loginViewModel = new LoginViewModel(clientModelManager);
         return loginViewModel;
     }
 
