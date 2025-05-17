@@ -618,7 +618,7 @@ public class ServerModelManager {
             dao.editTask(task);
             for(Task taskReflection : projects.get(task.getProject_id()).getBacklog()) {
                 if(taskReflection.getTask_id() == task.getTask_id()) {
-                    taskReflection.setTitle(task.getTitle());
+                    taskReflection.setTitle(task.getName());
                     taskReflection.setDescription(task.getDescription());
                     return true;
                 }

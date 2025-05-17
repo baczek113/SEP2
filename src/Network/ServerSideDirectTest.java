@@ -199,26 +199,26 @@ public class ServerSideDirectTest {
             serverModelManager.processRequest(addTaskReq);
 
             createdTaskByPO = createdProjectByPO.getBacklog().stream()
-                    .filter(t -> taskTitle.equals(t.getTitle())).findFirst().orElse(null);
+                    .filter(t -> taskTitle.equals(t.getName())).findFirst().orElse(null);
             Project projectAfterTaskAdd = serverModelManager.getProjects().stream().filter(p -> p.getProject_id() == createdProjectByPO.getProject_id()).findFirst().orElse(null);
             if(projectAfterTaskAdd != null) {
                 createdProjectByPO = projectAfterTaskAdd;
                 createdTaskByPO = createdProjectByPO.getBacklog().stream()
-                        .filter(t -> taskTitle.equals(t.getTitle())).findFirst().orElse(null);
+                        .filter(t -> taskTitle.equals(t.getName())).findFirst().orElse(null);
             }
 
             if (createdTaskByPO != null) {
-                System.out.println("PO: Successfully added task to backlog: " + createdTaskByPO.getTitle() + " (ID: " + createdTaskByPO.getTask_id() + ")");
+                System.out.println("PO: Successfully added task to backlog: " + createdTaskByPO.getName() + " (ID: " + createdTaskByPO.getTask_id() + ")");
             } else {
                 System.err.println("PO: Failed to add or find task '" + taskTitle + "' in backlog of " + createdProjectByPO.getName());
             }
         }
 
         if (createdTaskByPO != null) {
-            System.out.println("PO: Assigning priority 5 to task: " + createdTaskByPO.getTitle());
+            System.out.println("PO: Assigning priority 5 to task: " + createdTaskByPO.getName());
             AssignPriorityRequest priorityReq = new AssignPriorityRequest(productOwner, createdTaskByPO, 5);
             serverModelManager.processRequest(priorityReq);
-            if(createdTaskByPO.getPriority() == 5) System.out.println("PO: Priority for task " + createdTaskByPO.getTitle() + " updated to 5 (client-side model).");
+            if(createdTaskByPO.getPriority() == 5) System.out.println("PO: Priority for task " + createdTaskByPO.getName() + " updated to 5 (client-side model).");
         }
 
         Task taskToApprove = serverModelManager.getProjects().stream()
@@ -227,16 +227,16 @@ public class ServerSideDirectTest {
                 .findFirst().orElse(null);
 
         if (taskToApprove != null) {
-            System.out.println("PO: Attempting to approve task '" + taskToApprove.getTitle() + "' (ID: " + taskToApprove.getTask_id() + ")");
+            System.out.println("PO: Attempting to approve task '" + taskToApprove.getName() + "' (ID: " + taskToApprove.getTask_id() + ")");
             ChangeTaskStatusRequest approveReq = new ChangeTaskStatusRequest(productOwner, taskToApprove, "done-and-approved");
             serverModelManager.processRequest(approveReq);
             Task approvedTask = serverModelManager.getProjects().stream()
                     .flatMap(p -> p.getBacklog().stream())
                     .filter(t -> t.getTask_id() == taskToApprove.getTask_id()).findFirst().orElse(null);
             if(approvedTask != null && "done-and-approved".equals(approvedTask.getStatus())){
-                System.out.println("PO: Task " + approvedTask.getTitle() + " status is now 'done-and-approved'.");
+                System.out.println("PO: Task " + approvedTask.getName() + " status is now 'done-and-approved'.");
             } else {
-                System.err.println("PO: Failed to approve task " + taskToApprove.getTitle() + " or status not updated.");
+                System.err.println("PO: Failed to approve task " + taskToApprove.getName() + " or status not updated.");
             }
         } else {
             System.out.println("PO: No task found with ID 1 and status 'done' to approve, or task not found.");
@@ -308,7 +308,7 @@ public class ServerSideDirectTest {
                     .findFirst();
             if (backlogTask.isPresent()){
                 taskForSprint = backlogTask.get();
-                System.out.println("SM: Using task from backlog: " + taskForSprint.getTitle());
+                System.out.println("SM: Using task from backlog: " + taskForSprint.getName());
             } else {
                 taskForSprint = createdTaskByPO;
             }
@@ -317,7 +317,7 @@ public class ServerSideDirectTest {
         }
 
         if (createdSprintBySM != null && taskForSprint != null) {
-            System.out.println("SM: Assigning task '" + taskForSprint.getTitle() + "' to sprint '" + createdSprintBySM.getName() + "'.");
+            System.out.println("SM: Assigning task '" + taskForSprint.getName() + "' to sprint '" + createdSprintBySM.getName() + "'.");
             TaskSprintRequest assignTaskToSprintReq = new TaskSprintRequest("addTaskToSprint", scrumMaster, taskForSprint, createdSprintBySM);
             serverModelManager.processRequest(assignTaskToSprintReq);
             Project finalProjectForSMOps1 = projectForSMOps;
@@ -327,10 +327,10 @@ public class ServerSideDirectTest {
 
             Task finalTaskForSprint = taskForSprint;
             if(sprintAfterTaskAssign != null && sprintAfterTaskAssign.getTasks().stream().anyMatch(t -> t.getTask_id() == finalTaskForSprint.getTask_id())){
-                System.out.println("SM: Successfully assigned task " + taskForSprint.getTitle() + " to sprint " + sprintAfterTaskAssign.getName());
+                System.out.println("SM: Successfully assigned task " + taskForSprint.getName() + " to sprint " + sprintAfterTaskAssign.getName());
                 taskForSprint.setSprint_id(createdSprintBySM.getSprint_id());
             } else {
-                System.err.println("SM: Failed to assign task " + taskForSprint.getTitle() + " to sprint " + createdSprintBySM.getName());
+                System.err.println("SM: Failed to assign task " + taskForSprint.getName() + " to sprint " + createdSprintBySM.getName());
             }
 
         } else {
@@ -383,7 +383,7 @@ public class ServerSideDirectTest {
             devTask = createdTaskByPO;
             Task finalDevTask = devTask;
             devProject = serverModelManager.getProjects().stream().filter(p -> p.getProject_id() == finalDevTask.getProject_id()).findFirst().orElse(null);
-            System.out.println("Developer: Found task '" + devTask.getTitle() + "' from SM assignment.");
+            System.out.println("Developer: Found task '" + devTask.getName() + "' from SM assignment.");
         }
 
         if (devTask == null) {
@@ -401,40 +401,40 @@ public class ServerSideDirectTest {
             return;
         }
 
-        System.out.println("Developer (" + developer.getUsername() + "): Attempting to self-assign task '" + devTask.getTitle() + "' (ID: " + devTask.getTask_id() + ")");
+        System.out.println("Developer (" + developer.getUsername() + "): Attempting to self-assign task '" + devTask.getName() + "' (ID: " + devTask.getTask_id() + ")");
         AssignTaskRequest selfAssignReq = new AssignTaskRequest("assignTask", developer, devTask);
         serverModelManager.processRequest(selfAssignReq);
         Task taskAfterSelfAssign = findTaskInModel(devTask.getTask_id());
         if(taskAfterSelfAssign != null && taskAfterSelfAssign.getAssignedTo().stream().anyMatch(e -> e.getEmployee_id() == developer.getEmployee_id())){
-            System.out.println("Developer: Successfully self-assigned task '" + taskAfterSelfAssign.getTitle() + "'.");
+            System.out.println("Developer: Successfully self-assigned task '" + taskAfterSelfAssign.getName() + "'.");
             devTask = taskAfterSelfAssign;
         } else {
-            System.err.println("Developer: Failed to self-assign task '" + devTask.getTitle() + "'.");
+            System.err.println("Developer: Failed to self-assign task '" + devTask.getName() + "'.");
         }
 
         if (devTask != null && "to-do".equals(devTask.getStatus())) {
-            System.out.println("Developer: Setting task '" + devTask.getTitle() + "' to 'doing'.");
+            System.out.println("Developer: Setting task '" + devTask.getName() + "' to 'doing'.");
             ChangeTaskStatusRequest statusToDoingReq = new ChangeTaskStatusRequest(developer, devTask, "doing");
             serverModelManager.processRequest(statusToDoingReq);
             Task taskAfterDoing = findTaskInModel(devTask.getTask_id());
             if(taskAfterDoing != null && "doing".equals(taskAfterDoing.getStatus())){
-                System.out.println("Developer: Task '" + taskAfterDoing.getTitle() + "' status is now 'doing'.");
+                System.out.println("Developer: Task '" + taskAfterDoing.getName() + "' status is now 'doing'.");
                 devTask = taskAfterDoing;
             } else {
-                System.err.println("Developer: Failed to set task '" + devTask.getTitle() + "' to 'doing'.");
+                System.err.println("Developer: Failed to set task '" + devTask.getName() + "' to 'doing'.");
             }
         }
 
         if (devTask != null && "doing".equals(devTask.getStatus())) {
-            System.out.println("Developer: Setting task '" + devTask.getTitle() + "' to 'done'.");
+            System.out.println("Developer: Setting task '" + devTask.getName() + "' to 'done'.");
             ChangeTaskStatusRequest statusToDoneReq = new ChangeTaskStatusRequest(developer, devTask, "done");
             serverModelManager.processRequest(statusToDoneReq);
             Task taskAfterDone = findTaskInModel(devTask.getTask_id());
             if(taskAfterDone != null && "done".equals(taskAfterDone.getStatus())){
-                System.out.println("Developer: Task '" + taskAfterDone.getTitle() + "' status is now 'done'.");
+                System.out.println("Developer: Task '" + taskAfterDone.getName() + "' status is now 'done'.");
                 devTask = taskAfterDone;
             } else {
-                System.err.println("Developer: Failed to set task '" + devTask.getTitle() + "' to 'done'.");
+                System.err.println("Developer: Failed to set task '" + devTask.getName() + "' to 'done'.");
             }
         }
         System.out.println("Developer operations test calls finished.");
