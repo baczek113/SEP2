@@ -51,7 +51,7 @@ public class ViewModelFactory {
     }
 
     public ManageProjectsViewModel getManageProjectsViewModel() {
-        if (manageProjectsViewModel == null) manageProjectsViewModel = new ManageProjectsViewModel();
+        if (manageProjectsViewModel == null) manageProjectsViewModel = new ManageProjectsViewModel(clientModelManager);
         return manageProjectsViewModel;
     }
 

@@ -5,9 +5,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.SQLException;
 
-public class TestServer
+public class Server
 {
-  public static void main(String[] args) throws IOException, SQLException {
+  public static void main(String[] args) throws IOException {
     ServerSocket serverSocket = new ServerSocket(2137);
     System.out.println("Server started on port 2137");
     ServerModelManager manager = ServerModelManager.getInstance();

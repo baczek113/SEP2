@@ -1,5 +1,6 @@
 package View;
 
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -21,10 +22,12 @@ public class ViewHandler
 
     public void openView (String viewName)
     {
-        Scene scene = viewFactory.load(viewName);
-        stage.setTitle(viewName);
-        stage.setScene(scene);
-        stage.show();
+        Platform.runLater(() -> {
+            Scene scene = viewFactory.load(viewName);
+            stage.setTitle(viewName);
+            stage.setScene(scene);
+            stage.show();
+        });
     }
 
 

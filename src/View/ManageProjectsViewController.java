@@ -1,14 +1,16 @@
 package View;
 
+import Model.Project;
 import ViewModel.ManageProjectsViewModel;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.cell.PropertyValueFactory;
+
+import java.beans.PropertyChangeEvent;
 
 
 public class ManageProjectsViewController
@@ -26,9 +28,6 @@ public class ManageProjectsViewController
     @FXML private TableColumn<Project, String> startDate;
     @FXML private TableColumn<Project, String> endDate;
 
-    private final ObservableList<Project> dummyProjects = FXCollections.observableArrayList();
-
-
     private ViewHandler viewHandler;
     private ManageProjectsViewModel viewModel;
 
@@ -37,21 +36,14 @@ public class ManageProjectsViewController
     {
         this.viewHandler = viewHandler;
         this.viewModel = viewModel;
+        viewModel.addListener(this::updateProjectsHandler);
+        updateProjects();
 
         // Bind table columns to Project properties
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
         status.setCellValueFactory(new PropertyValueFactory<>("status"));
         startDate.setCellValueFactory(new PropertyValueFactory<>("startDate"));
         endDate.setCellValueFactory(new PropertyValueFactory<>("endDate"));
-
-// Set data source
-        tableView.setItems(dummyProjects); // TODO: Replace with viewModel.getProjects()
-
-// --- Dummy data ---
-        Project p1 = new Project("Redesign App", "Active", "2024-05-01", "2024-06-30");
-        Project p2 = new Project("Launch Website", "Planning", "2024-06-01", "2024-07-15");
-        dummyProjects.addAll(p1, p2);
-
 
         tableView.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2 && tableView.getSelectionModel().getSelectedItem() != null) {
@@ -106,7 +98,7 @@ public class ManageProjectsViewController
     private void remove() {
         Project selected = tableView.getSelectionModel().getSelectedItem();
         if (selected != null) {
-            dummyProjects.remove(selected);
+//            dummyProjects.remove(selected);
         } else {
             showAlert("Please select a project to remove.");
         }
@@ -129,7 +121,15 @@ public class ManageProjectsViewController
         viewHandler.openView("Login");
     }
 
+    private void updateProjects()
+    {
+        tableView.setItems(viewModel.getProjects());
+    }
 
+    private void updateProjectsHandler(PropertyChangeEvent event)
+    {
+        updateProjects();
+    }
 
 
 }

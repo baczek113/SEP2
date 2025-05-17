@@ -146,4 +146,9 @@ public class ClientModelManager {
     public Employee getLoggedEmployee(){
         return loggedEmployee;
     }
+
+    public List<Project> getProjects()
+    {
+        return projects;
+    }
 }
