@@ -25,9 +25,8 @@ public class ManageBacklogViewController {
     private ViewHandler viewHandler;
     private ManageBacklogViewModel viewModel;
     private Project project;
-    private final ObservableList<Task> observableList = FXCollections.observableArrayList();
 
-    private ObservableList<Task> tasks;
+    private final ObservableList<Task> dummyTasks = FXCollections.observableArrayList();
 
     public void init(ViewHandler viewHandler, ManageBacklogViewModel viewModel, Object obj) {
         this.viewHandler = viewHandler;
@@ -47,8 +46,14 @@ public class ManageBacklogViewController {
         startDate.setCellValueFactory(new PropertyValueFactory<>("priority"));
         endDate.setCellValueFactory(new PropertyValueFactory<>("status"));
 
-        observableList.addAll(project.getBacklog());
-        tableView.setItems(observableList);
+        // Load dummy data
+//        dummyTasks.addAll(
+//                new Task("Implement Login", "High", "5", "Done"),
+//                new Task("Fix Bug #42", "Medium", "3", "Done"),
+//                new Task("Write Unit Tests", "Low", "2","To Do")
+//        );
+
+        tableView.setItems(dummyTasks); // TODO: Replace with viewModel.getTasks()
 
         tableView.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2 && tableView.getSelectionModel().getSelectedItem() != null) {
@@ -78,7 +83,7 @@ public class ManageBacklogViewController {
     private void remove() {
         Task selected = tableView.getSelectionModel().getSelectedItem();
         if (selected != null) {
-//            dummyTasks.remove(selected);
+            dummyTasks.remove(selected); // TODO: Replace with viewModel.removeTask(selected)
         } else {
             showAlert("Please select a task to remove.");
         }

@@ -71,7 +71,7 @@ public class ViewModelFactory {
     }
 
     public ManageSprintsViewModel getManageSprintsViewModel() {
-        if (manageSprintsViewModel == null) manageSprintsViewModel = new ManageSprintsViewModel();
+        if (manageSprintsViewModel == null) manageSprintsViewModel = new ManageSprintsViewModel(clientModelManager);
         return manageSprintsViewModel;
     }
 

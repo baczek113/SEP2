@@ -48,7 +48,8 @@ public class ManageProjectsViewController
         tableView.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2 && tableView.getSelectionModel().getSelectedItem() != null) {
                 // TODO: Pass selected project to ViewState if needed
-                viewHandler.openView("ManageSprints");
+                Project selected = tableView.getSelectionModel().getSelectedItem();
+                viewHandler.openView("ManageSprints", selected);
             }
         });
 
@@ -108,7 +109,7 @@ public class ManageProjectsViewController
         Project selected = tableView.getSelectionModel().getSelectedItem();
         if (selected != null) {
             // TODO: Pass selected sprint to ViewModel or ViewState
-            viewHandler.openView("Backlog", selected);
+            viewHandler.openView("Backlog");
         } else {
             showAlert("Please select a project to view its backlog.");
         }

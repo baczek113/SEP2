@@ -40,7 +40,7 @@ public class Task implements Serializable {
         this.sprint_id = sprint_id;
     }
 
-    public String getName() {
+    public String getTitle() {
         return title;
     }
 
