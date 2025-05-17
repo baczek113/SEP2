@@ -33,4 +33,7 @@ public class LoginViewModel {
     {
         propertyChangeSupport.addPropertyChangeListener(name, listener);
     }
+    public Employee employeeGetLog(){
+        return model.getLoggedEmployee();
+    }
 }

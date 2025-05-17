@@ -33,10 +33,30 @@ public class LoginViewController
         String password = name1.getText();
 
         viewModel.login(username, password);
+
+
     }
 
     public void handleLoginResponse(PropertyChangeEvent event)
     {
+        if (viewModel.employeeGetLog() != null && viewModel.employeeGetLog().getRole().getRole_name().equals("admin"))
+        {
+            viewHandler.openView("ManageUser");
+        } else if (viewModel.employeeGetLog() != null && (viewModel.employeeGetLog().getRole().getRole_name().equals("product_owner")|| viewModel.employeeGetLog().getRole().getRole_name().equals("scrum_master")|| viewModel.employeeGetLog().getRole().getRole_name().equals("developer")))
+        {
+            viewHandler.openView("ManageProjects");
+        }
+        else
+        {
+            Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Login Failed");
+                alert.setHeaderText(null);
+                alert.setContentText("Role does not exist");
+                alert.showAndWait();
+            });
+        }
+
         if(event.getNewValue() == null)
         {
             Platform.runLater(() -> {
