@@ -1,4 +1,4 @@
-package ClientModel.ServerInteractions;
+package ClientModel.Requests;
 
 import Model.Employee;
 
@@ -9,7 +9,7 @@ public class LoginRequest extends Request
 
   public LoginRequest(String action, Employee employee, String username, String password)
   {
-    super("login", null);
+    super(action, null);
     this.username = username;
     this.password = password;
   }

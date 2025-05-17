@@ -97,9 +97,9 @@ public class Project implements Serializable {
         this.sprints.add(sprint);
     }
 
-    public void removeEmployee(Employee employee)
+    public boolean removeEmployee(Employee employee)
     {
-        this.employees.remove(employee);
+        return this.employees.remove(employee);
     }
 
     public void removeSprint(Sprint sprint)

@@ -1,9 +1,8 @@
 package Network.RequestHandling;
 
-import ClientModel.ServerInteractions.Request;
-import Network.Response.Response;
+import ClientModel.Requests.Request;
 import Network.ServerModelManager;
 
 public interface RequestHandlerStrategy {
-    public Response processRequest(Request request, ServerModelManager modelManager);
+    public void processRequest(Request request, ServerModelManager modelManager);
 }
