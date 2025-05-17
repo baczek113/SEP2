@@ -19,7 +19,9 @@ public class LoginViewModel {
 
     public void loginResponse(PropertyChangeEvent event)
     {
-        propertyChangeSupport.firePropertyChange("login", null, event.getNewValue());
+        if(event.getPropertyName().equals("login")) {
+            propertyChangeSupport.firePropertyChange("login", null, event.getNewValue());
+        }
     }
 
     public void login(String username, String password)

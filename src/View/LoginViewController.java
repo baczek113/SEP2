@@ -2,6 +2,7 @@ package View;
 
 import Model.Employee;
 import ViewModel.LoginViewModel;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.PasswordField;
@@ -38,11 +39,13 @@ public class LoginViewController
     {
         if(event.getNewValue() == null)
         {
+            Platform.runLater(() -> {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Login Failed");
             alert.setHeaderText(null);
             alert.setContentText("Invalid username or password.");
             alert.showAndWait();
+            });
         }
         else
         {
