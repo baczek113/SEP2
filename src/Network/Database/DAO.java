@@ -20,7 +20,7 @@ public class DAO {
     public Connection getConnection() throws SQLException
     {
         //Substitute for your own database login/password
-        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=sep_database", "postgres", "gigakoks1");
+        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=sep_database", "postgres", "zaq1@WSX");
     }
 
     public static DAO getInstance() throws SQLException
@@ -169,7 +169,7 @@ public class DAO {
         try(Connection connection = getConnection()) {
             PreparedStatement statement = connection.prepareStatement("UPDATE task SET description = ?, title = ? WHERE task_id = ?");
             statement.setString(1, task.getDescription());
-            statement.setString(2, task.getTitle());
+            statement.setString(2, task.getName());
             statement.setInt(3, task.getTask_id());
             statement.executeUpdate();
         }
@@ -243,7 +243,7 @@ public class DAO {
             statement.setInt(2, task.getTask_id());
             statement.executeUpdate();
         }catch (SQLException e){
-            System.out.println("failed to assign task " + task.getTitle().toUpperCase() + " to employee " + employee.getUsername().toUpperCase());
+            System.out.println("failed to assign task " + task.getName().toUpperCase() + " to employee " + employee.getUsername().toUpperCase());
             throw new RuntimeException(e);
         }
     }
@@ -255,7 +255,7 @@ public class DAO {
             statement.setInt(2, task.getTask_id());
             statement.executeUpdate();
         }catch (SQLException e){
-            System.out.println("failed to unassign task " + task.getTitle().toUpperCase() + " to employee " + employee.getUsername().toUpperCase());
+            System.out.println("failed to unassign task " + task.getName().toUpperCase() + " to employee " + employee.getUsername().toUpperCase());
             throw new RuntimeException(e);
         }
     }
@@ -267,7 +267,7 @@ public class DAO {
             statement.setInt(2, task.getTask_id());
             statement.executeUpdate();
         } catch (SQLException e) {
-            System.out.println("failed to assign priority to a task " + task.getTitle().toUpperCase());
+            System.out.println("failed to assign priority to a task " + task.getName().toUpperCase());
             throw new RuntimeException(e);
         }
     }
@@ -279,7 +279,7 @@ public class DAO {
             statement.setInt(2, task.getTask_id());
             statement.executeUpdate();
         }catch (SQLException e){
-            System.out.println("failed to change status of a task " + task.getTitle() );
+            System.out.println("failed to change status of a task " + task.getName() );
             throw new RuntimeException(e);
         }
     }

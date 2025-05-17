@@ -96,7 +96,7 @@ public class ViewModelFactory {
     }
 
     public ManageUsersViewModel getManageUsersViewModel() {
-        if (manageUsersViewModel == null) manageUsersViewModel = new ManageUsersViewModel();
+        if (manageUsersViewModel == null) manageUsersViewModel = new ManageUsersViewModel(clientModelManager);
         return manageUsersViewModel;
     }
 

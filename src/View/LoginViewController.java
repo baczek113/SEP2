@@ -41,7 +41,7 @@ public class LoginViewController
     {
         if (viewModel.employeeGetLog() != null && viewModel.employeeGetLog().getRole().getRole_name().equals("admin"))
         {
-            viewHandler.openView("ManageUser");
+            viewHandler.openView("ManageUsers");
         } else if (viewModel.employeeGetLog() != null && (viewModel.employeeGetLog().getRole().getRole_name().equals("product_owner")|| viewModel.employeeGetLog().getRole().getRole_name().equals("scrum_master")|| viewModel.employeeGetLog().getRole().getRole_name().equals("developer")))
         {
             viewHandler.openView("ManageProjects");
