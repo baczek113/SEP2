@@ -94,7 +94,7 @@ public class ViewFactory
                  loader.setLocation(getClass().getResource("/View/AddTaskView.fxml"));
                  root = loader.load();
                  AddTaskViewController controller = loader.getController();
-                 controller.init(viewHandler, viewModelFactory.getAddTaskViewModel());
+                 controller.init(viewHandler, viewModelFactory.getAddTaskViewModel(), obj);
              }
 
              case "EditTask" -> {

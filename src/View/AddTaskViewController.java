@@ -1,6 +1,7 @@
 package View;
 
 
+import Model.Project;
 import ViewModel.AddTaskViewModel; // Replace with your actual ViewModel when implemented
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -16,13 +17,14 @@ public class AddTaskViewController {
 
     private ViewHandler viewHandler;
     private AddTaskViewModel viewModel; // Replace with null or dummy if you don't use it yet
+    private Project project;
 
-    public void init(ViewHandler viewHandler, AddTaskViewModel viewModel) {
+    public void init(ViewHandler viewHandler, AddTaskViewModel viewModel, Object obj) {
         this.viewHandler = viewHandler;
         this.viewModel = viewModel;
+        this.project = (Project) obj;
 
-
-        priorityComboBox.setItems(FXCollections.observableArrayList("Low", "Medium", "High"));
+        priorityComboBox.setItems(FXCollections.observableArrayList("Very Low", "Low", "Medium", "High", "Very High"));
     }
 
     @FXML
@@ -35,12 +37,10 @@ public class AddTaskViewController {
             showAlert("Please fill in all fields.");
             return;
         }
-
-        // TODO: Send this to the ViewModel / model manager
-        System.out.println("Saving Task: " + title + ", " + description + ", " + priority);
+        viewModel.addTask(project, title, description, priorityStringToInt(priority));
 
         // Optionally reset or go back
-        viewHandler.openView("Backlog");
+        viewHandler.openView("Backlog", project);
     }
 
     @FXML
@@ -54,5 +54,20 @@ public class AddTaskViewController {
         alert.setHeaderText(null);
         alert.setContentText(msg);
         alert.showAndWait();
+    }
+
+    private int priorityStringToInt(String priority) {
+        switch (priority) {
+            case "Low":
+                return 2;
+            case "Medium":
+                return 3;
+            case "High":
+                return 4;
+            case "Very High":
+                return 5;
+            default:
+                return 1;
+        }
     }
 }

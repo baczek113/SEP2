@@ -6,12 +6,13 @@ import Model.Project;
 import Model.Sprint;
 import Network.ServerModelManager;
 
+import java.sql.SQLException;
+
 public class AddTaskRequestHandler implements RequestHandlerStrategy {
 
     @Override
-    public void processRequest(Request request, ServerModelManager modelManager) {
+    public void processRequest(Request request, ServerModelManager modelManager) throws SQLException {
         AddTaskRequest addTaskRequest = (AddTaskRequest) request;
-        Sprint sprint = addTaskRequest.getSprint();
         Project project = addTaskRequest.getProject();
 
         if (project == null) {
@@ -19,9 +20,9 @@ public class AddTaskRequestHandler implements RequestHandlerStrategy {
             return;
         }
 
-        if (modelManager.addTask(sprint, project, addTaskRequest.getName(), addTaskRequest.getDescription(), addTaskRequest.getPriority()))
+        if (modelManager.addTask(project, addTaskRequest.getName(), addTaskRequest.getDescription(), addTaskRequest.getPriority()))
         {
-          modelManager.getConnectionPool().broadcastProject(modelManager.getProjects().get(sprint.getProject_id()));
+          modelManager.getConnectionPool().broadcastProject(modelManager.getProjects().get(project.getProject_id()));
         }
     }
 }

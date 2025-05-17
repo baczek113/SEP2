@@ -76,7 +76,7 @@ public class ViewModelFactory {
     }
 
     public AddTaskViewModel getAddTaskViewModel() {
-        if (addTaskViewModel == null) addTaskViewModel = new AddTaskViewModel();
+        if (addTaskViewModel == null) addTaskViewModel = new AddTaskViewModel(clientModelManager);
         return addTaskViewModel;
     }
 
@@ -101,7 +101,7 @@ public class ViewModelFactory {
     }
 
     public ManageBacklogViewModel getManageBacklogViewModel() {
-        if (manageBacklogViewModel == null) manageBacklogViewModel = new ManageBacklogViewModel();
+        if (manageBacklogViewModel == null) manageBacklogViewModel = new ManageBacklogViewModel(clientModelManager);
         return manageBacklogViewModel;
     }
 }

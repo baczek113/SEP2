@@ -195,7 +195,7 @@ public class ServerSideDirectTest {
         if (createdProjectByPO != null) {
             String taskTitle = "POTask_" + System.currentTimeMillis();
             System.out.println("PO: Adding task '" + taskTitle + "' to backlog of project " + createdProjectByPO.getName());
-            AddTaskRequest addTaskReq = new AddTaskRequest(productOwner,createdProjectByPO, null, taskTitle, "Task added by PO directly to backlog.", 3);
+            AddTaskRequest addTaskReq = new AddTaskRequest(productOwner,createdProjectByPO, taskTitle, "Task added by PO directly to backlog.", 3);
             serverModelManager.processRequest(addTaskReq);
 
             createdTaskByPO = createdProjectByPO.getBacklog().stream()
@@ -218,7 +218,7 @@ public class ServerSideDirectTest {
             System.out.println("PO: Assigning priority 5 to task: " + createdTaskByPO.getName());
             AssignPriorityRequest priorityReq = new AssignPriorityRequest(productOwner, createdTaskByPO, 5);
             serverModelManager.processRequest(priorityReq);
-            if(createdTaskByPO.getPriority() == 5) System.out.println("PO: Priority for task " + createdTaskByPO.getName() + " updated to 5 (client-side model).");
+            if(createdTaskByPO.getPriorityInt() == 5) System.out.println("PO: Priority for task " + createdTaskByPO.getName() + " updated to 5 (client-side model).");
         }
 
         Task taskToApprove = serverModelManager.getProjects().stream()

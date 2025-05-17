@@ -9,6 +9,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import ViewModel.ManageBacklogViewModel;
 
+import java.beans.PropertyChangeEvent;
+
 public class ManageBacklogViewController {
 
     @FXML private Button addProject;
@@ -31,6 +33,14 @@ public class ManageBacklogViewController {
         this.viewHandler = viewHandler;
         this.viewModel = viewModel;
         this.project = (Project) obj;
+        viewModel.addListener(this::updateProject);
+
+        if(project.getCreated_by().getEmployee_id() != viewModel.getLoggedEmployee().getEmployee_id() || project.getStatus().equals("finished"))
+        {
+            addProject.setVisible(false);
+            editProject.setVisible(false);
+            removeProject.setVisible(false);
+        }
 
         // Bind columns
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -50,7 +60,7 @@ public class ManageBacklogViewController {
 
     @FXML
     private void add() {
-        viewHandler.openView("AddTask"); // Or ManageAddTask if that’s the name
+        viewHandler.openView("AddTask", project); // Or ManageAddTask if that’s the name
     }
 
     @FXML
@@ -89,4 +99,15 @@ public class ManageBacklogViewController {
         viewHandler.openView("ManageProjects");
     }
 
+    private void updateProject(PropertyChangeEvent propertyChangeEvent) {
+        for(Project iterableProject : viewModel.getProjects())
+        {
+            if(project.getProject_id() == iterableProject.getProject_id())
+            {
+                project = iterableProject;
+                observableList.clear();
+                observableList.addAll(project.getBacklog());
+            }
+        }
+    }
 }

@@ -103,8 +103,8 @@ public class ClientModelManager {
         AddSprintRequest addSprint = new AddSprintRequest(loggedEmployee, project, name, startDate, endDate);
         client.sendRequest(addSprint);
     }
-    public void addTask(Project project, Sprint sprint, String name, String desc, int priority){
-        AddTaskRequest addTask = new AddTaskRequest(loggedEmployee, project, sprint, name, desc, priority);
+    public void addTask(Project project, String name, String desc, int priority){
+        AddTaskRequest addTask = new AddTaskRequest(loggedEmployee, project, name, desc, priority);
         client.sendRequest(addTask);
     }
     public void assignPriority(Task task, int priority){
