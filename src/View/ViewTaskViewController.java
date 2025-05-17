@@ -31,7 +31,7 @@ public class ViewTaskViewController {
 
         // Setup table
         usernameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
-        assignedUsersTable.getItems().add(new User("developer1", "Scrum Master")); // TODO: Replace with viewModel.getAssignedUsers()
+        assignedUsersTable.getItems().add(new User("developer1", "Scrum Master", "Active")); // TODO: Replace with viewModel.getAssignedUsers()
     }
 
     @FXML
