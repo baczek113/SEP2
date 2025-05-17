@@ -48,7 +48,8 @@ public class ManageProjectsViewController
         tableView.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2 && tableView.getSelectionModel().getSelectedItem() != null) {
                 // TODO: Pass selected project to ViewState if needed
-                viewHandler.openView("ManageSprints");
+                Project selected = tableView.getSelectionModel().getSelectedItem();
+                viewHandler.openView("ManageSprints", selected);
             }
         });
 

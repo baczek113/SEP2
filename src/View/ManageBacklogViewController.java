@@ -37,11 +37,11 @@ public class ManageBacklogViewController {
         endDate.setCellValueFactory(new PropertyValueFactory<>("status"));
 
         // Load dummy data
-        dummyTasks.addAll(
-                new Task("Implement Login", "High", "5", "Done"),
-                new Task("Fix Bug #42", "Medium", "3", "Done"),
-                new Task("Write Unit Tests", "Low", "2","To Do")
-        );
+//        dummyTasks.addAll(
+//                new Task("Implement Login", "High", "5", "Done"),
+//                new Task("Fix Bug #42", "Medium", "3", "Done"),
+//                new Task("Write Unit Tests", "Low", "2","To Do")
+//        );
 
         tableView.setItems(dummyTasks); // TODO: Replace with viewModel.getTasks()
 
