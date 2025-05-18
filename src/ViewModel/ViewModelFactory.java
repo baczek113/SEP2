@@ -56,7 +56,7 @@ public class ViewModelFactory {
     }
 
     public AddSprintViewModel getAddSprintViewModel() {
-        if (addSprintViewModel == null) addSprintViewModel = new AddSprintViewModel();
+        if (addSprintViewModel == null) addSprintViewModel = new AddSprintViewModel(clientModelManager);
         return addSprintViewModel;
     }
 

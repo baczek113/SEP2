@@ -68,15 +68,14 @@ public class ManageSprintsViewController {
 
     @FXML
     private void add() {
-        viewHandler.openView("AddSprint"); // TODO: Pass selected project context if needed
+        viewHandler.openView("AddSprint", project); // TODO: Pass selected project context if needed
     }
 
     @FXML
     private void edit() {
         Sprint selected = tableView.getSelectionModel().getSelectedItem();
         if (selected != null) {
-            // TODO: store selected sprint in ViewModel or ViewState
-            viewHandler.openView("EditSprint");
+            viewHandler.openView("EditSprint", selected);
         } else {
             showAlert("Please select a sprint to edit.");
         }
