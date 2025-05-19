@@ -20,7 +20,7 @@ public class DAO {
     public Connection getConnection() throws SQLException
     {
         //Substitute for your own database login/password
-        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=sep_database", "postgres", "gigakoks1");
+        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=sep_database", "postgres", "dupa123");
     }
 
     public static DAO getInstance() throws SQLException
@@ -397,7 +397,7 @@ public class DAO {
     {
         try(Connection connection = getConnection())
         {
-            PreparedStatement statement = connection.prepareStatement("UPDATE task SET sprint_id = 0 WHERE task_id = ?");
+            PreparedStatement statement = connection.prepareStatement("UPDATE task SET sprint_id = NULL WHERE task_id = ?");
             statement.setInt(1, task.getTask_id());
             statement.executeUpdate();
         }

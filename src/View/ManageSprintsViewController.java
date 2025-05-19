@@ -38,7 +38,7 @@ public class ManageSprintsViewController {
         this.viewModel = viewModel;
         this.project = (Project) obj;
         this.viewModel.addListener(this::updateProjects);
-        if (viewModel.getLoggedEmployee().getEmployee_id() != 3){
+        if (viewModel.getLoggedEmployee().getRole().getRole_id() != 3){
             addSprint.setVisible(false);
             editSprint.setVisible(false);
             removeSprint.setVisible(false);
@@ -55,7 +55,7 @@ public class ManageSprintsViewController {
         tableView.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2 && tableView.getSelectionModel().getSelectedItem() != null) {
                 // TODO: Pass selected project to ViewState if needed
-                viewHandler.openView("ManageTasks");
+                viewHandler.openView("ManageTasks", project);
             }
         });
 
@@ -79,7 +79,7 @@ public class ManageSprintsViewController {
 
     @FXML
     private void add() {
-        viewHandler.openView("AddSprint", project); // TODO: Pass selected project context if needed
+        viewHandler.openView("AddSprint", project);
     }
 
     @FXML
@@ -96,7 +96,7 @@ public class ManageSprintsViewController {
     private void remove() {
         Sprint selected = tableView.getSelectionModel().getSelectedItem();
         if (selected != null) {
-            sprints.remove(selected); // TODO: viewModel.removeSprint(selected)
+            viewModel.remove(selected);
         } else {
             showAlert("Please select a sprint to remove.");
         }

@@ -23,6 +23,7 @@ public class ViewModelFactory {
 
     private ManageUsersViewModel manageUsersViewModel;
     private ManageBacklogViewModel manageBacklogViewModel;
+    private ManageTasksViewModel manageTasksViewModel;
 
     private final ClientModelManager clientModelManager;
 
@@ -90,10 +91,10 @@ public class ViewModelFactory {
         return viewTaskViewModel;
     }
 
-//    public ManageTasksViewModel getManageTasksViewModel() {
-//        if (manageTasksViewModel == null) manageTasksViewModel = new ManageTasksViewModel();
-//        return manageTasksViewModel;
-//    }
+    public ManageTasksViewModel getManageTasksViewModel() {
+        if (manageTasksViewModel == null) manageTasksViewModel = new ManageTasksViewModel(clientModelManager);
+        return manageTasksViewModel;
+    }
 
     public ManageUsersViewModel getManageUsersViewModel() {
         if (manageUsersViewModel == null) manageUsersViewModel = new ManageUsersViewModel(clientModelManager);

@@ -49,4 +49,7 @@ public class ManageSprintsViewModel
     }
     return null;
   }
+  public void remove(Sprint sprint){
+    model.removeSprint(sprint);
+  }
 }

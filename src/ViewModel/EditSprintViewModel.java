@@ -13,46 +13,31 @@ import java.util.List;
 
 public class EditSprintViewModel {
   private final ClientModelManager model;
-  private List<Project> projects;
   private PropertyChangeSupport propertyChangeSupport;
+  private Sprint sprint;
 
   public EditSprintViewModel(ClientModelManager model)
   {
     this.model = model;
-    projects = model.getProjects();
-    propertyChangeSupport = new PropertyChangeSupport(this);
-    model.addListener("projects", this::projectsUpdated);
   }
 
+  public void setSprint(Sprint sprint){
+    this.sprint = sprint;
+  }
   public void editSprint(Sprint sprint){
       model.editSprint(sprint);
   }
 
-  public void addTaskToSprint(String action, Sprint sprint, Task task){
-    model.addTaskToSprint(action, sprint, task);
-  }
-
-  public void removeTaskFromSprint(Task task, Sprint sprint){
-    model.removeTaskFromSprint(task, sprint);
-  }
-
-  public void addListener(PropertyChangeListener listener) {
-    propertyChangeSupport.addPropertyChangeListener(listener);
-  }
-
-  public void projectsUpdated(PropertyChangeEvent e) {
-    List<Project> updatedProjectsFromModel = (List<Project>) e.getNewValue();
-    this.projects = new ArrayList<>(updatedProjectsFromModel);
-    propertyChangeSupport.firePropertyChange("projects", null, null);
-  }
-  public Project getProject(int project_id) {
-    for(Project project : model.getProjects())
-    {
-      if(project.getProject_id() == project_id)
-      {
-        return project;
+  public void addTasks(List<Task> tasksAssigned, List<Task> tasksAvailable){
+    for (Task taskAssigned : tasksAssigned){
+      if (taskAssigned.getSprint_id() != sprint.getSprint_id()) {
+        model.addTaskToSprint("addTaskToSprint", sprint, taskAssigned);
       }
     }
-    return null;
+    for (Task availableTask : tasksAvailable){
+      if (availableTask.getSprint_id() == sprint.getSprint_id()) {
+        model.removeTaskFromSprint(availableTask, sprint);
+      }
+    }
   }
 }

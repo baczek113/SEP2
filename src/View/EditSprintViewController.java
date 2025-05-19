@@ -43,11 +43,14 @@ public class EditSprintViewController {
     private final ObservableList<Task> assignedTasks = FXCollections.observableArrayList();
 
     public void init(ViewHandler viewHandler, EditSprintViewModel viewModel, Object obj) {
+        availableTasks.clear();
+        assignedTasks.clear();
         Object[] receivedData = (Object[]) obj;
         this.viewHandler = viewHandler;
         this.viewModel = viewModel;
         this.sprint = (Sprint) receivedData[0];
         this.project = (Project) receivedData[1];
+        this.viewModel.setSprint(sprint);
 
         // Set up table columns
        assignedTaskColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -60,15 +63,16 @@ public class EditSprintViewController {
         endDatePicker.setValue(tempEndDate.toLocalDate());
 
 
-//        availableTasks.addAll(project.getBacklog());
-        assignedTasks.addAll(sprint.getTasks());
         for (Task task : project.getBacklog()){
-          if (task.getSprint_id() != 0 && task.getSprint_id() != sprint.getSprint_id())
+          if (task.getSprint_id() == 0)
           {
             availableTasks.add(task);
+              System.out.println(task.getName());
           }
         }
         availableTaskTable.setItems(availableTasks);
+
+        assignedTasks.addAll(sprint.getTasks());
         assignedTaskTable.setItems(assignedTasks);
 
         // Action listeners
@@ -78,24 +82,19 @@ public class EditSprintViewController {
         cancelButton.setOnAction(e -> viewHandler.openView("ManageSprints", this.project));
     }
 
-  private void updateProjects(PropertyChangeEvent propertyChangeEvent)
-  {
-    updateProjects();
-  }
-
   private void assignTask() {
         Task selected = availableTaskTable.getSelectionModel().getSelectedItem();
         if (selected != null) {
-            viewModel.addTaskToSprint("addTaskToSprint", sprint, selected);
-            this.viewModel.addListener(this::updateProjects);
+            availableTasks.remove(selected);
+            assignedTasks.add(selected);
         }
     }
 
     private void unassignTask() {
         Task selected = assignedTaskTable.getSelectionModel().getSelectedItem();
         if (selected != null) {
-            viewModel.removeTaskFromSprint(selected, sprint);
-            this.viewModel.addListener(this::updateProjects);
+            availableTasks.add(selected);
+            assignedTasks.remove(selected);
         }
     }
 
@@ -107,24 +106,7 @@ public class EditSprintViewController {
         Date.valueOf(localEndDate);
         Sprint tempSprint = new Sprint(sprint.getSprint_id(), sprint.getProject_id(), tempTitle, Date.valueOf(localStartDate), Date.valueOf(localEndDate));
         viewModel.editSprint(tempSprint);
+        viewModel.addTasks(assignedTasks, availableTasks);
         viewHandler.openView("ManageSprints", project);
-    }
-
-    private void updateProjects()
-    {
-      project = viewModel.getProject(project.getProject_id());
-      availableTasks.clear();
-      for(Task task : project.getBacklog())
-      {
-        if (task.getSprint_id() != 0
-            && task.getSprint_id() != sprint.getSprint_id())
-        {
-          availableTasks.add(task);
-        }
-      }
-      sprint = viewModel.getProject(project.getProject_id()).getSprints().get(sprint.getSprint_id());
-      assignedTasks.setAll(sprint.getTasks());
-      availableTaskTable.setItems(availableTasks);
-      assignedTaskTable.setItems(assignedTasks);
     }
 }
