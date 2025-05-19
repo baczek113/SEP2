@@ -53,14 +53,15 @@ public class ManageUsersViewController {
 
     }
     private int mapRoleToId(String role) {
-        return switch (role) {
-            case "Admin" -> 1;
-            case "Product Owner" -> 2;
-            case "Scrum Master" -> 3;
-            case "Developer" -> 4;
+        return switch (role.toLowerCase()) {
+            case "admin" -> 1;
+            case "product owner", "product_owner" -> 2;
+            case "scrum master", "scrum_master" -> 3;
+            case "developer" -> 4;
             default -> throw new IllegalArgumentException("Unknown role: " + role);
         };
     }
+
 
     @FXML
     private void add() {
