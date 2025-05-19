@@ -49,9 +49,9 @@
             <font>
                 <Font size="20.0" />
             </font></Label>
-        <TableView fx:id="availableUsersTable" layoutX="450.0" layoutY="95.0" prefHeight="180" prefWidth="300">
+        <TableView fx:id="availableTaskTable" layoutX="450.0" layoutY="95.0" prefHeight="180" prefWidth="300">
             <columns>
-                <TableColumn fx:id="availableUsernameColumn" prefWidth="290" text="Tasks" />
+                <TableColumn fx:id="availableTaskColumn" prefWidth="290" text="Tasks" />
             </columns>
         </TableView>
 
@@ -61,9 +61,9 @@
             <font>
                 <Font size="20.0" />
             </font></Label>
-        <TableView fx:id="assignedUsersTable" layoutX="450.0" layoutY="353.0" prefHeight="180" prefWidth="300">
+        <TableView fx:id="assignedTaskTable" layoutX="450.0" layoutY="353.0" prefHeight="180" prefWidth="300">
             <columns>
-                <TableColumn fx:id="assignedUsernameColumn" prefWidth="290" text="Tasks" />
+                <TableColumn fx:id="assignedTaskColumn" prefWidth="290" text="Tasks" />
             </columns>
         </TableView>
 
