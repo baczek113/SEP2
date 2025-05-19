@@ -200,31 +200,20 @@ public class DAO {
 
     }
 
-    public Task addTask(Sprint sprint, Project project, String title, String description, int priority) {
+    public Task addTask(Project project, String title, String description, int priority) throws SQLException {
         try(Connection connection = getConnection()) {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO task(sprint_id, project_id, title, description, status, priority) VALUES (?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
-            if(sprint != null) {
-                statement.setInt(1, sprint.getSprint_id());
-            }
-            else
-            {
-                statement.setInt(1, java.sql.Types.INTEGER);
-            }
-            statement.setInt(2, project.getProject_id());
-            statement.setString(3, title);
-            statement.setString(4, description);
-            statement.setString(5, "to-do");
-            statement.setInt(6, priority);
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO task(sprint_id, project_id, title, description, status, priority) VALUES (NULL,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+            statement.setInt(1, project.getProject_id());
+            statement.setString(2, title);
+            statement.setString(3, description);
+            statement.setString(4, "to-do");
+            statement.setInt(5, priority);
             statement.executeUpdate();
             ResultSet keys = statement.getGeneratedKeys();
 
             if(keys.next())
             {
-                int sprintIdForModel = 0; // Or whatever your Task model uses for "no sprint"
-                if (sprint != null) {
-                    sprintIdForModel = sprint.getSprint_id();
-                }
-                return new Task(keys.getInt(1), sprintIdForModel, project.getProject_id(), title, description, "to-do", priority);
+                return new Task(keys.getInt(1), -1, project.getProject_id(), title, description, "to-do", priority);
             }
             else
             {

@@ -64,7 +64,24 @@ public class Task implements Serializable {
         this.status = status;
     }
 
-    public int getPriority() {
+    public String getPriority() {
+        switch(priority)
+        {
+            case 2:
+                return "Low";
+            case 3:
+                return "Medium";
+            case 4:
+                return "High";
+            case 5:
+                return "Very High";
+            default:
+                return "Very Low";
+        }
+    }
+
+    public int getPriorityInt()
+    {
         return priority;
     }
 

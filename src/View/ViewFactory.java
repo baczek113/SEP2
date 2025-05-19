@@ -61,12 +61,12 @@ public class ViewFactory
                  controller.init(viewHandler, viewModelFactory.getViewProjectViewModel());
              }
 
-//             case "ManageSprints" -> {
-//                 loader.setLocation(getClass().getResource("/View/ManageSprintsView.fxml"));
-//                 root = loader.load();
-//                 ManageSprintsViewController controller = loader.getController();
-//                 controller.init(viewHandler, viewModelFactory.getManageSprintsViewModel());
-//             }
+             case "ManageSprints" -> {
+                 loader.setLocation(getClass().getResource("/View/ManageSprintsView.fxml"));
+                 root = loader.load();
+                 ManageSprintsViewController controller = loader.getController();
+                 controller.init(viewHandler, viewModelFactory.getManageSprintsViewModel(), obj);
+             }
 
 //             case "AddSprint" -> {
 //                 loader.setLocation(getClass().getResource("/View/AddSprintView.fxml"));
@@ -94,7 +94,7 @@ public class ViewFactory
                  loader.setLocation(getClass().getResource("/View/AddTaskView.fxml"));
                  root = loader.load();
                  AddTaskViewController controller = loader.getController();
-                 controller.init(viewHandler, viewModelFactory.getAddTaskViewModel());
+                 controller.init(viewHandler, viewModelFactory.getAddTaskViewModel(), obj);
              }
 
              case "EditTask" -> {

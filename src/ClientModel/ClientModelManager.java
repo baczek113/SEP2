@@ -6,6 +6,7 @@ import Network.Response.EmployeeResponse;
 import Network.Response.LoginResponse;
 import Network.Response.ProjectResponse;
 import Network.Response.Response;
+import View.EditProjectViewController;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -103,13 +104,25 @@ public class ClientModelManager {
         AddSprintRequest addSprint = new AddSprintRequest(loggedEmployee, project, name, startDate, endDate);
         client.sendRequest(addSprint);
     }
-    public void addTask(Project project, Sprint sprint, String name, String desc, int priority){
-        AddTaskRequest addTask = new AddTaskRequest(loggedEmployee, project, sprint, name, desc, priority);
+    public void addTask(Project project, String name, String desc, int priority){
+        AddTaskRequest addTask = new AddTaskRequest(loggedEmployee, project, name, desc, priority);
         client.sendRequest(addTask);
     }
     public void assignPriority(Task task, int priority){
         AssignPriorityRequest assignPriority = new AssignPriorityRequest(loggedEmployee, task, priority);
         client.sendRequest(assignPriority);
+    }
+    public void activateEmployee(Employee employee){
+        EmployeeRequest activateEmployee = new EmployeeRequest("activateEmployee", loggedEmployee, employee);
+        client.sendRequest(activateEmployee);
+    }
+    public void deactivateEmployee(Employee employee){
+        EmployeeRequest deactivateEmployee = new EmployeeRequest("deactivateEmployee", loggedEmployee, employee);
+        client.sendRequest(deactivateEmployee);
+    }
+    public void editEmployee(Employee employee){
+        EmployeeRequest editEmployee = new EmployeeRequest("updateEmployee", loggedEmployee, employee);
+        client.sendRequest(editEmployee);
     }
     public void assignTask(String action, Task task){
         AssignTaskRequest assignTask = new AssignTaskRequest(action, loggedEmployee, task);
