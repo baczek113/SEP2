@@ -297,6 +297,20 @@ public class DAO {
         }
     }
 
+    public void removeSprint(Sprint sprint)
+    {
+        try(Connection connection = getConnection())
+        {
+            removeTasksFromSprint(sprint);
+            PreparedStatement statement = connection.prepareStatement("DELETE FROM sprint WHERE sprint_id = ?");
+            statement.setInt(1, sprint.getSprint_id());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Failed to remove sprint");
+            throw new RuntimeException(e);
+        }
+    }
+
     public HashMap<Integer, String> getAllRoles()
     {
         try(Connection connection = getConnection()) {
@@ -385,6 +399,19 @@ public class DAO {
         {
             PreparedStatement statement = connection.prepareStatement("UPDATE task SET sprint_id = 0 WHERE task_id = ?");
             statement.setInt(1, task.getTask_id());
+            statement.executeUpdate();
+        }
+        catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void removeTasksFromSprint(Sprint sprint)
+    {
+        try(Connection connection = getConnection())
+        {
+            PreparedStatement statement = connection.prepareStatement("UPDATE task SET sprint_id = 0 WHERE sprint_id = ?");
+            statement.setInt(1, sprint.getSprint_id());
             statement.executeUpdate();
         }
         catch (SQLException e){

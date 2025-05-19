@@ -724,6 +724,35 @@ public class ServerModelManager {
         }
     }
 
+    public boolean removeSprint(Sprint sprint) {
+        synchronized(writerLock) {
+            waitingWriters++;
+        }
+
+        lock.writeLock().lock();
+        try {
+            dao.removeSprint(sprint);
+            for(Sprint sprintReflection : projects.get(sprint.getProject_id()).getSprints())
+            {
+                if(sprintReflection.getSprint_id() == sprint.getSprint_id()) {
+                    for(Task taskReflection : sprintReflection.getTasks()) {
+                        taskReflection.setSprint_id(0);
+                    }
+                    projects.get(sprint.getProject_id()).getSprints().remove(sprintReflection);
+                }
+            }
+            return false;
+        } catch (RuntimeException e) {
+            return false;
+        } finally {
+            lock.writeLock().unlock();
+            synchronized(writerLock) {
+                waitingWriters--;
+                writerLock.notifyAll();
+            }
+        }
+    }
+
     public void processRequest(Request request) throws SQLException {
         switch(request.getAction()){
             case "createEmployee":
@@ -788,6 +817,9 @@ public class ServerModelManager {
                 break;
             case "editProject":
                 requestHandler = new EditProjectHandler();
+                break;
+            case "removeSprint":
+                requestHandler = new RemoveSprintHandler();
                 break;
             default:
                 requestHandler = null;
