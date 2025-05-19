@@ -105,6 +105,7 @@ public class EditProjectViewController {
         {
             viewModel.endProject();
         }
+        viewModel.saveNameAndDesc(titleField.getText(), descriptionField.getText());
         viewHandler.openView("ManageProjects");
     }
 
@@ -135,6 +136,8 @@ public class EditProjectViewController {
             default:
                 startEndProjectButton.setVisible(false);
                 saveButton.setVisible(false);
+                addUserButton.setVisible(false);
+                removeUserButton.setVisible(false);
                 break;
         }
         statusText.setText(selectedProject.getStatus());

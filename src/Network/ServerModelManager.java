@@ -279,6 +279,39 @@ public class ServerModelManager {
         }
     }
 
+    public boolean editProject(Project project)
+    {
+        synchronized(writerLock) {
+            waitingWriters++;
+        }
+        lock.writeLock().lock();
+        try {
+            dao.editProject(project);
+            for(Project projectReflection : projects)
+            {
+                if(projectReflection.getProject_id() == project.getProject_id())
+                {
+                    projectReflection.setName(project.getName());
+                    projectReflection.setDescription(project.getDescription());
+                    return true;
+                }
+            }
+            return false;
+        }
+        catch (RuntimeException e)
+        {
+            return false;
+        }
+        finally
+        {
+            lock.writeLock().unlock();
+            synchronized(writerLock) {
+                waitingWriters--;
+                writerLock.notifyAll();
+            }
+        }
+    }
+
     public boolean endProject(Project project) {
         synchronized(writerLock) {
             waitingWriters++;
@@ -752,6 +785,9 @@ public class ServerModelManager {
                 break;
             case "editSprint":
                 requestHandler = new EditSprintHandler();
+                break;
+            case "editProject":
+                requestHandler = new EditProjectHandler();
                 break;
             default:
                 requestHandler = null;

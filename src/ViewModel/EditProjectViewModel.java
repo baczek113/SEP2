@@ -3,7 +3,6 @@ package ViewModel;
 import ClientModel.ClientModelManager;
 import Model.Employee;
 import Model.Project;
-import javafx.collections.ObservableList;
 
 import java.util.List;
 
@@ -53,6 +52,12 @@ public class EditProjectViewModel {
                 removeEmployee(employee);
             }
         }
+    }
+
+    public void saveNameAndDesc(String name, String desc)
+    {
+        Project projectCopy = new Project(project.getProject_id(), null, null, name, desc, null, null, null);
+        model.sendProject("editProject", projectCopy);
     }
 
     public List<Employee> getEmployees()
