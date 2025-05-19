@@ -11,7 +11,6 @@
 
 <AnchorPane prefHeight="420.0" prefWidth="758.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.ManageUsersViewController">
     <children>
-        <Button fx:id="removeUser" layoutX="208.0" layoutY="383.0" mnemonicParsing="false" onAction="#removeUser" prefHeight="26.0" prefWidth="115.0" text="Remove" />
         <TableView fx:id="tableView" layoutX="14.0" layoutY="56.0" prefHeight="310.0" prefWidth="427.0">
             <columns>
                 <TableColumn fx:id="title" prefWidth="175.0" text="Username" />
@@ -24,7 +23,7 @@
                 <Font size="32.0" />
             </font>
         </Label>
-        <Button fx:id="addUser" layoutX="40.0" layoutY="383.0" mnemonicParsing="false" onAction="#add" prefHeight="26.0" prefWidth="115.0" text="Add" />
+        <Button fx:id="addUser" layoutX="460.0" layoutY="261.0" mnemonicParsing="false" onAction="#add" prefHeight="26.0" prefWidth="115.0" text="Add" />
       <TextField fx:id="usernameField" layoutX="594.0" layoutY="108.0" />
       <TextField fx:id="passwordField" layoutX="593.0" layoutY="157.0" />
       <Label layoutX="464.0" layoutY="101.0" prefHeight="38.0" prefWidth="129.0" text="Username:" textAlignment="CENTER">
@@ -44,8 +43,7 @@
       </Label>
       <Button fx:id="saveUser" layoutX="628.0" layoutY="261.0" mnemonicParsing="false" onAction="#save" prefHeight="26.0" prefWidth="115.0" text="Save" />
       <ComboBox fx:id="roleComboBox" layoutX="593.0" layoutY="206.0" prefWidth="150.0" />
-      <Button fx:id="logout" layoutX="551.0" layoutY="383.0" mnemonicParsing="false" onAction="#logOut" prefHeight="26.0" prefWidth="115.0" text="Log out" />
-      <Button fx:id="deactivate" layoutX="628.0" layoutY="323.0" mnemonicParsing="false" onAction="#deactivate" prefHeight="26.0" prefWidth="115.0" text="Deactivate" />
-      <Button fx:id="deactivate1" layoutX="460.0" layoutY="323.0" mnemonicParsing="false" onAction="#activate" prefHeight="26.0" prefWidth="115.0" text="Active" />
+      <Button fx:id="deactivate" layoutX="321.0" layoutY="383.0" mnemonicParsing="false" onAction="#deactivate" prefHeight="26.0" prefWidth="115.0" text="Deactivate" />
+      <Button fx:id="activate" layoutX="28.0" layoutY="383.0" mnemonicParsing="false" onAction="#activate" prefHeight="26.0" prefWidth="115.0" text="Active" />
     </children>
 </AnchorPane>

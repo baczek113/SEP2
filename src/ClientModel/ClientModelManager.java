@@ -168,4 +168,8 @@ public class ClientModelManager {
     {
         return projects;
     }
+    public List<Employee> getEmployees()
+    {
+        return employees;
+    }
 }

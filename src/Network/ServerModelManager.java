@@ -770,7 +770,7 @@ public class ServerModelManager {
     {
         LoginRequest loginRequest = (LoginRequest) request;
         Employee loggedEmployee = this.login(loginRequest.getUsername(), loginRequest.getPassword());
-        if(loggedEmployee != null) {
+        if(loggedEmployee != null && loggedEmployee.getStatus().equals("active")) {
             return new LoginResponse("loginSuccess", loggedEmployee);
         }
         return new LoginResponse("loginFailure", null);

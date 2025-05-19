@@ -111,12 +111,12 @@ public class ViewFactory
                  controller.init(viewHandler, viewModelFactory.getViewTaskViewModel(), obj);
              }
 
-//             case "ManageUsers" -> {
-//                 loader.setLocation(getClass().getResource("/View/ManageUsersView.fxml"));
-//                 root = loader.load();
-//                 ManageUsersViewController controller = loader.getController();
-//                 controller.init(viewHandler, viewModelFactory.getManageUsersViewModel());
-//             }
+             case "ManageUsers" -> {
+                 loader.setLocation(getClass().getResource("/View/ManageUsersView.fxml"));
+                 root = loader.load();
+                 ManageUsersViewController controller = loader.getController();
+                 controller.init(viewHandler, viewModelFactory.getManageUsersViewModel());
+             }
              case "Backlog" -> {
                  loader.setLocation(getClass().getResource("/View/ManageBacklog.fxml"));
                  root = loader.load();

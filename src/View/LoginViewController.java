@@ -39,25 +39,14 @@ public class LoginViewController
 
     public void handleLoginResponse(PropertyChangeEvent event)
     {
-        if (viewModel.employeeGetLog() != null && viewModel.employeeGetLog().getRole().getRole_name().equals("admin"))
+        if (viewModel.employeeGetLog() != null && viewModel.employeeGetLog().getRole().getRole_name().equals("admin") && viewModel.employeeGetLog().getStatus().equals("active"))
         {
-            viewHandler.openView("ManageUser");
-        } else if (viewModel.employeeGetLog() != null && (viewModel.employeeGetLog().getRole().getRole_name().equals("product_owner")|| viewModel.employeeGetLog().getRole().getRole_name().equals("scrum_master")|| viewModel.employeeGetLog().getRole().getRole_name().equals("developer")))
+            viewHandler.openView("ManageUsers");
+        } else if (viewModel.employeeGetLog() != null && (viewModel.employeeGetLog().getRole().getRole_name().equals("product_owner")|| viewModel.employeeGetLog().getRole().getRole_name().equals("scrum_master")|| viewModel.employeeGetLog().getRole().getRole_name().equals("developer") && viewModel.employeeGetLog().getStatus().equals("active")))
         {
             viewHandler.openView("ManageProjects");
         }
         else
-        {
-            Platform.runLater(() -> {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Login Failed");
-                alert.setHeaderText(null);
-                alert.setContentText("Role does not exist");
-                alert.showAndWait();
-            });
-        }
-
-        if(event.getNewValue() == null)
         {
             Platform.runLater(() -> {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -66,10 +55,6 @@ public class LoginViewController
             alert.setContentText("Invalid username or password.");
             alert.showAndWait();
             });
-        }
-        else
-        {
-            System.out.println(((Employee) event.getNewValue()).getRole().getRole_name());
         }
     }
 
