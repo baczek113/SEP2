@@ -1,5 +1,6 @@
 package View;
 
+import Model.Project;
 import Model.Sprint;
 import Model.Task;
 import ViewModel.EditSprintViewModel;
@@ -19,11 +20,11 @@ public class EditSprintViewController {
     @FXML private DatePicker startDatePicker;
     @FXML private DatePicker endDatePicker;
 
-    @FXML private TableView<Task> availableUsersTable;
-    @FXML private TableColumn<Task, String> availableUsernameColumn;
+    @FXML private TableView<Task> availableTaskTable;
+    @FXML private TableColumn<Task, String> availableTaskColumn;
 
-    @FXML private TableView<Task> assignedUsersTable;
-    @FXML private TableColumn<Task, String> assignedUsernameColumn;
+    @FXML private TableView<Task> assignedTaskTable;
+    @FXML private TableColumn<Task, String> assignedTaskColumn;
 
     @FXML private Button addUserButton;
     @FXML private Button removeUserButton;
@@ -33,17 +34,21 @@ public class EditSprintViewController {
     private ViewHandler viewHandler;
     private EditSprintViewModel viewModel;
     private Sprint sprint;
+    private Project project;
 
     private final ObservableList<Task> availableTasks = FXCollections.observableArrayList();
     private final ObservableList<Task> assignedTasks = FXCollections.observableArrayList();
 
     public void init(ViewHandler viewHandler, EditSprintViewModel viewModel, Object obj) {
+        Object[] receivedData = (Object[]) obj;
         this.viewHandler = viewHandler;
         this.viewModel = viewModel;
-        this.sprint = (Sprint) obj;
+        this.sprint = (Sprint) receivedData[0];
+        this.project = (Project) receivedData[1];
 
         // Set up table columns
-       assignedUsernameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+       assignedTaskColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+       availableTaskColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
 
         titleField.setText(sprint.getName());
         Date tempStartDate = sprint.getStart_date();
@@ -51,19 +56,20 @@ public class EditSprintViewController {
         Date tempEndDate = sprint.getEnd_date();
         endDatePicker.setValue(tempEndDate.toLocalDate());
 
+        availableTasks.addAll(project.getBacklog());
         assignedTasks.addAll(sprint.getTasks());
-        availableUsersTable.setItems(availableTasks);
-        assignedUsersTable.setItems(assignedTasks);
+        availableTaskTable.setItems(availableTasks);
+        assignedTaskTable.setItems(assignedTasks);
 
         // Action listeners
         addUserButton.setOnAction(e -> assignTask());
         removeUserButton.setOnAction(e -> unassignTask());
         saveButton.setOnAction(e -> saveSprint());
-        cancelButton.setOnAction(e -> viewHandler.openView("ManageSprints"));
+        cancelButton.setOnAction(e -> viewHandler.openView("ManageSprints", this.project));
     }
 
     private void assignTask() {
-        Task selected = availableUsersTable.getSelectionModel().getSelectedItem();
+        Task selected = availableTaskTable.getSelectionModel().getSelectedItem();
         if (selected != null) {
             availableTasks.remove(selected);
             assignedTasks.add(selected);
@@ -71,7 +77,7 @@ public class EditSprintViewController {
     }
 
     private void unassignTask() {
-        Task selected = assignedUsersTable.getSelectionModel().getSelectedItem();
+        Task selected = assignedTaskTable.getSelectionModel().getSelectedItem();
         if (selected != null) {
             assignedTasks.remove(selected);
             availableTasks.add(selected);
@@ -85,6 +91,6 @@ public class EditSprintViewController {
         System.out.println("Start: " + startDatePicker.getValue());
         System.out.println("End: " + endDatePicker.getValue());
         System.out.println("Assigned tasks: " + assignedTasks);
-        viewHandler.openView("ManageSprints");
+        viewHandler.openView("ManageSprints", project);
     }
 }
