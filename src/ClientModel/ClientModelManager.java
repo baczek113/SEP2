@@ -137,7 +137,11 @@ public class ClientModelManager {
         client.sendRequest(editSprint);
     }
     public void editTask(Task task){
-        EditTaskRequest editTask = new EditTaskRequest(loggedEmployee, task);
+        EditTaskRequest editTask = new EditTaskRequest("editTask", loggedEmployee, task);
+        client.sendRequest(editTask);
+    }
+    public void removeTask(Task task){
+        EditTaskRequest editTask = new EditTaskRequest("removeTask", loggedEmployee, task);
         client.sendRequest(editTask);
     }
     public void sendEmployee(String action, Employee employeeToSend){

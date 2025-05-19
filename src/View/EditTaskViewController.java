@@ -1,5 +1,7 @@
 package View;
 
+import Model.Project;
+import Model.Task;
 import ViewModel.EditTaskViewModel;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -15,15 +17,19 @@ public class EditTaskViewController {
 
     private ViewHandler viewHandler;
     private EditTaskViewModel viewModel;
+    private Task selectedTask;
 
-    public void init(ViewHandler viewHandler, EditTaskViewModel viewModel) {
+    public void init(ViewHandler viewHandler, EditTaskViewModel viewModel, Object obj) {
         this.viewHandler = viewHandler;
         this.viewModel = viewModel;
+        selectedTask = (Task) obj;
 
         // Populate priority options
-        priorityComboBox.getItems().addAll("Low", "Medium", "High");
+        priorityComboBox.getItems().addAll("Very Low", "Low", "Medium", "High", "Very High");
 
-        // TODO: Pre-fill fields from selected Task object (via ViewModel or ViewState)
+        titleField.setText(selectedTask.getName());
+        titleField1.setText(selectedTask.getDescription());
+        priorityComboBox.getSelectionModel().select(selectedTask.getPriority());
     }
 
     @FXML
@@ -32,17 +38,35 @@ public class EditTaskViewController {
         String description = titleField1.getText();
         String priority = priorityComboBox.getValue();
 
-        // TODO: Save to model or pass to backend
-        System.out.println("Saving task:");
-        System.out.println("Name: " + name);
-        System.out.println("Description: " + description);
-        System.out.println("Priority: " + priority);
+        if(!selectedTask.getName().equals(name) || !selectedTask.getDescription().equals(description)) {
+            selectedTask.setTitle(name);
+            selectedTask.setDescription(description);
+            viewModel.saveEdition(selectedTask);
+        }
+        if(!priority.equals(selectedTask.getPriority())) {
+            viewModel.assignPriority(selectedTask, priorityStringToInt(priority));
+        }
 
-        viewHandler.openView("Backlog");
+        viewHandler.openView("Backlog", viewModel.getProject(selectedTask.getProject_id()));
     }
 
     @FXML
     private void cancel() {
-        viewHandler.openView("Backlog");
+        viewHandler.openView("Backlog", viewModel.getProject(selectedTask.getProject_id()));
+    }
+
+    private int priorityStringToInt(String priority) {
+        switch (priority) {
+            case "Low":
+                return 2;
+            case "Medium":
+                return 3;
+            case "High":
+                return 4;
+            case "Very High":
+                return 5;
+            default:
+                return 1;
+        }
     }
 }

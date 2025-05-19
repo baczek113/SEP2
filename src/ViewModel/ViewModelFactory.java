@@ -41,7 +41,7 @@ public class ViewModelFactory {
     }
 
     public EditProjectViewModel getEditProjectViewModel() {
-        if (editProjectViewModel == null) editProjectViewModel = new EditProjectViewModel();
+        if (editProjectViewModel == null) editProjectViewModel = new EditProjectViewModel(clientModelManager);
         return editProjectViewModel;
     }
 
@@ -81,12 +81,12 @@ public class ViewModelFactory {
     }
 
     public EditTaskViewModel getEditTaskViewModel() {
-        if (editTaskViewModel == null) editTaskViewModel = new EditTaskViewModel();
+        if (editTaskViewModel == null) editTaskViewModel = new EditTaskViewModel(clientModelManager);
         return editTaskViewModel;
     }
 
     public ViewTaskViewModel getViewTaskViewModel() {
-        if (viewTaskViewModel == null) viewTaskViewModel = new ViewTaskViewModel();
+        if (viewTaskViewModel == null) viewTaskViewModel = new ViewTaskViewModel(clientModelManager);
         return viewTaskViewModel;
     }
 

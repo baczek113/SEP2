@@ -391,6 +391,19 @@ public class DAO {
         }
     }
 
+    public void removeTask(Task task)
+    {
+        try(Connection connection = getConnection())
+        {
+            PreparedStatement statement = connection.prepareStatement("DELETE FROM task where task_id = ?");
+            statement.setInt(1, task.getTask_id());
+            statement.executeUpdate();
+        }
+        catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
+
     public void editSprint(Sprint sprint)
     {
         try(Connection connection = getConnection())

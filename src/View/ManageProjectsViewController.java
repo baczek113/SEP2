@@ -18,7 +18,6 @@ public class ManageProjectsViewController
 
     @FXML private Button addProject;
     @FXML private Button editProject;
-    @FXML private Button removeProject;
     @FXML private Button infoProject;
     @FXML private  Button backlog;
 
@@ -71,14 +70,14 @@ public class ManageProjectsViewController
     @FXML
     private void edit ()
     {
-        Project selceted = tableView.getSelectionModel().getSelectedItem();
-        if (selceted == null)
+        Project selected = tableView.getSelectionModel().getSelectedItem();
+        if (selected == null)
         {
             showAlert("Please select a project to edit.");
         }
         else
         {
-            viewHandler.openView("EditProject"); // TODO: store selected project in ViewState or pass via ViewModel
+            viewHandler.openView("EditProject", selected);
         }
 
     }
@@ -93,15 +92,6 @@ public class ManageProjectsViewController
         else
         {
             viewHandler.openView("ViewProject"); // TODO: store selected project in ViewState or pass via ViewModel
-        }
-    }
-    @FXML
-    private void remove() {
-        Project selected = tableView.getSelectionModel().getSelectedItem();
-        if (selected != null) {
-//            dummyProjects.remove(selected);
-        } else {
-            showAlert("Please select a project to remove.");
         }
     }
     @FXML
