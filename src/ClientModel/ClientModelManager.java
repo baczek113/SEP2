@@ -156,10 +156,6 @@ public class ClientModelManager {
         TaskSprintRequest addTaskToSprint = new TaskSprintRequest(action, loggedEmployee, task, sprint);
         client.sendRequest(addTaskToSprint);
     }
-    public void deactivateEmployee()
-    {
-
-    }
     public Employee getLoggedEmployee(){
         return loggedEmployee;
     }

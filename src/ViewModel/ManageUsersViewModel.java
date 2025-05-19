@@ -44,9 +44,20 @@ public class ManageUsersViewModel
         model.createEmployee(username, password, role);
     }
 
-    public void deactivate()
+    public void deactivateEmployee(Employee employee)
     {
-        model.
+        model.deactivateEmployee(employee);
     }
+    public void activateEmployee(Employee employee)
+    {
+        model.activateEmployee(employee);
+    }
+
+    public void updateEmployee(Employee employee) {
+
+        model.editEmployee(employee);
+    }
+
+
 
 }

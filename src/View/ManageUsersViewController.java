@@ -48,7 +48,7 @@ public class ManageUsersViewController {
 
         roleComboBox.setItems(FXCollections.observableArrayList("Admin","Product Owner", "Scrum Master", "Developer"));
 
-//        setupSelectionListener();
+        setupSelectionListener();
 
 
     }
@@ -79,51 +79,62 @@ public class ManageUsersViewController {
 
 
 
-//    @FXML
-//    private void save() {
-//        Employee selected = tableView.getSelectionModel().getSelectedItem();
-//        int role = mapRoleToId(roleComboBox.getValue());
-//        if (selected != null) {
-//            selected.setUsername(usernameField.getText());
-//            selected.setRole(mapRoleToId(roleComboBox.getValue()));
-//            tableView.refresh();
-//            showAlert("User updated successfully.");
-//        } else {
-//            showAlert("Please select a user to update.");
-//        }
-//    }
-
     @FXML
-    private void deactivate() {
+    private void save() {
         Employee selected = tableView.getSelectionModel().getSelectedItem();
         if (selected != null) {
-            selected.deativate();
-            tableView.refresh();
-            showAlert("User deactivated successfully.");
+            String newUsername = usernameField.getText();
+            String selectedRole = roleComboBox.getValue();
+
+            if (newUsername.isEmpty() || selectedRole == null) {
+                showAlert("Please fill in all fields.");
+                return;
+            }
+
+            int roleId = mapRoleToId(selectedRole);
+            viewModel.updateEmployee(selected);
+            clearFields();
+            showAlert("User updated successfully.");
         } else {
-            showAlert("Please select a user to deactivate.");
+            showAlert("Please select a user to update.");
         }
     }
+
     @FXML
     private void activate() {
         Employee selected = tableView.getSelectionModel().getSelectedItem();
         if (selected != null) {
-            selected.activate();
-            tableView.refresh();
+            viewModel.activateEmployee(selected);
             showAlert("User activated successfully.");
+            clearFields();
+        } else {
+            showAlert("Please select a user to activate.");
+        }
+    }
+    @FXML
+    private void deactivate() {
+        Employee selected = tableView.getSelectionModel().getSelectedItem();
+        if (selected != null) {
+            viewModel.deactivateEmployee(selected);
+            showAlert("User deactivated successfully.");
+            clearFields();
         } else {
             showAlert("Please select a user to deactivate.");
         }
     }
 
-//    private void setupSelectionListener() {
-//        tableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-//            if (newSelection != null) {
-//                usernameField.setText(newSelection.getUsername());
-//                roleComboBox.setValue(newSelection.getRole());
-//            }
-//        });
-//    }
+
+
+    private void setupSelectionListener() {
+        tableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                usernameField.setText(newSelection.getUsername());
+                passwordField.clear(); // password can't be fetched, so we leave it empty
+                roleComboBox.setValue(newSelection.getRole().getRole_name()); // update based on role name
+            }
+        });
+    }
+
 
     private void clearFields() {
         usernameField.clear();
@@ -147,8 +158,5 @@ public class ManageUsersViewController {
     {
         updateEmploy();
     }
-    @FXML
-    private void save() {
-        // your logic
-    }
+
 }
