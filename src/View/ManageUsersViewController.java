@@ -82,23 +82,28 @@ public class ManageUsersViewController {
     @FXML
     private void save() {
         Employee selected = tableView.getSelectionModel().getSelectedItem();
-        if (selected != null) {
-            String newUsername = usernameField.getText();
-            String selectedRole = roleComboBox.getValue();
 
-            if (newUsername.isEmpty() || selectedRole == null) {
-                showAlert("Please fill in all fields.");
-                return;
-            }
-
-            int roleId = mapRoleToId(selectedRole);
-            viewModel.updateEmployee(selected);
-            clearFields();
-            showAlert("User updated successfully.");
-        } else {
+        if (selected == null) {
             showAlert("Please select a user to update.");
+            return;
         }
+
+        String username = usernameField.getText();
+        String selectedRole = roleComboBox.getValue();
+
+        if (username.isEmpty() || selectedRole == null) {
+            showAlert("Please fill in all fields.");
+            return;
+        }
+
+        int roleId = mapRoleToId(selectedRole);
+
+        viewModel.updateEmployee(selected, username, roleId);
+        clearFields();
+        tableView.getSelectionModel().clearSelection();
+        showAlert("User updated successfully.");
     }
+
 
     @FXML
     private void activate() {

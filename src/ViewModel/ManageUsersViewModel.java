@@ -3,6 +3,7 @@ package ViewModel;
 import ClientModel.ClientModelManager;
 import Model.Employee;
 import Model.Project;
+import Model.Role;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -57,6 +58,27 @@ public class ManageUsersViewModel
 
         model.editEmployee(employee);
     }
+    public void updateEmployee(Employee employee, String newUsername, int newRoleId) {
+        employee.setUsername(newUsername);
+
+        // Replace role object with new one
+        String roleName = roleNameFromId(newRoleId);
+        employee.setRole(new Role(newRoleId, roleName));
+
+        model.editEmployee(employee); // send to server
+    }
+    private String roleNameFromId(int id) {
+        return switch (id) {
+            case 1 -> "admin";
+            case 2 -> "product_owner";
+            case 3 -> "scrum_master";
+            case 4 -> "developer";
+            default -> "unknown";
+        };
+    }
+
+
+
 
 
 
