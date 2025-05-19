@@ -1,10 +1,13 @@
 package View;
 
+import Model.Employee;
+import Model.Project;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import ViewModel.ViewProjectViewModel;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 public class ViewProjectViewController {
 
@@ -15,7 +18,7 @@ public class ViewProjectViewController {
     @FXML private Label startDateLabel;
     @FXML private Label endDateLabel;
 
-    @FXML private TableView<String> assignedUsersTable;
+    @FXML private TableView<Employee> assignedUsersTable;
     @FXML private TableColumn<String, String> assignedUsernameColumn;
 
     @FXML private Button backButton;
@@ -23,25 +26,28 @@ public class ViewProjectViewController {
 
     private ViewHandler viewHandler;
     private ViewProjectViewModel viewModel;
+    private Project selectedProject;
 
-    private final ObservableList<String> dummyAssignedUsers = FXCollections.observableArrayList();
+    private final ObservableList<Employee> assignedUsers = FXCollections.observableArrayList();
 
-    public void init(ViewHandler viewHandler, ViewProjectViewModel viewModel) {
+    public void init(ViewHandler viewHandler, ViewProjectViewModel viewModel, Object obj) {
         this.viewHandler = viewHandler;
         this.viewModel = viewModel;
+        this.selectedProject = (Project) obj;
 
         // Fill dummy data for now — TODO: Replace with viewModel.getSelectedProject()
-        titleLabel.setText("Redesign App");
-        descriptionLabel.setText("UI redesign for mobile application.");
-        statusLabel.setText("Active");
-        scrumMasterLabel.setText("Alice");
-        startDateLabel.setText("2024-05-01");
-        endDateLabel.setText("2024-06-30");
+        titleLabel.setText(selectedProject.getName());
+        descriptionLabel.setText(selectedProject.getDescription());
+        statusLabel.setText(selectedProject.getStatus());
+        scrumMasterLabel.setText(selectedProject.getScrum_master().getUsername());
+        startDateLabel.setText(selectedProject.getStartDate());
+        endDateLabel.setText(selectedProject.getEndDate());
 
         // Set table column
-        assignedUsernameColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue()));
-        dummyAssignedUsers.addAll("dev1", "dev2", "dev3");
-        assignedUsersTable.setItems(dummyAssignedUsers); // TODO: Replace with viewModel.getAssignedUsers()
+        assignedUsernameColumn.setText("Users");
+        assignedUsernameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
+        assignedUsers.addAll(selectedProject.getEmployees());
+        assignedUsersTable.setItems(assignedUsers);
     }
 
     @FXML
@@ -50,7 +56,7 @@ public class ViewProjectViewController {
     }
     @FXML
     private void editProject() {
-        viewHandler.openView("EditProject");
+        viewHandler.openView("EditProject", selectedProject);
     }
 
 

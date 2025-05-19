@@ -279,6 +279,39 @@ public class ServerModelManager {
         }
     }
 
+    public boolean editProject(Project project)
+    {
+        synchronized(writerLock) {
+            waitingWriters++;
+        }
+        lock.writeLock().lock();
+        try {
+            dao.editProject(project);
+            for(Project projectReflection : projects)
+            {
+                if(projectReflection.getProject_id() == project.getProject_id())
+                {
+                    projectReflection.setName(project.getName());
+                    projectReflection.setDescription(project.getDescription());
+                    return true;
+                }
+            }
+            return false;
+        }
+        catch (RuntimeException e)
+        {
+            return false;
+        }
+        finally
+        {
+            lock.writeLock().unlock();
+            synchronized(writerLock) {
+                waitingWriters--;
+                writerLock.notifyAll();
+            }
+        }
+    }
+
     public boolean endProject(Project project) {
         synchronized(writerLock) {
             waitingWriters++;
@@ -691,6 +724,35 @@ public class ServerModelManager {
         }
     }
 
+    public boolean removeSprint(Sprint sprint) {
+        synchronized(writerLock) {
+            waitingWriters++;
+        }
+
+        lock.writeLock().lock();
+        try {
+            dao.removeSprint(sprint);
+            for(Sprint sprintReflection : projects.get(sprint.getProject_id()).getSprints())
+            {
+                if(sprintReflection.getSprint_id() == sprint.getSprint_id()) {
+                    for(Task taskReflection : sprintReflection.getTasks()) {
+                        taskReflection.setSprint_id(0);
+                    }
+                    projects.get(sprint.getProject_id()).getSprints().remove(sprintReflection);
+                }
+            }
+            return false;
+        } catch (RuntimeException e) {
+            return false;
+        } finally {
+            lock.writeLock().unlock();
+            synchronized(writerLock) {
+                waitingWriters--;
+                writerLock.notifyAll();
+            }
+        }
+    }
+
     public void processRequest(Request request) throws SQLException {
         switch(request.getAction()){
             case "createEmployee":
@@ -752,6 +814,12 @@ public class ServerModelManager {
                 break;
             case "editSprint":
                 requestHandler = new EditSprintHandler();
+                break;
+            case "editProject":
+                requestHandler = new EditProjectHandler();
+                break;
+            case "removeSprint":
+                requestHandler = new RemoveSprintHandler();
                 break;
             default:
                 requestHandler = null;
