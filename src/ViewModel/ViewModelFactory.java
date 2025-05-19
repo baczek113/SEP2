@@ -36,7 +36,7 @@ public class ViewModelFactory {
     }
 
     public AddProjectViewModel getAddProjectViewModel() {
-        if (addProjectViewModel == null) addProjectViewModel = new AddProjectViewModel();
+        if (addProjectViewModel == null) addProjectViewModel = new AddProjectViewModel(clientModelManager);
         return addProjectViewModel;
     }
 

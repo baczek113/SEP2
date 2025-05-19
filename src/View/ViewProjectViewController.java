@@ -35,7 +35,6 @@ public class ViewProjectViewController {
         this.viewModel = viewModel;
         this.selectedProject = (Project) obj;
 
-        // Fill dummy data for now — TODO: Replace with viewModel.getSelectedProject()
         titleLabel.setText(selectedProject.getName());
         descriptionLabel.setText(selectedProject.getDescription());
         statusLabel.setText(selectedProject.getStatus());
@@ -44,9 +43,13 @@ public class ViewProjectViewController {
         endDateLabel.setText(selectedProject.getEndDate());
 
         // Set table column
-        assignedUsernameColumn.setText("Users");
+        assignedUsernameColumn.setText("Employees");
         assignedUsernameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
-        assignedUsers.addAll(selectedProject.getEmployees());
+        for(Employee employee : selectedProject.getEmployees()) {
+            if(employee.getRole().getRole_name().equals("developer")) {
+                assignedUsers.add(employee);
+            }
+        }
         assignedUsersTable.setItems(assignedUsers);
     }
 

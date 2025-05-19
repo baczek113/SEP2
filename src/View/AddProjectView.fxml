@@ -2,7 +2,6 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -11,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600" prefWidth="800.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.AddProjectViewController">
+<AnchorPane prefHeight="600" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.AddProjectViewController">
     <children>
 
         <!-- Title -->
@@ -32,26 +31,6 @@
          </font></Label>
         <TextArea fx:id="descriptionField" layoutX="170.0" layoutY="148.0" prefHeight="127.0" prefWidth="250" />
 
-        <!-- Dates -->
-        <Label layoutX="59.0" layoutY="441.0" text="Start Date:">
-         <font>
-            <Font size="20.0" />
-         </font></Label>
-        <DatePicker fx:id="startDatePicker" layoutX="169.0" layoutY="443.0" prefHeight="26.0" prefWidth="250.0" />
-
-        <Label layoutX="63.0" layoutY="504.0" text="End Date:">
-         <font>
-            <Font size="20.0" />
-         </font></Label>
-        <DatePicker fx:id="endDatePicker" layoutX="170.0" layoutY="507.0" prefWidth="250.0" />
-
-        <!-- Status -->
-        <Label layoutX="93.0" layoutY="302.0" prefHeight="40.0" prefWidth="63.0" text="Status:">
-         <font>
-            <Font size="20.0" />
-         </font></Label>
-        <ComboBox fx:id="statusComboBox" layoutX="169.0" layoutY="309.0" prefWidth="250" />
-
         <!-- User Tables -->
         <Label layoutX="514.0" layoutY="64.0" text="Available developers">
          <font>
@@ -63,7 +42,7 @@
             </columns>
         </TableView>
 
-        <Button fx:id="addUserButton" layoutX="574.0" layoutY="287.0" text="Add →" onAction="#addUser" />
+        <Button fx:id="addUserButton" layoutX="574.0" layoutY="287.0" onAction="#addUser" text="Add →" />
 
         <Label layoutX="509.0" layoutY="319.0" text="Assigned developers">
          <font>
@@ -75,10 +54,10 @@
             </columns>
         </TableView>
 
-        <Button fx:id="removeUserButton" layoutX="569.0" layoutY="550.0" text="← Remove" onAction="#removeUser"/>
+        <Button fx:id="removeUserButton" layoutX="569.0" layoutY="550.0" onAction="#removeUser" text="← Remove" />
 
-        <Button fx:id="saveButton" layoutX="63.0" layoutY="550.0" prefWidth="100" text="Save" onAction="#save" />
-        <Button fx:id="cancelButton" layoutX="295.0" layoutY="550.0" prefWidth="100" text="Cancel" onAction="#cancel" />
+        <Button fx:id="saveButton" layoutX="63.0" layoutY="550.0" onAction="#save" prefWidth="100" text="Save" />
+        <Button fx:id="cancelButton" layoutX="295.0" layoutY="550.0" onAction="#cancel" prefWidth="100" text="Cancel" />
       <Label layoutX="20.0" layoutY="365.0" prefHeight="40.0" prefWidth="145.0" text="SCRUM Master:">
          <font>
             <Font size="20.0" />

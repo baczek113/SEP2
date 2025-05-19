@@ -45,7 +45,7 @@ public class AddTaskViewController {
 
     @FXML
     private void cancle() {
-        viewHandler.openView("Backlog");
+        viewHandler.openView("Backlog", project);
     }
 
     private void showAlert(String msg) {
