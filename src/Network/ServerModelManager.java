@@ -409,24 +409,17 @@ public class ServerModelManager {
         }
     }
 
-    public boolean addTask(Sprint sprint, Project project, String title, String description, int priority) {
+    public boolean addTask(Project project, String title, String description, int priority) throws SQLException {
         synchronized(writerLock) {
             waitingWriters++;
         }
         
         lock.writeLock().lock();
         try {
-            Task newTask = dao.addTask(sprint, project, title, description, priority);
+            Task newTask = dao.addTask(project, title, description, priority);
             if(newTask != null) {
                 Project relevantProject = projects.get(project.getProject_id());
                 relevantProject.addToBacklog(newTask);
-                if(sprint != null) {
-                    for(Sprint sprintReflection : relevantProject.getSprints()) {
-                        if(sprintReflection.getSprint_id() == sprint.getSprint_id()) {
-                            sprintReflection.addTask(newTask);
-                        }
-                    }
-                }
                 return true;
             }
             return false;
@@ -618,7 +611,7 @@ public class ServerModelManager {
             dao.editTask(task);
             for(Task taskReflection : projects.get(task.getProject_id()).getBacklog()) {
                 if(taskReflection.getTask_id() == task.getTask_id()) {
-                    taskReflection.setTitle(task.getTitle());
+                    taskReflection.setTitle(task.getName());
                     taskReflection.setDescription(task.getDescription());
                     return true;
                 }
@@ -663,7 +656,7 @@ public class ServerModelManager {
         }
     }
 
-    public void processRequest(Request request) {
+    public void processRequest(Request request) throws SQLException {
         switch(request.getAction()){
             case "createEmployee":
                 requestHandler = new CreateEmployeeHandler();

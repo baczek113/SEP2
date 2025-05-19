@@ -20,7 +20,7 @@ public class ViewFactory
     public void setViewHandler(ViewHandler viewHandler) {
         this.viewHandler = viewHandler;
     }
-    public Scene load (String viewName)
+    public Scene load (String viewName, Object obj)
     {
      try{
          FXMLLoader loader = new FXMLLoader();
@@ -40,12 +40,12 @@ public class ViewFactory
                  controller.init(viewHandler, viewModelFactory.getManageProjectsViewModel());
              }
 
-             case "AddProject" -> {
-                 loader.setLocation(getClass().getResource("/View/AddProjectView.fxml"));
-                 root = loader.load();
-                 AddProjectViewController controller = loader.getController();
-                 controller.init(viewHandler, viewModelFactory.getAddProjectViewModel());
-             }
+//             case "AddProject" -> {
+//                 loader.setLocation(getClass().getResource("/View/AddProjectView.fxml"));
+//                 root = loader.load();
+//                 AddProjectViewController controller = loader.getController();
+//                 controller.init(viewHandler, viewModelFactory.getAddProjectViewModel());
+//             }
 
              case "EditProject" -> {
                  loader.setLocation(getClass().getResource("/View/EditProjectView.fxml"));
@@ -65,15 +65,15 @@ public class ViewFactory
                  loader.setLocation(getClass().getResource("/View/ManageSprintsView.fxml"));
                  root = loader.load();
                  ManageSprintsViewController controller = loader.getController();
-                 controller.init(viewHandler, viewModelFactory.getManageSprintsViewModel());
+                 controller.init(viewHandler, viewModelFactory.getManageSprintsViewModel(), obj);
              }
 
-             case "AddSprint" -> {
-                 loader.setLocation(getClass().getResource("/View/AddSprintView.fxml"));
-                 root = loader.load();
-                 AddSprintViewController controller = loader.getController();
-                 controller.init(viewHandler, viewModelFactory.getAddSprintViewModel());
-             }
+//             case "AddSprint" -> {
+//                 loader.setLocation(getClass().getResource("/View/AddSprintView.fxml"));
+//                 root = loader.load();
+//                 AddSprintViewController controller = loader.getController();
+//                 controller.init(viewHandler, viewModelFactory.getAddSprintViewModel());
+//             }
 
              case "EditSprint" -> {
                  loader.setLocation(getClass().getResource("/View/EditSprintView.fxml"));
@@ -83,18 +83,18 @@ public class ViewFactory
              }
 
 
-             case "ManageTasks" -> {
-                 loader.setLocation(getClass().getResource("/View/ManageTasksView.fxml"));
-                 root = loader.load();
-                 ManageTasksViewController controller = loader.getController();
-                 controller.init(viewHandler, viewModelFactory.getManageTasksViewModel());
-             }
+//             case "ManageTasks" -> {
+//                 loader.setLocation(getClass().getResource("/View/ManageTasksView.fxml"));
+//                 root = loader.load();
+//                 ManageTasksViewController controller = loader.getController();
+//                 controller.init(viewHandler, viewModelFactory.getManageTasksViewModel());
+//             }
 
              case "AddTask" -> {
                  loader.setLocation(getClass().getResource("/View/AddTaskView.fxml"));
                  root = loader.load();
                  AddTaskViewController controller = loader.getController();
-                 controller.init(viewHandler, viewModelFactory.getAddTaskViewModel());
+                 controller.init(viewHandler, viewModelFactory.getAddTaskViewModel(), obj);
              }
 
              case "EditTask" -> {
@@ -104,26 +104,31 @@ public class ViewFactory
                  controller.init(viewHandler, viewModelFactory.getEditTaskViewModel());
              }
 
-             case "ViewTask" -> {
-                 loader.setLocation(getClass().getResource("/View/ViewTaskView.fxml"));
-                 root = loader.load();
-                 ViewTaskViewController controller = loader.getController();
-                 controller.init(viewHandler, viewModelFactory.getViewTaskViewModel());
-             }
+//             case "ViewTask" -> {
+//                 loader.setLocation(getClass().getResource("/View/ViewTaskView.fxml"));
+//                 root = loader.load();
+//                 ViewTaskViewController controller = loader.getController();
+//                 controller.init(viewHandler, viewModelFactory.getViewTaskViewModel());
+//             }
 
-             case "ManageUsers" -> {
-                 loader.setLocation(getClass().getResource("/View/ManageUsersView.fxml"));
-                 root = loader.load();
-                 ManageUsersViewController controller = loader.getController();
-                 controller.init(viewHandler, viewModelFactory.getManageUsersViewModel());
-             }
+//             case "ManageUsers" -> {
+//                 loader.setLocation(getClass().getResource("/View/ManageUsersView.fxml"));
+//                 root = loader.load();
+//                 ManageUsersViewController controller = loader.getController();
+//                 controller.init(viewHandler, viewModelFactory.getManageUsersViewModel());
+//             }
              case "Backlog" -> {
                  loader.setLocation(getClass().getResource("/View/ManageBacklog.fxml"));
                  root = loader.load();
                  ManageBacklogViewController controller = loader.getController();
-                 controller.init(viewHandler, viewModelFactory.getManageBacklogViewModel());
+                 controller.init(viewHandler, viewModelFactory.getManageBacklogViewModel(), obj);
 
              }
+         }
+         if(root == null)
+         {
+             System.out.println("View cannot be created, because it does not exist");
+             return null;
          }
          return new Scene(root);
      } catch (IOException e)

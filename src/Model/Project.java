@@ -40,12 +40,24 @@ public class Project implements Serializable {
         this.project_id = project_id;
     }
 
-    public Date getEnd_date() {
-        return end_date;
+    public String getEndDate() {
+        if(end_date != null) {
+            return end_date.toString();
+        }
+        else
+        {
+            return "Cannot provide end date";
+        }
     }
 
-    public Date getStart_date() {
-        return start_date;
+    public String getStartDate() {
+        if(start_date != null) {
+            return start_date.toString();
+        }
+        else
+        {
+            return "Cannot provide start date";
+        }
     }
 
     public Employee getCreated_by() {

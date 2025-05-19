@@ -51,7 +51,7 @@ public class ViewModelFactory {
     }
 
     public ManageProjectsViewModel getManageProjectsViewModel() {
-        if (manageProjectsViewModel == null) manageProjectsViewModel = new ManageProjectsViewModel();
+        if (manageProjectsViewModel == null) manageProjectsViewModel = new ManageProjectsViewModel(clientModelManager);
         return manageProjectsViewModel;
     }
 
@@ -71,12 +71,12 @@ public class ViewModelFactory {
     }
 
     public ManageSprintsViewModel getManageSprintsViewModel() {
-        if (manageSprintsViewModel == null) manageSprintsViewModel = new ManageSprintsViewModel();
+        if (manageSprintsViewModel == null) manageSprintsViewModel = new ManageSprintsViewModel(clientModelManager);
         return manageSprintsViewModel;
     }
 
     public AddTaskViewModel getAddTaskViewModel() {
-        if (addTaskViewModel == null) addTaskViewModel = new AddTaskViewModel();
+        if (addTaskViewModel == null) addTaskViewModel = new AddTaskViewModel(clientModelManager);
         return addTaskViewModel;
     }
 
@@ -101,7 +101,7 @@ public class ViewModelFactory {
     }
 
     public ManageBacklogViewModel getManageBacklogViewModel() {
-        if (manageBacklogViewModel == null) manageBacklogViewModel = new ManageBacklogViewModel();
+        if (manageBacklogViewModel == null) manageBacklogViewModel = new ManageBacklogViewModel(clientModelManager);
         return manageBacklogViewModel;
     }
 }

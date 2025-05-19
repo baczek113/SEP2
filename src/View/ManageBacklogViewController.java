@@ -1,11 +1,15 @@
 package View;
 
+import Model.Project;
+import Model.Task;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import ViewModel.ManageBacklogViewModel;
+
+import java.beans.PropertyChangeEvent;
 
 public class ManageBacklogViewController {
 
@@ -20,26 +24,30 @@ public class ManageBacklogViewController {
 
     private ViewHandler viewHandler;
     private ManageBacklogViewModel viewModel;
+    private Project project;
 
-    private final ObservableList<Task> dummyTasks = FXCollections.observableArrayList();
+    private final ObservableList<Task> observableList = FXCollections.observableArrayList();
 
-    public void init(ViewHandler viewHandler, ManageBacklogViewModel viewModel) {
+    public void init(ViewHandler viewHandler, ManageBacklogViewModel viewModel, Object obj) {
         this.viewHandler = viewHandler;
         this.viewModel = viewModel;
+        this.project = (Project) obj;
+        viewModel.addListener(this::updateProject);
+
+        if(project.getCreated_by().getEmployee_id() != viewModel.getLoggedEmployee().getEmployee_id() || project.getStatus().equals("finished"))
+        {
+            addProject.setVisible(false);
+            editProject.setVisible(false);
+            removeProject.setVisible(false);
+        }
 
         // Bind columns
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
         startDate.setCellValueFactory(new PropertyValueFactory<>("priority"));
         endDate.setCellValueFactory(new PropertyValueFactory<>("status"));
 
-        // Load dummy data
-        dummyTasks.addAll(
-                new Task("Implement Login", "High", "5", "Done"),
-                new Task("Fix Bug #42", "Medium", "3", "Done"),
-                new Task("Write Unit Tests", "Low", "2","To Do")
-        );
-
-        tableView.setItems(dummyTasks); // TODO: Replace with viewModel.getTasks()
+        observableList.addAll(project.getBacklog());
+        tableView.setItems(observableList);
 
         tableView.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2 && tableView.getSelectionModel().getSelectedItem() != null) {
@@ -51,7 +59,7 @@ public class ManageBacklogViewController {
 
     @FXML
     private void add() {
-        viewHandler.openView("AddTask"); // Or ManageAddTask if that’s the name
+        viewHandler.openView("AddTask", project); // Or ManageAddTask if that’s the name
     }
 
     @FXML
@@ -69,7 +77,7 @@ public class ManageBacklogViewController {
     private void remove() {
         Task selected = tableView.getSelectionModel().getSelectedItem();
         if (selected != null) {
-            dummyTasks.remove(selected); // TODO: Replace with viewModel.removeTask(selected)
+//            dummyTasks.remove(selected); // TODO: Replace with viewModel.removeTask(selected)
         } else {
             showAlert("Please select a task to remove.");
         }
@@ -90,4 +98,15 @@ public class ManageBacklogViewController {
         viewHandler.openView("ManageProjects");
     }
 
+    private void updateProject(PropertyChangeEvent propertyChangeEvent) {
+        for(Project iterableProject : viewModel.getProjects())
+        {
+            if(project.getProject_id() == iterableProject.getProject_id())
+            {
+                project = iterableProject;
+                observableList.clear();
+                observableList.addAll(project.getBacklog());
+            }
+        }
+    }
 }

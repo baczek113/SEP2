@@ -1,5 +1,7 @@
 package View;
 
+import Model.Project;
+import Model.Sprint;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
@@ -26,28 +28,24 @@ public class ManageSprintsViewController {
     @FXML private TableColumn<Sprint, String> startDate;
     @FXML private TableColumn<Sprint, String> endDate;
 
-    private final ObservableList<Sprint> dummySprints = FXCollections.observableArrayList();
+    private ObservableList<Sprint> sprints = FXCollections.observableArrayList();
+    Project project;
 
-
-
-    public void init (ViewHandler viewHandler, ManageSprintsViewModel viewModel)
+    public void init (ViewHandler viewHandler, ManageSprintsViewModel viewModel, Object obj)
     {
         this.viewHandler = viewHandler;
         this.viewModel = viewModel;
+        this.project = (Project) obj;
 
+        sprints.setAll(project.getSprints());
         // Bind columns to Sprint properties
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
-        startDate.setCellValueFactory(new PropertyValueFactory<>("startDate"));
-        endDate.setCellValueFactory(new PropertyValueFactory<>("endDate"));
+        startDate.setCellValueFactory(new PropertyValueFactory<>("start_date"));
+        endDate.setCellValueFactory(new PropertyValueFactory<>("end_date"));
 
 // Set table data
-        tableView.setItems(dummySprints); // TODO: Replace with viewModel.getSprints()
+        tableView.setItems(sprints); // TODO: Replace with viewModel.getSprints()
 
-// --- Dummy data ---
-        Sprint s1 = new Sprint("Sprint 1", "2024-05-01", "2024-05-15");
-        Sprint s2 = new Sprint("Sprint 2", "2024-05-16", "2024-05-31");
-
-        dummySprints.addAll(s1, s2);
 
         tableView.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2 && tableView.getSelectionModel().getSelectedItem() != null) {
@@ -87,7 +85,7 @@ public class ManageSprintsViewController {
     private void remove() {
         Sprint selected = tableView.getSelectionModel().getSelectedItem();
         if (selected != null) {
-            dummySprints.remove(selected); // TODO: viewModel.removeSprint(selected)
+            sprints.remove(selected); // TODO: viewModel.removeSprint(selected)
         } else {
             showAlert("Please select a sprint to remove.");
         }
