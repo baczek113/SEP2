@@ -164,6 +164,12 @@ public class ClientModelManager {
         return loggedEmployee;
     }
 
+    public void removeTaskFromSprint(Task task, Sprint sprint)
+    {
+        TaskSprintRequest removeTaskFromSprint = new TaskSprintRequest("removeTaskFromSprint", loggedEmployee, task, sprint);
+        client.sendRequest(removeTaskFromSprint);
+    }
+
     public List<Project> getProjects()
     {
         return projects;
