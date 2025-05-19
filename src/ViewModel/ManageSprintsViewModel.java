@@ -9,6 +9,7 @@ import javafx.collections.ObservableList;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ManageSprintsViewModel
@@ -30,12 +31,18 @@ public class ManageSprintsViewModel
   }
 
   public void projectsUpdated(PropertyChangeEvent e) {
-    projects = (List<Project>) e.getNewValue();
-    propertyChangeSupport.firePropertyChange("projects", null, null);
+      List<Project> updatedProjectsFromModel = (List<Project>) e.getNewValue();
+      this.projects = new ArrayList<>(updatedProjectsFromModel);
+      propertyChangeSupport.firePropertyChange("projects", null, null);
   }
-  public ObservableList<Project> getProjects() {
-    ObservableList<Project> projectsObservable = FXCollections.observableArrayList();
-    projectsObservable.setAll(projects);
-    return projectsObservable;
+  public Project getProject(int project_id) {
+    for(Project project : model.getProjects())
+    {
+      if(project.getProject_id() == project_id)
+      {
+        return project;
+      }
+    }
+    return null;
   }
 }

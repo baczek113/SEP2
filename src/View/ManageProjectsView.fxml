@@ -7,11 +7,10 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="466.0" prefWidth="681.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.ManageProjectsViewController">
+<AnchorPane prefHeight="466.0" prefWidth="681.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.ManageProjectsViewController">
     <children>
-        <Button fx:id="addProject" layoutX="146.0" layoutY="427.0" mnemonicParsing="false" onAction="#add" prefHeight="26.0" prefWidth="115.0" text="Add" />
-        <Button fx:id="editProject" layoutX="287.0" layoutY="427.0" mnemonicParsing="false" onAction="#edit" prefHeight="26.0" prefWidth="115.0" text="Edit" />
-        <Button fx:id="removeProject" layoutX="423.0" layoutY="427.0" mnemonicParsing="false" onAction="#remove" prefHeight="26.0" prefWidth="115.0" text="Remove" />
+        <Button fx:id="addProject" layoutX="194.0" layoutY="427.0" mnemonicParsing="false" onAction="#add" prefHeight="26.0" prefWidth="115.0" text="Add" />
+        <Button fx:id="editProject" layoutX="379.0" layoutY="427.0" mnemonicParsing="false" onAction="#edit" prefHeight="26.0" prefWidth="115.0" text="Edit" />
         <TableView fx:id="tableView" layoutY="64.0" prefHeight="350.0" prefWidth="689.0">
             <columns>
                 <TableColumn fx:id="name" prefWidth="170.0" text="Name" />
@@ -20,7 +19,7 @@
                 <TableColumn fx:id="endDate" prefWidth="170.0" text="End date" />
             </columns>
         </TableView>
-        <Button fx:id="infoProject" layoutX="560.0" layoutY="427.0" mnemonicParsing="false" onAction="#info" prefHeight="26.0" prefWidth="115.0" text="View" />
+        <Button fx:id="infoProject" layoutX="548.0" layoutY="427.0" mnemonicParsing="false" onAction="#info" prefHeight="26.0" prefWidth="115.0" text="View" />
         <Label layoutX="220.0" layoutY="14.0" prefHeight="47.0" prefWidth="240.0" text="Manage Projects" textAlignment="CENTER">
             <font>
                 <Font size="32.0" />

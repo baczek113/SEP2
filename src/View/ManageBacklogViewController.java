@@ -50,9 +50,10 @@ public class ManageBacklogViewController {
         tableView.setItems(observableList);
 
         tableView.setOnMouseClicked(event -> {
-            if (event.getClickCount() == 2 && tableView.getSelectionModel().getSelectedItem() != null) {
+            Task selected = tableView.getSelectionModel().getSelectedItem();
+            if (event.getClickCount() == 2 && selected != null) {
                 // TODO: Pass selected project to ViewState if needed
-                viewHandler.openView("ViewTask");
+                viewHandler.openView("ViewTask", selected);
             }
         });
     }
@@ -66,8 +67,7 @@ public class ManageBacklogViewController {
     private void edit() {
         Task selected = tableView.getSelectionModel().getSelectedItem();
         if (selected != null) {
-            // TODO: Set selected task in ViewState
-            viewHandler.openView("EditTask");
+            viewHandler.openView("EditTask", selected);
         } else {
             showAlert("Please select a task to edit.");
         }
@@ -77,7 +77,7 @@ public class ManageBacklogViewController {
     private void remove() {
         Task selected = tableView.getSelectionModel().getSelectedItem();
         if (selected != null) {
-//            dummyTasks.remove(selected); // TODO: Replace with viewModel.removeTask(selected)
+            viewModel.remove(selected);
         } else {
             showAlert("Please select a task to remove.");
         }
