@@ -58,7 +58,7 @@ public class ViewFactory
                  loader.setLocation(getClass().getResource("/View/ViewProjectView.fxml"));
                  root = loader.load();
                  ViewProjectViewController controller = loader.getController();
-                 controller.init(viewHandler, viewModelFactory.getViewProjectViewModel());
+                 controller.init(viewHandler, viewModelFactory.getViewProjectViewModel(), obj);
              }
 
              case "ManageSprints" -> {

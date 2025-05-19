@@ -84,14 +84,14 @@ public class ManageProjectsViewController
     @FXML
     private void info ()
     {
-        Project selceted = tableView.getSelectionModel().getSelectedItem();
-        if (selceted == null)
+        Project selected = tableView.getSelectionModel().getSelectedItem();
+        if (selected == null)
         {
-            showAlert("Please select a project to edit.");
+            showAlert("Please select a project to view.");
         }
         else
         {
-            viewHandler.openView("ViewProject"); // TODO: store selected project in ViewState or pass via ViewModel
+            viewHandler.openView("ViewProject", selected);
         }
     }
     @FXML
