@@ -20,7 +20,7 @@ public class DAO {
     public Connection getConnection() throws SQLException
     {
         //Substitute for your own database login/password
-        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=sep_database", "postgres", "dupa123");
+        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=sep_database", "postgres", "gigakoks1");
     }
 
     public static DAO getInstance() throws SQLException
@@ -132,6 +132,7 @@ public class DAO {
             PreparedStatement statement = connection.prepareStatement("UPDATE project SET name = ?, description = ? WHERE project_id = ?");
             statement.setString(1, project.getName());
             statement.setString(2, project.getDescription());
+            statement.setInt(3, project.getProject_id());
             statement.executeUpdate();
         }
         catch (SQLException e){
@@ -296,6 +297,20 @@ public class DAO {
         }
     }
 
+    public void removeSprint(Sprint sprint)
+    {
+        try(Connection connection = getConnection())
+        {
+            removeTasksFromSprint(sprint);
+            PreparedStatement statement = connection.prepareStatement("DELETE FROM sprint WHERE sprint_id = ?");
+            statement.setInt(1, sprint.getSprint_id());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Failed to remove sprint");
+            throw new RuntimeException(e);
+        }
+    }
+
     public HashMap<Integer, String> getAllRoles()
     {
         try(Connection connection = getConnection()) {
@@ -384,6 +399,19 @@ public class DAO {
         {
             PreparedStatement statement = connection.prepareStatement("UPDATE task SET sprint_id = 0 WHERE task_id = ?");
             statement.setInt(1, task.getTask_id());
+            statement.executeUpdate();
+        }
+        catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void removeTasksFromSprint(Sprint sprint)
+    {
+        try(Connection connection = getConnection())
+        {
+            PreparedStatement statement = connection.prepareStatement("UPDATE task SET sprint_id = 0 WHERE sprint_id = ?");
+            statement.setInt(1, sprint.getSprint_id());
             statement.executeUpdate();
         }
         catch (SQLException e){

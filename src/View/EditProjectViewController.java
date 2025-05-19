@@ -1,5 +1,6 @@
 package View;
 
+import Model.Employee;
 import Model.Project;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -10,6 +11,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import ViewModel.EditProjectViewModel;
 
 import java.beans.PropertyChangeEvent;
+import java.time.LocalDate;
 
 public class EditProjectViewController {
 
@@ -20,10 +22,10 @@ public class EditProjectViewController {
     @FXML private Label statusText;
     @FXML private Button startEndProjectButton;
 
-    @FXML private TableView<String> availableUsersTable;
+    @FXML private TableView<Employee> availableUsersTable;
     @FXML private TableColumn<String, String> availableUsernameColumn;
 
-    @FXML private TableView<String> assignedUsersTable;
+    @FXML private TableView<Employee> assignedUsersTable;
     @FXML private TableColumn<String, String> assignedUsernameColumn;
 
     @FXML private Button addUserButton;
@@ -34,30 +36,37 @@ public class EditProjectViewController {
     private ViewHandler viewHandler;
     private EditProjectViewModel viewModel;
     private Project selectedProject;
+    private String statusChange;
 
-    private final ObservableList<String> availableUsers = FXCollections.observableArrayList();
-    private final ObservableList<String> assignedUsers = FXCollections.observableArrayList();
+    private final ObservableList<Employee> availableUsers = FXCollections.observableArrayList();
+    private final ObservableList<Employee> assignedUsers = FXCollections.observableArrayList();
 
     public void init(ViewHandler viewHandler, EditProjectViewModel viewModel, Object obj) {
         this.viewHandler = viewHandler;
         this.viewModel = viewModel;
         this.selectedProject = (Project) obj;
+        this.statusChange = "none";
+        viewModel.setProject(selectedProject);
 
         this.titleField.setText(selectedProject.getName());
         this.descriptionField.setText(selectedProject.getDescription());
 
         // Setup table columns
-        availableUsernameColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue()));
-        assignedUsernameColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue()));
+        availableUsernameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
+        assignedUsernameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
 
-        // Dummy data (replace with viewModel later)
-        availableUsers.addAll("dev1", "dev2", "dev3");
-        assignedUsers.addAll("dev4");
+        for(Employee employee : viewModel.getEmployees()) {
+            if(employee.getRole().getRole_name().equals("developer") && employee.getStatus().equals("active")) {
+                if (selectedProject.getEmployees().get(employee.getEmployee_id()) != null) {
+                    assignedUsers.add(employee);
+                } else {
+                    availableUsers.add(employee);
+                }
+            }
+        }
 
         availableUsersTable.setItems(availableUsers);
         assignedUsersTable.setItems(assignedUsers);
-
-        viewModel.addListener(this::projectUpdated);
 
         // Action buttons
         addUserButton.setOnAction(e -> assignUser());
@@ -66,11 +75,12 @@ public class EditProjectViewController {
         cancelButton.setOnAction(e -> viewHandler.openView("ManageProjects"));
         startEndProjectButton.setOnAction(e -> startEndProject());
 
+
         loadLabels();
     }
 
     private void assignUser() {
-        String selected = availableUsersTable.getSelectionModel().getSelectedItem();
+        Employee selected = availableUsersTable.getSelectionModel().getSelectedItem();
         if (selected != null) {
             availableUsers.remove(selected);
             assignedUsers.add(selected);
@@ -78,7 +88,7 @@ public class EditProjectViewController {
     }
 
     private void unassignUser() {
-        String selected = assignedUsersTable.getSelectionModel().getSelectedItem();
+        Employee selected = assignedUsersTable.getSelectionModel().getSelectedItem();
         if (selected != null) {
             assignedUsers.remove(selected);
             availableUsers.add(selected);
@@ -86,35 +96,32 @@ public class EditProjectViewController {
     }
 
     private void saveProject() {
-        // TODO: Replace with model logic
-        System.out.println("Saving project with:");
-        System.out.println("Title: " + titleField.getText());
-        System.out.println("Description: " + descriptionField.getText());
-        System.out.println("Assigned Users: " + assignedUsers);
+        viewModel.saveEmployees(assignedUsers, availableUsers);
+        if(statusChange.equals("ongoing"))
+        {
+            viewModel.startProject();
+        }
+        else if(statusChange.equals("finished"))
+        {
+            viewModel.endProject();
+        }
+        viewModel.saveNameAndDesc(titleField.getText(), descriptionField.getText());
         viewHandler.openView("ManageProjects");
     }
 
     private void startEndProject() {
         if(selectedProject.getStatus().equals("pending"))
         {
-            viewModel.startProject(selectedProject);
+            statusChange = "ongoing";
+            statusText.setText(statusChange);
+            startDateLabel.setText(LocalDate.now().toString());
         }
         else if(selectedProject.getStatus().equals("ongoing"))
         {
-            viewModel.endProject(selectedProject);
+            statusChange = "finished";
+            statusText.setText(statusChange);
+            endDateLabel.setText(LocalDate.now().toString());
         }
-    }
-
-    private void projectUpdated(PropertyChangeEvent propertyChangeEvent) {
-        Platform.runLater(() -> {
-            this.projectUpdated();
-        });
-    }
-
-    private void projectUpdated()
-    {
-        selectedProject = viewModel.getProject(selectedProject.getProject_id());
-        loadLabels();
     }
 
     private void loadLabels() {
@@ -128,6 +135,9 @@ public class EditProjectViewController {
                 break;
             default:
                 startEndProjectButton.setVisible(false);
+                saveButton.setVisible(false);
+                addUserButton.setVisible(false);
+                removeUserButton.setVisible(false);
                 break;
         }
         statusText.setText(selectedProject.getStatus());
