@@ -11,6 +11,7 @@ import Network.Response.Response;
 
 import java.sql.Date;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -289,6 +290,7 @@ public class ServerModelManager {
             Project projectReflection = projects.get(project.getProject_id());
             if(projectReflection != null) {
                 projectReflection.setStatus("finished");
+                projectReflection.setEnd_date(Date.valueOf(LocalDate.now()));
                 return true;
             }
             return false;
@@ -314,6 +316,7 @@ public class ServerModelManager {
             Project projectReflection = projects.get(project.getProject_id());
             if(projectReflection != null) {
                 projectReflection.setStatus("ongoing");
+                projectReflection.setStart_date(Date.valueOf(LocalDate.now()));
                 return true;
             }
             return false;
@@ -628,6 +631,38 @@ public class ServerModelManager {
         }
     }
 
+    public boolean removeTask(Task task)
+    {
+        synchronized(writerLock) {
+            waitingWriters++;
+        }
+
+        lock.writeLock().lock();
+        try
+        {
+            dao.removeTask(task);
+            for(Task taskReflection : projects.get(task.getProject_id()).getBacklog()) {
+                if(taskReflection.getTask_id() == task.getTask_id()) {
+                    projects.get(task.getProject_id()).getBacklog().remove(taskReflection);
+                    for(Sprint sprintReflection : projects.get(task.getProject_id()).getSprints())
+                    {
+                        sprintReflection.removeTask(taskReflection);
+                        return true;
+                    }
+                }
+            }
+            return false;
+        } catch (RuntimeException e) {
+            return false;
+        } finally {
+            lock.writeLock().unlock();
+            synchronized(writerLock) {
+                waitingWriters--;
+                writerLock.notifyAll();
+            }
+        }
+    }
+
     public boolean editSprint(Sprint sprint) {
         synchronized(writerLock) {
             waitingWriters++;
@@ -711,6 +746,9 @@ public class ServerModelManager {
                 break;
             case "editTask":
                 requestHandler = new EditTaskHandler();
+                break;
+            case "removeTask":
+                requestHandler = new RemoveTaskHandler();
                 break;
             case "editSprint":
                 requestHandler = new EditSprintHandler();

@@ -51,7 +51,7 @@ public class ViewFactory
                  loader.setLocation(getClass().getResource("/View/EditProjectView.fxml"));
                  root = loader.load();
                  EditProjectViewController controller = loader.getController();
-                 controller.init(viewHandler, viewModelFactory.getEditProjectViewModel());
+                 controller.init(viewHandler, viewModelFactory.getEditProjectViewModel(), obj);
              }
 
              case "ViewProject" -> {
@@ -68,18 +68,18 @@ public class ViewFactory
                  controller.init(viewHandler, viewModelFactory.getManageSprintsViewModel(), obj);
              }
 
-//             case "AddSprint" -> {
-//                 loader.setLocation(getClass().getResource("/View/AddSprintView.fxml"));
-//                 root = loader.load();
-//                 AddSprintViewController controller = loader.getController();
-//                 controller.init(viewHandler, viewModelFactory.getAddSprintViewModel());
-//             }
+             case "AddSprint" -> {
+                 loader.setLocation(getClass().getResource("/View/AddSprintView.fxml"));
+                 root = loader.load();
+                 AddSprintViewController controller = loader.getController();
+                 controller.init(viewHandler, viewModelFactory.getAddSprintViewModel(), obj);
+             }
 
              case "EditSprint" -> {
                  loader.setLocation(getClass().getResource("/View/EditSprintView.fxml"));
                  root = loader.load();
                  EditSprintViewController controller = loader.getController();
-                 controller.init(viewHandler, viewModelFactory.getEditSprintViewModel());
+                 controller.init(viewHandler, viewModelFactory.getEditSprintViewModel(), obj);
              }
 
 
@@ -101,15 +101,15 @@ public class ViewFactory
                  loader.setLocation(getClass().getResource("/View/EditTaskView.fxml"));
                  root = loader.load();
                  EditTaskViewController controller = loader.getController();
-                 controller.init(viewHandler, viewModelFactory.getEditTaskViewModel());
+                 controller.init(viewHandler, viewModelFactory.getEditTaskViewModel(), obj);
              }
 
-//             case "ViewTask" -> {
-//                 loader.setLocation(getClass().getResource("/View/ViewTaskView.fxml"));
-//                 root = loader.load();
-//                 ViewTaskViewController controller = loader.getController();
-//                 controller.init(viewHandler, viewModelFactory.getViewTaskViewModel());
-//             }
+             case "ViewTask" -> {
+                 loader.setLocation(getClass().getResource("/View/ViewTaskView.fxml"));
+                 root = loader.load();
+                 ViewTaskViewController controller = loader.getController();
+                 controller.init(viewHandler, viewModelFactory.getViewTaskViewModel(), obj);
+             }
 
 //             case "ManageUsers" -> {
 //                 loader.setLocation(getClass().getResource("/View/ManageUsersView.fxml"));
