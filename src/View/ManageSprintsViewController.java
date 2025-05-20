@@ -109,6 +109,7 @@ public class ManageSprintsViewController {
 
     private void updateProjects()
     {
+        System.out.println("chujchuj kurwa sie updatuje");
         project = viewModel.getProject(project.getProject_id());
         sprints.setAll(project.getSprints());
         tableView.setItems(sprints);

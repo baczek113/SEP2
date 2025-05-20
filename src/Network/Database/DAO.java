@@ -304,6 +304,7 @@ public class DAO {
             removeTasksFromSprint(sprint);
             PreparedStatement statement = connection.prepareStatement("DELETE FROM sprint WHERE sprint_id = ?");
             statement.setInt(1, sprint.getSprint_id());
+            System.out.println("Dupa");
             statement.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Failed to remove sprint");
@@ -410,7 +411,7 @@ public class DAO {
     {
         try(Connection connection = getConnection())
         {
-            PreparedStatement statement = connection.prepareStatement("UPDATE task SET sprint_id = 0 WHERE sprint_id = ?");
+            PreparedStatement statement = connection.prepareStatement("UPDATE task SET sprint_id = null WHERE sprint_id = ?");
             statement.setInt(1, sprint.getSprint_id());
             statement.executeUpdate();
         }
