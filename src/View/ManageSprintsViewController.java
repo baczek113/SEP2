@@ -53,9 +53,9 @@ public class ManageSprintsViewController {
         tableView.setItems(sprints);
 
         tableView.setOnMouseClicked(event -> {
+            Sprint selected = tableView.getSelectionModel().getSelectedItem();
             if (event.getClickCount() == 2 && tableView.getSelectionModel().getSelectedItem() != null) {
-                // TODO: Pass selected project to ViewState if needed
-                viewHandler.openView("ManageTasks", project);
+                viewHandler.openView("ManageTasks", selected);
             }
         });
 
@@ -65,7 +65,6 @@ public class ManageSprintsViewController {
     private void updateProjects(PropertyChangeEvent propertyChangeEvent)
     {
         updateProjects();
-        System.out.println("CHuj");
     }
 
     private void showAlert(String message) {
@@ -109,7 +108,6 @@ public class ManageSprintsViewController {
 
     private void updateProjects()
     {
-        System.out.println("chujchuj kurwa sie updatuje");
         project = viewModel.getProject(project.getProject_id());
         sprints.setAll(project.getSprints());
         tableView.setItems(sprints);

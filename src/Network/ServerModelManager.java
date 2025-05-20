@@ -479,7 +479,7 @@ public class ServerModelManager {
             for(Task taskReflection : projects.get(task.getProject_id()).getBacklog()) {
                 if(taskReflection.getTask_id() == task.getTask_id()) {
                     dao.assignTask(employee, task);
-                    taskReflection.assignTo(employee);
+                    taskReflection.assignTo(employees.get(employee.getEmployee_id()));
                     return true;
                 }
             }
@@ -505,7 +505,7 @@ public class ServerModelManager {
             for(Task taskReflection : projects.get(task.getProject_id()).getBacklog()) {
                 if(taskReflection.getTask_id() == task.getTask_id()) {
                     dao.unAssignTask(employee, task);
-                    taskReflection.unassignTo(employee);
+                    taskReflection.unassignTo(employees.get(employee.getEmployee_id()));
                     return true;
                 }
             }

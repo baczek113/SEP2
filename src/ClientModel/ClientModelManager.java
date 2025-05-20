@@ -136,7 +136,7 @@ public class ClientModelManager {
         AssignTaskRequest assignTask = new AssignTaskRequest(action, loggedEmployee, task);
         client.sendRequest(assignTask);
     }
-    public void ChangeTaskStatus(Task task, String status){
+    public void changeTaskStatus(Task task, String status){
         ChangeTaskStatusRequest changeStatus = new ChangeTaskStatusRequest(loggedEmployee, task, status);
         client.sendRequest(changeStatus);
     }

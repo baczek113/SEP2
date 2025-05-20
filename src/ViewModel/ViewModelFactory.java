@@ -13,13 +13,11 @@ public class ViewModelFactory {
 
     private AddSprintViewModel addSprintViewModel;
     private EditSprintViewModel editSprintViewModel;
-//    private ViewSprintViewModel viewSprintViewModel;
     private ManageSprintsViewModel manageSprintsViewModel;
 
     private AddTaskViewModel addTaskViewModel;
     private EditTaskViewModel editTaskViewModel;
     private ViewTaskViewModel viewTaskViewModel;
-//    private ManageTasksViewModel manageTasksViewModel;
 
     private ManageUsersViewModel manageUsersViewModel;
     private ManageBacklogViewModel manageBacklogViewModel;
@@ -65,11 +63,6 @@ public class ViewModelFactory {
         if (editSprintViewModel == null) editSprintViewModel = new EditSprintViewModel(clientModelManager);
         return editSprintViewModel;
     }
-
-//    public ViewSprintViewModel getViewSprintViewModel() {
-//        if (viewSprintViewModel == null) viewSprintViewModel = new ViewSprintViewModel();
-//        return viewSprintViewModel;
-//    }
 
     public ManageSprintsViewModel getManageSprintsViewModel() {
         if (manageSprintsViewModel == null) manageSprintsViewModel = new ManageSprintsViewModel(clientModelManager);

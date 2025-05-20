@@ -24,7 +24,7 @@
                 <TableView fx:id="todoTable" prefHeight="486.0" prefWidth="719.0">
                     <columns>
                         <TableColumn fx:id="todoNameColumn" prefWidth="233.0" text="Name" />
-                        <TableColumn fx:id="todoCreatedByColumn" prefWidth="233.0" text="Created By" />
+                        <TableColumn fx:id="todoAssignedToColumn" prefWidth="233.0" text="Assigned To" />
                         <TableColumn fx:id="todoPriorityColumn" prefWidth="233.0" text="Priority" />   
                     </columns>
                 </TableView>
@@ -35,7 +35,7 @@
                 <TableView fx:id="doingTable">
                     <columns>
                         <TableColumn fx:id="doingNameColumn" prefWidth="233.0" text="Name" />
-                        <TableColumn fx:id="doingCreatedByColumn" prefWidth="233.0" text="Created By" />
+                        <TableColumn fx:id="doingAssignedToColumn" prefWidth="233.0" text="Assigned To" />
                         <TableColumn fx:id="doingPriorityColumn" prefWidth="233.0" text="Priority" />
                     </columns>
                 </TableView>
@@ -46,7 +46,7 @@
                 <TableView fx:id="doneTable">
                     <columns>
                         <TableColumn fx:id="doneNameColumn" prefWidth="233.0" text="Name" />
-                        <TableColumn fx:id="doneCreatedByColumn" prefWidth="233.0" text="Created By" />
+                        <TableColumn fx:id="doneAssignedToColumn" prefWidth="233.0" text="Assigned To" />
                         <TableColumn fx:id="donePriorityColumn" prefWidth="233.0" text="Priority" />
                     </columns>
                 </TableView>
@@ -57,15 +57,15 @@
                 <TableView fx:id="checkedTable">
                     <columns>
                         <TableColumn fx:id="checkedNameColumn" prefWidth="233.0" text="Name" />
-                        <TableColumn fx:id="checkedCreatedByColumn" prefWidth="233.0" text="Created By" />
+                        <TableColumn fx:id="checkedAssignedToColumn" prefWidth="233.0" text="Assigned To" />
                         <TableColumn fx:id="checkedPriorityColumn" prefWidth="233.0" text="Priority" />
                     </columns>
                 </TableView>
             </Tab>
         </TabPane>
-      <Button fx:id="takeTask" layoutX="116.0" layoutY="563.0" mnemonicParsing="false" onAction="#takeTask" text="Take task" />
-      <Button fx:id="changeStatus" layoutX="533.0" layoutY="563.0" mnemonicParsing="false" onAction="#changeStatus" text="Change status" />
-      <Button fx:id="unassign" layoutX="329.0" layoutY="563.0" mnemonicParsing="false" onAction="#unassign" text="Unassign" />
+      <Button fx:id="takeTask" layoutX="115.0" layoutY="563.0" mnemonicParsing="false" onAction="#takeTask" text="Assign to self" />
+      <Button fx:id="changeStatus" layoutX="533.0" layoutY="563.0" mnemonicParsing="false" onAction="#changeStatus" text="Update status" />
+      <Button fx:id="unassign" layoutX="304.0" layoutY="563.0" mnemonicParsing="false" onAction="#unassign" text="Unassign from self" />
       <Button fx:id="goBack" layoutX="50.0" layoutY="21.0" mnemonicParsing="false" onAction="#goBack" prefHeight="8.0" prefWidth="34.0" text="←" />
 
     </children>
