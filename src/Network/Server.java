@@ -5,7 +5,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.SQLException;
 
-public class Server
+public class   Server
 {
   public static void main(String[] args) throws IOException {
     ServerSocket serverSocket = new ServerSocket(2137);

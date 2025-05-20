@@ -69,7 +69,6 @@ public class ManageUsersViewModel
     }
     private String roleNameFromId(int id) {
         return switch (id) {
-            case 1 -> "admin";
             case 2 -> "product_owner";
             case 3 -> "scrum_master";
             case 4 -> "developer";
