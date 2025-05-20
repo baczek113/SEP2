@@ -5,8 +5,6 @@ import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -17,9 +15,9 @@ import java.beans.PropertyChangeEvent;
 public class ManageUsersViewController {
 
     @FXML private TableView<Employee> tableView;
-    @FXML private TableColumn<Employee, String> title; // Username
-    @FXML private TableColumn<Employee, String> year;  // Role
-    @FXML private TableColumn<Employee, String> status;  // Status
+    @FXML private TableColumn<Employee, String> title;  // Username
+    @FXML private TableColumn<Employee, String> year;   // Role
+    @FXML private TableColumn<Employee, String> status; // Status
 
     @FXML private TextField usernameField;
     @FXML private TextField passwordField;
@@ -54,31 +52,30 @@ public class ManageUsersViewController {
                     case "product_owner" -> roleName = "Product Owner";
                     case "scrum_master" -> roleName = "Scrum Master";
                     case "developer" -> roleName = "Developer";
-                    default -> roleName = cellData.getValue().getRole().getRole_name(); // fallback
+                    default -> roleName = cellData.getValue().getRole().getRole_name();
                 }
             }
             return new ReadOnlyStringWrapper(roleName);
         });
         status.setCellValueFactory(new PropertyValueFactory<>("status"));
 
-
         roleComboBox.setItems(FXCollections.observableArrayList("Product Owner", "Scrum Master", "Developer"));
 
         setupSelectionListener();
-
-
     }
-    private int mapRoleToId(String role) {
-        return switch (role.toLowerCase()) {
-            case "product owner", "product_owner" -> 2;
-            case "scrum master", "scrum_master" -> 3;
-            case "developer" -> 4;
-            default -> throw new IllegalArgumentException("Unknown role: " + role);
-        };
+
+    @FXML
+    private void add() {
+        clearFields();
+        passwordField.setVisible(true);
+        passwordLabel.setVisible(true);
+        passwordField.setEditable(true);
+        isEditMode = false;
+        editingUser = null;
     }
+
     @FXML
     private void edit() {
-
         Employee selected = tableView.getSelectionModel().getSelectedItem();
 
         if (selected == null) {
@@ -89,38 +86,29 @@ public class ManageUsersViewController {
         usernameField.setText(selected.getUsername());
         passwordField.setVisible(false);
         passwordLabel.setVisible(false);
-        roleComboBox.setValue(selected.getRole().getRole_name());
+
+        if (selected.getRole() != null) {
+            String roleName = selected.getRole().getRole_name();
+            switch (roleName.toLowerCase()) {
+                case "product_owner" -> roleComboBox.setValue("Product Owner");
+                case "scrum_master" -> roleComboBox.setValue("Scrum Master");
+                case "developer" -> roleComboBox.setValue("Developer");
+                default -> roleComboBox.setValue(roleName);
+            }
+        } else {
+            roleComboBox.setValue(null);
+        }
 
         editingUser = selected;
         isEditMode = true;
     }
-
-
-
-    @FXML
-    private void add() {
-        String username = usernameField.getText();
-        String password = passwordField.getText();
-        int role = mapRoleToId(roleComboBox.getValue());
-
-        passwordField.setVisible(true);
-        passwordLabel.setVisible(true);
-
-        if (username != null && password != null)
-        {
-            viewModel.addEmployee(username, password, role);
-            clearFields();
-        }
-    }
-
-
 
     @FXML
     private void save() {
         String username = usernameField.getText();
         String selectedRole = roleComboBox.getValue();
 
-        if (username.isEmpty() || selectedRole == null) {
+        if (username == null || username.isEmpty() || selectedRole == null) {
             showAlert("Please fill in all fields.");
             return;
         }
@@ -128,12 +116,10 @@ public class ManageUsersViewController {
         int roleId = mapRoleToId(selectedRole);
 
         if (isEditMode && editingUser != null) {
-            // Update logic
             viewModel.updateEmployee(editingUser, username, roleId);
         } else {
-            // Add logic
             String password = passwordField.getText();
-            if (password.isEmpty()) {
+            if (password == null || password.isEmpty()) {
                 showAlert("Please enter a password.");
                 return;
             }
@@ -146,7 +132,6 @@ public class ManageUsersViewController {
         editingUser = null;
     }
 
-
     @FXML
     private void activate() {
         Employee selected = tableView.getSelectionModel().getSelectedItem();
@@ -155,6 +140,7 @@ public class ManageUsersViewController {
             clearFields();
         }
     }
+
     @FXML
     private void deactivate() {
         Employee selected = tableView.getSelectionModel().getSelectedItem();
@@ -164,15 +150,11 @@ public class ManageUsersViewController {
         }
     }
 
-
-
     private void setupSelectionListener() {
         tableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            // Optional: add live preview or enable/disable buttons
         });
     }
-
-
-
 
     private void clearFields() {
         usernameField.clear();
@@ -183,8 +165,6 @@ public class ManageUsersViewController {
         editingUser = null;
     }
 
-
-
     private void showAlert(String msg) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Info");
@@ -192,29 +172,36 @@ public class ManageUsersViewController {
         alert.setContentText(msg);
         alert.showAndWait();
     }
-    private void updateEmployee()
-    {
+
+    private int mapRoleToId(String role) {
+        if (role == null) {
+            throw new IllegalArgumentException("Role must be selected.");
+        }
+        return switch (role.toLowerCase()) {
+            case "product owner", "product_owner" -> 2;
+            case "scrum master", "scrum_master" -> 3;
+            case "developer" -> 4;
+            default -> throw new IllegalArgumentException("Unknown role: " + role);
+        };
+    }
+
+    private void updateEmployee() {
         ObservableList<Employee> allEmployees = viewModel.getEmployees();
-
-        ObservableList<Employee> withoutAdmin = allEmployees.filtered(employee -> employee.getRole() != null
-                && !employee.getRole().getRole_name().equals("admin"));
-
+        ObservableList<Employee> withoutAdmin = allEmployees.filtered(employee ->
+                employee.getRole() != null && !employee.getRole().getRole_name().equalsIgnoreCase("admin"));
         tableView.setItems(withoutAdmin);
     }
 
-    private void updateEmployHandler(PropertyChangeEvent event)
-    {
-        if(event.getPropertyName().equals("employees")) {
+    private void updateEmployHandler(PropertyChangeEvent event) {
+        if (event.getPropertyName().equals("employees")) {
             updateEmployee();
-        }
-        else if(event.getPropertyName().equals("cannotDeactivateEmployee") || event.getPropertyName().equals("cannotChangeRole"))
-        {
+        } else if (event.getPropertyName().equals("cannotDeactivateEmployee") ||
+                event.getPropertyName().equals("cannotChangeRole")) {
             Platform.runLater(() -> showAlert("This employee is assigned to an active project"));
         }
     }
 
-    private void logOut()
-    {
+    private void logOut() {
         viewModel.logOut();
         viewHandler.openView("Login");
     }
