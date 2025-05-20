@@ -1,6 +1,7 @@
 package ViewModel;
 
 import ClientModel.ClientModelManager;
+import Model.Employee;
 import Model.Project;
 import Model.Sprint;
 import javafx.collections.FXCollections;
@@ -30,6 +31,9 @@ public class ManageSprintsViewModel
     propertyChangeSupport.addPropertyChangeListener(listener);
   }
 
+  public Employee getLoggedEmployee(){
+    return model.getLoggedEmployee();
+  }
   public void projectsUpdated(PropertyChangeEvent e) {
       List<Project> updatedProjectsFromModel = (List<Project>) e.getNewValue();
       this.projects = new ArrayList<>(updatedProjectsFromModel);
@@ -44,5 +48,8 @@ public class ManageSprintsViewModel
       }
     }
     return null;
+  }
+  public void remove(Sprint sprint){
+    model.removeSprint(sprint);
   }
 }

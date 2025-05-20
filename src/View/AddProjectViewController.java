@@ -9,7 +9,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.StringConverter;
-
 import java.util.List;
 
 public class AddProjectViewController {
@@ -42,7 +41,6 @@ public class AddProjectViewController {
         // Setup table columns
         availableUsernameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
         assignedUsernameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
-
         List<Employee> employees = viewModel.getEmployees();
         List<Employee> scrum_masters = new EmployeeList();
 

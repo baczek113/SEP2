@@ -20,7 +20,7 @@ public class DAO {
     public Connection getConnection() throws SQLException
     {
         //Substitute for your own database login/password
-        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=sep_database", "postgres", "gigakoks1");
+        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=sep_database", "postgres", "dupa123");
     }
 
     public static DAO getInstance() throws SQLException
@@ -304,6 +304,7 @@ public class DAO {
             removeTasksFromSprint(sprint);
             PreparedStatement statement = connection.prepareStatement("DELETE FROM sprint WHERE sprint_id = ?");
             statement.setInt(1, sprint.getSprint_id());
+            System.out.println("Dupa");
             statement.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Failed to remove sprint");
@@ -397,7 +398,7 @@ public class DAO {
     {
         try(Connection connection = getConnection())
         {
-            PreparedStatement statement = connection.prepareStatement("UPDATE task SET sprint_id = 0 WHERE task_id = ?");
+            PreparedStatement statement = connection.prepareStatement("UPDATE task SET sprint_id = NULL WHERE task_id = ?");
             statement.setInt(1, task.getTask_id());
             statement.executeUpdate();
         }
@@ -410,7 +411,7 @@ public class DAO {
     {
         try(Connection connection = getConnection())
         {
-            PreparedStatement statement = connection.prepareStatement("UPDATE task SET sprint_id = 0 WHERE sprint_id = ?");
+            PreparedStatement statement = connection.prepareStatement("UPDATE task SET sprint_id = null WHERE sprint_id = ?");
             statement.setInt(1, sprint.getSprint_id());
             statement.executeUpdate();
         }

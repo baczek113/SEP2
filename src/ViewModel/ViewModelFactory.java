@@ -8,21 +8,22 @@ public class ViewModelFactory {
 
     private AddProjectViewModel addProjectViewModel;
     private EditProjectViewModel editProjectViewModel;
-    private ViewProjectViewModel viewProjectViewModel;
+//    private ViewProjectViewModel viewProjectViewModel;
     private ManageProjectsViewModel manageProjectsViewModel;
 
     private AddSprintViewModel addSprintViewModel;
     private EditSprintViewModel editSprintViewModel;
-    private ViewSprintViewModel viewSprintViewModel;
+//    private ViewSprintViewModel viewSprintViewModel;
     private ManageSprintsViewModel manageSprintsViewModel;
 
     private AddTaskViewModel addTaskViewModel;
     private EditTaskViewModel editTaskViewModel;
     private ViewTaskViewModel viewTaskViewModel;
-    private ManageTasksViewModel manageTasksViewModel;
+//    private ManageTasksViewModel manageTasksViewModel;
 
     private ManageUsersViewModel manageUsersViewModel;
     private ManageBacklogViewModel manageBacklogViewModel;
+    private ManageTasksViewModel manageTasksViewModel;
 
     private final ClientModelManager clientModelManager;
 
@@ -45,10 +46,10 @@ public class ViewModelFactory {
         return editProjectViewModel;
     }
 
-    public ViewProjectViewModel getViewProjectViewModel() {
-        if (viewProjectViewModel == null) viewProjectViewModel = new ViewProjectViewModel();
-        return viewProjectViewModel;
-    }
+//    public ViewProjectViewModel getViewProjectViewModel() {
+//        if (viewProjectViewModel == null) viewProjectViewModel = new ViewProjectViewModel();
+//        return viewProjectViewModel;
+//    }
 
     public ManageProjectsViewModel getManageProjectsViewModel() {
         if (manageProjectsViewModel == null) manageProjectsViewModel = new ManageProjectsViewModel(clientModelManager);
@@ -61,14 +62,14 @@ public class ViewModelFactory {
     }
 
     public EditSprintViewModel getEditSprintViewModel() {
-        if (editSprintViewModel == null) editSprintViewModel = new EditSprintViewModel();
+        if (editSprintViewModel == null) editSprintViewModel = new EditSprintViewModel(clientModelManager);
         return editSprintViewModel;
     }
 
-    public ViewSprintViewModel getViewSprintViewModel() {
-        if (viewSprintViewModel == null) viewSprintViewModel = new ViewSprintViewModel();
-        return viewSprintViewModel;
-    }
+//    public ViewSprintViewModel getViewSprintViewModel() {
+//        if (viewSprintViewModel == null) viewSprintViewModel = new ViewSprintViewModel();
+//        return viewSprintViewModel;
+//    }
 
     public ManageSprintsViewModel getManageSprintsViewModel() {
         if (manageSprintsViewModel == null) manageSprintsViewModel = new ManageSprintsViewModel(clientModelManager);
@@ -91,7 +92,7 @@ public class ViewModelFactory {
     }
 
     public ManageTasksViewModel getManageTasksViewModel() {
-        if (manageTasksViewModel == null) manageTasksViewModel = new ManageTasksViewModel();
+        if (manageTasksViewModel == null) manageTasksViewModel = new ManageTasksViewModel(clientModelManager);
         return manageTasksViewModel;
     }
 

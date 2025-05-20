@@ -19,7 +19,4 @@ public class AddSprintViewModel {
     public void addSprint(Project project, String name, Date startDate, Date endDate){
         model.addSprint(project, name, startDate, endDate);
     }
-    public void addTaskToSprint(String action, Sprint sprint, Task task){
-        model.addTaskToSprint(action, sprint, task);
-    }
 }

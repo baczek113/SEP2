@@ -12,6 +12,7 @@ import Network.Response.Response;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -580,6 +581,7 @@ public class ServerModelManager {
                 if(sprintReflection.getSprint_id() == sprint.getSprint_id()) {
                     for(Task taskReflection : projects.get(task.getProject_id()).getBacklog()) {
                         if(taskReflection.getTask_id() == task.getTask_id()) {
+                            taskReflection.setSprint_id(sprint.getSprint_id());
                             sprintReflection.addTask(taskReflection);
                             return true;
                         }
@@ -617,6 +619,7 @@ public class ServerModelManager {
                         if(taskReflection.getTask_id() == task.getTask_id())
                         {
                             sprintReflection.removeTask(taskReflection);
+                            taskReflection.setSprint_id(0);
                             return true;
                         }
                     }
@@ -732,17 +735,21 @@ public class ServerModelManager {
         lock.writeLock().lock();
         try {
             dao.removeSprint(sprint);
-            for(Sprint sprintReflection : projects.get(sprint.getProject_id()).getSprints())
+            Iterator<Sprint> employeeIterator = projects.get(sprint.getProject_id()).getSprints().iterator();
+            while(employeeIterator.hasNext())
             {
+                Sprint sprintReflection = employeeIterator.next();
                 if(sprintReflection.getSprint_id() == sprint.getSprint_id()) {
                     for(Task taskReflection : sprintReflection.getTasks()) {
                         taskReflection.setSprint_id(0);
                     }
-                    projects.get(sprint.getProject_id()).getSprints().remove(sprintReflection);
+                    employeeIterator.remove();
+                    return true;
                 }
             }
             return false;
         } catch (RuntimeException e) {
+            e.printStackTrace();
             return false;
         } finally {
             lock.writeLock().unlock();

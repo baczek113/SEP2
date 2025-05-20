@@ -2,6 +2,7 @@ package View;
 
 import Model.Project;
 import Model.Sprint;
+import Model.Task;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
@@ -13,7 +14,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
 import java.beans.PropertyChangeEvent;
-import java.util.List;
 
 public class ManageSprintsViewController {
     private ViewHandler viewHandler;
@@ -38,6 +38,11 @@ public class ManageSprintsViewController {
         this.viewModel = viewModel;
         this.project = (Project) obj;
         this.viewModel.addListener(this::updateProjects);
+        if (viewModel.getLoggedEmployee().getRole().getRole_id() != 3){
+            addSprint.setVisible(false);
+            editSprint.setVisible(false);
+            removeSprint.setVisible(false);
+        }
         updateProjects();
 
         sprints.setAll(project.getSprints());
@@ -50,7 +55,7 @@ public class ManageSprintsViewController {
         tableView.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2 && tableView.getSelectionModel().getSelectedItem() != null) {
                 // TODO: Pass selected project to ViewState if needed
-                viewHandler.openView("ManageTasks");
+                viewHandler.openView("ManageTasks", project);
             }
         });
 
@@ -74,7 +79,7 @@ public class ManageSprintsViewController {
 
     @FXML
     private void add() {
-        viewHandler.openView("AddSprint", project); // TODO: Pass selected project context if needed
+        viewHandler.openView("AddSprint", project);
     }
 
     @FXML
@@ -91,7 +96,7 @@ public class ManageSprintsViewController {
     private void remove() {
         Sprint selected = tableView.getSelectionModel().getSelectedItem();
         if (selected != null) {
-            sprints.remove(selected); // TODO: viewModel.removeSprint(selected)
+            viewModel.remove(selected);
         } else {
             showAlert("Please select a sprint to remove.");
         }
@@ -104,6 +109,7 @@ public class ManageSprintsViewController {
 
     private void updateProjects()
     {
+        System.out.println("chujchuj kurwa sie updatuje");
         project = viewModel.getProject(project.getProject_id());
         sprints.setAll(project.getSprints());
         tableView.setItems(sprints);
