@@ -83,6 +83,10 @@ public class ClientModelManager {
                 System.out.println("Error response received");
                 propertyChangeSupport.firePropertyChange("cannotDeactivateEmployee", null, null);
                 break;
+            case "cannotChangeRole":
+                System.out.println("Error response received");
+                propertyChangeSupport.firePropertyChange("cannotChangeRole", null, null);
+                break;
         }
     }
 

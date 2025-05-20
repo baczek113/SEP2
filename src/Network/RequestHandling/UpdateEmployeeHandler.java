@@ -30,5 +30,9 @@ public class UpdateEmployeeHandler implements RequestHandlerStrategy{
             }
             modelManager.getConnectionPool().broadcastProjects(broadcastProjectsTo);
         }
+        else
+        {
+            modelManager.getConnectionPool().sendErrorToSingleEmployee(request.getEmployee(), "cannotChangeRole");
+        }
     }
 }

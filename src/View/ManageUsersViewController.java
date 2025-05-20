@@ -207,7 +207,7 @@ public class ManageUsersViewController {
         if(event.getPropertyName().equals("employees")) {
             updateEmployee();
         }
-        else if(event.getPropertyName().equals("cannotDeactivateEmployee"))
+        else if(event.getPropertyName().equals("cannotDeactivateEmployee") || event.getPropertyName().equals("cannotChangeRole"))
         {
             Platform.runLater(() -> showAlert("This employee is assigned to an active project"));
         }

@@ -26,6 +26,11 @@ public class ManageUsersViewModel
         propertyChangeSupport = new PropertyChangeSupport(this);
         model.addListener("employees",this::employeesUpdated);
         model.addListener("cannotDeactivateEmployee", this::errorHandling);
+        model.addListener("cannotChangeRole", this::cannotChangeRole);
+    }
+
+    private void cannotChangeRole(PropertyChangeEvent propertyChangeEvent) {
+        propertyChangeSupport.firePropertyChange("cannotChangeRole", null, null);
     }
 
     public void addListener(PropertyChangeListener listener) {
