@@ -1,6 +1,7 @@
 package View;
 
 import Model.Employee;
+import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -203,7 +204,13 @@ public class ManageUsersViewController {
 
     private void updateEmployHandler(PropertyChangeEvent event)
     {
-        updateEmployee();
+        if(event.getPropertyName().equals("employees")) {
+            updateEmployee();
+        }
+        else if(event.getPropertyName().equals("cannotDeactivateEmployee"))
+        {
+            Platform.runLater(() -> showAlert("This employee is assigned to an active project"));
+        }
     }
 
     private void logOut()

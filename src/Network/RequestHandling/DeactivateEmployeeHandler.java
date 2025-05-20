@@ -30,5 +30,9 @@ public class DeactivateEmployeeHandler implements RequestHandlerStrategy{
             }
             modelManager.getConnectionPool().broadcastProjects(broadcastProjectsTo);
         }
+        else
+        {
+            modelManager.getConnectionPool().sendErrorToSingleEmployee(request.getEmployee(), "cannotDeactivateEmployee");
+        }
     }
 }

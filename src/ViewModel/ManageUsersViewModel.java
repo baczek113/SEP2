@@ -25,7 +25,7 @@ public class ManageUsersViewModel
         employees = model.getEmployees();
         propertyChangeSupport = new PropertyChangeSupport(this);
         model.addListener("employees",this::employeesUpdated);
-
+        model.addListener("cannotDeactivateEmployee", this::errorHandling);
     }
 
     public void addListener(PropertyChangeListener listener) {
@@ -34,7 +34,7 @@ public class ManageUsersViewModel
 
     public void employeesUpdated(PropertyChangeEvent e) {
         employees = (List<Employee>) e.getNewValue();
-        propertyChangeSupport.firePropertyChange("projects", null, null);
+        propertyChangeSupport.firePropertyChange("employees", null, null);
     }
     public ObservableList<Employee> getEmployees() {
         ObservableList<Employee> projectsObservable = FXCollections.observableArrayList();
@@ -81,5 +81,9 @@ public class ManageUsersViewModel
         model.logOut();
     }
 
+    public void errorHandling(PropertyChangeEvent propertyChangeEvent)
+    {
+        propertyChangeSupport.firePropertyChange("cannotDeactivateEmployee", null, null);
+    }
 
 }

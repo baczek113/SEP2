@@ -4,10 +4,9 @@ import Model.Employee;
 import Model.EmployeeList;
 import Model.Project;
 import Model.ProjectList;
-import Network.Response.EmployeeResponse;
-import Network.Response.ProjectResponse;
-import Network.Response.Response;
+import Network.Response.*;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -77,6 +76,21 @@ public class ConnectionPool {
                 catch (Exception e)
                 {
                     System.out.println("Failed to broadcast project");
+                }
+            }
+        }
+    }
+
+    public void sendErrorToSingleEmployee(Employee employee, String errorMessage) {
+        for(ServerConnection connection : connections)
+        {
+            if(connection.getEmployee().getEmployee_id() == employee.getEmployee_id())
+            {
+                try {
+                    connection.sendResponse(new ErrorResponse(errorMessage));
+                }
+                catch (Exception e) {
+                    System.out.println("Failed to send error message");
                 }
             }
         }
