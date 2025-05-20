@@ -37,4 +37,9 @@ public class ManageProjectsViewModel {
         projectsObservable.setAll(projects);
         return projectsObservable;
     }
+
+    public void logOut()
+    {
+        model.logOut();
+    }
 }

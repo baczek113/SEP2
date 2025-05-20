@@ -183,4 +183,13 @@ public class ClientModelManager {
     {
         return employees;
     }
+
+    public void logOut()
+    {
+        client.setRunning(false);
+        client = null;
+        loggedEmployee = null;
+        projects = new ProjectList();
+        employees = new EmployeeList();
+    }
 }

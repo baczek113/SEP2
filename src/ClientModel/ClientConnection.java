@@ -56,4 +56,8 @@ public class ClientConnection implements Runnable{
       e.printStackTrace();
     }
   }
+
+  public void setRunning(boolean running) {
+    this.running = running;
+  }
 }

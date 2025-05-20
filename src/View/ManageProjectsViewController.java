@@ -109,6 +109,7 @@ public class ManageProjectsViewController
     @FXML
     private void goBack()
     {
+        viewModel.logOut();
         viewHandler.openView("Login");
     }
 

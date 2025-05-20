@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="420.0" prefWidth="758.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.ManageUsersViewController">
+<AnchorPane prefHeight="420.0" prefWidth="758.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.ManageUsersViewController">
     <children>
         <TableView fx:id="tableView" layoutX="14.0" layoutY="56.0" prefHeight="310.0" prefWidth="427.0">
             <columns>
@@ -46,5 +46,6 @@
       <Button fx:id="deactivate" layoutX="321.0" layoutY="383.0" mnemonicParsing="false" onAction="#deactivate" prefHeight="26.0" prefWidth="115.0" text="Deactivate" />
       <Button fx:id="activate" layoutX="28.0" layoutY="383.0" mnemonicParsing="false" onAction="#activate" prefHeight="26.0" prefWidth="115.0" text="Active" />
       <Button fx:id="editUser" layoutX="620.0" layoutY="67.0" mnemonicParsing="false" onAction="#edit" prefHeight="26.0" prefWidth="115.0" text="Edit" />
+      <Button fx:id="logoutButton" layoutX="20.0" layoutY="11.0" mnemonicParsing="false" text="Log out" />
     </children>
 </AnchorPane>

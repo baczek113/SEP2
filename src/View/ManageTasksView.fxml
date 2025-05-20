@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="601.0" prefWidth="724.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.ManageTasksViewController">
+<AnchorPane prefHeight="601.0" prefWidth="724.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.ManageTasksViewController">
     <children>
 
 
@@ -20,7 +20,7 @@
 
         <TabPane fx:id="taskTabPane" layoutX="12.0" layoutY="57.0" prefHeight="500" prefWidth="700">
 
-            <Tab text="To Do">
+            <Tab closable="false" text="To Do">
                 <TableView fx:id="todoTable" prefHeight="486.0" prefWidth="719.0">
                     <columns>
                         <TableColumn fx:id="todoNameColumn" prefWidth="233.0" text="Name" />
@@ -31,7 +31,7 @@
             </Tab>
 
 
-            <Tab text="Doing">
+            <Tab closable="false" text="Doing">
                 <TableView fx:id="doingTable">
                     <columns>
                         <TableColumn fx:id="doingNameColumn" prefWidth="233.0" text="Name" />
@@ -42,7 +42,7 @@
             </Tab>
 
 
-            <Tab text="Done">
+            <Tab closable="false" text="Done">
                 <TableView fx:id="doneTable">
                     <columns>
                         <TableColumn fx:id="doneNameColumn" prefWidth="233.0" text="Name" />
@@ -53,7 +53,7 @@
             </Tab>
 
 
-            <Tab text="Done and Checked">
+            <Tab closable="false" text="Done and Approved">
                 <TableView fx:id="checkedTable">
                     <columns>
                         <TableColumn fx:id="checkedNameColumn" prefWidth="233.0" text="Name" />

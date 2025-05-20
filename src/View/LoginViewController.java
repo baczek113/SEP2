@@ -33,8 +33,6 @@ public class LoginViewController
         String password = name1.getText();
 
         viewModel.login(username, password);
-
-
     }
 
     public void handleLoginResponse(PropertyChangeEvent event)

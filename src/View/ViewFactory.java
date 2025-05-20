@@ -54,12 +54,12 @@ public class ViewFactory
                  controller.init(viewHandler, viewModelFactory.getEditProjectViewModel(), obj);
              }
 
-//             case "ViewProject" -> {
-//                 loader.setLocation(getClass().getResource("/View/ViewProjectView.fxml"));
-//                 root = loader.load();
-//                 ViewProjectViewController controller = loader.getController();
-//                 controller.init(viewHandler, viewModelFactory.getViewProjectViewModel(), obj);
-//             }
+             case "ViewProject" -> {
+                 loader.setLocation(getClass().getResource("/View/ViewProjectView.fxml"));
+                 root = loader.load();
+                 ViewProjectViewController controller = loader.getController();
+                 controller.init(viewHandler, viewModelFactory.getViewProjectViewModel(), obj);
+             }
 
              case "ManageSprints" -> {
                  loader.setLocation(getClass().getResource("/View/ManageSprintsView.fxml"));

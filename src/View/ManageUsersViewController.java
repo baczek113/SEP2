@@ -4,6 +4,8 @@ import Model.Employee;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -26,11 +28,10 @@ public class ManageUsersViewController {
     @FXML private Button deactivate;
     @FXML private Button saveUser;
     @FXML private Button addUser;
-
+    @FXML private Button logoutButton;
 
     private boolean isEditMode = false;
     private Employee editingUser = null;
-
 
     private ViewHandler viewHandler;
     private ManageUsersViewModel viewModel;
@@ -40,7 +41,9 @@ public class ManageUsersViewController {
         this.viewModel = viewModel;
 
         viewModel.addListener(this::updateEmployHandler);
-        updateEmploy();
+        updateEmployee();
+
+        logoutButton.setOnAction(e -> logOut());
 
         title.setCellValueFactory(new PropertyValueFactory<>("username"));
         year.setCellValueFactory(cellData -> {
@@ -188,7 +191,7 @@ public class ManageUsersViewController {
         alert.setContentText(msg);
         alert.showAndWait();
     }
-    private void updateEmploy()
+    private void updateEmployee()
     {
         ObservableList<Employee> allEmployees = viewModel.getEmployees();
 
@@ -200,7 +203,12 @@ public class ManageUsersViewController {
 
     private void updateEmployHandler(PropertyChangeEvent event)
     {
-        updateEmploy();
+        updateEmployee();
     }
 
+    private void logOut()
+    {
+        viewModel.logOut();
+        viewHandler.openView("Login");
+    }
 }

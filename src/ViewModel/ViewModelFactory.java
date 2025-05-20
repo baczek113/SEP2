@@ -8,7 +8,7 @@ public class ViewModelFactory {
 
     private AddProjectViewModel addProjectViewModel;
     private EditProjectViewModel editProjectViewModel;
-//    private ViewProjectViewModel viewProjectViewModel;
+    private ViewProjectViewModel viewProjectViewModel;
     private ManageProjectsViewModel manageProjectsViewModel;
 
     private AddSprintViewModel addSprintViewModel;
@@ -46,10 +46,10 @@ public class ViewModelFactory {
         return editProjectViewModel;
     }
 
-//    public ViewProjectViewModel getViewProjectViewModel() {
-//        if (viewProjectViewModel == null) viewProjectViewModel = new ViewProjectViewModel();
-//        return viewProjectViewModel;
-//    }
+    public ViewProjectViewModel getViewProjectViewModel() {
+        if (viewProjectViewModel == null) viewProjectViewModel = new ViewProjectViewModel();
+        return viewProjectViewModel;
+    }
 
     public ManageProjectsViewModel getManageProjectsViewModel() {
         if (manageProjectsViewModel == null) manageProjectsViewModel = new ManageProjectsViewModel(clientModelManager);

@@ -76,9 +76,10 @@ public class ManageUsersViewModel
         };
     }
 
-
-
-
+    public void logOut()
+    {
+        model.logOut();
+    }
 
 
 }
