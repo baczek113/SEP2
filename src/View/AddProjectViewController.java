@@ -1,27 +1,30 @@
 package View;
 
 import Model.Employee;
+import Model.EmployeeList;
 import ViewModel.AddProjectViewModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.StringConverter;
+import java.util.List;
 
 public class AddProjectViewController {
 
     @FXML private TextField titleField;
     @FXML private TextArea descriptionField;
-    @FXML private DatePicker startDatePicker;
-    @FXML private DatePicker endDatePicker;
-    @FXML private ComboBox<String> statusComboBox;
-    @FXML private ComboBox<String> statusComboBox1; // Scrum Master selection
+    @FXML private ComboBox<Employee> statusComboBox1;
 
     @FXML private TableView<Employee> availableUsersTable;
-    @FXML private TableColumn<Employee, String> availableUsernameColumn;
+    @FXML private TableColumn<String, String> availableUsernameColumn;
 
     @FXML private TableView<Employee> assignedUsersTable;
-    @FXML private TableColumn<Employee, String> assignedUsernameColumn;
+    @FXML private TableColumn<String, String> assignedUsernameColumn;
+
+    private ObservableList<Employee> availableUsers = FXCollections.observableArrayList();
+    private ObservableList<Employee> assignedUsers = FXCollections.observableArrayList();
 
     @FXML private Button addUserButton;
     @FXML private Button removeUserButton;
@@ -31,9 +34,6 @@ public class AddProjectViewController {
     private ViewHandler viewHandler;
     private AddProjectViewModel viewModel;
 
-    private final ObservableList<Employee> availableUsers = FXCollections.observableArrayList();
-    private final ObservableList<Employee> assignedUsers = FXCollections.observableArrayList();
-
     public void init(ViewHandler viewHandler, AddProjectViewModel viewModel) {
         this.viewHandler = viewHandler;
         this.viewModel = viewModel;
@@ -41,14 +41,36 @@ public class AddProjectViewController {
         // Setup table columns
         availableUsernameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
         assignedUsernameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
+        List<Employee> employees = viewModel.getEmployees();
+        List<Employee> scrum_masters = new EmployeeList();
 
-        // Populate table data
+        for(Employee employee : employees) {
+            if(employee.getRole().getRole_name().equals("developer"))
+            {
+                availableUsers.add(employee);
+            }
+            else if(employee.getRole().getRole_name().equals("scrum_master"))
+            {
+                scrum_masters.add(employee);
+            }
+        }
+        statusComboBox1.getItems().addAll(scrum_masters);
         availableUsersTable.setItems(availableUsers);
         assignedUsersTable.setItems(assignedUsers);
 
-        // Populate status options
-        statusComboBox.setItems(FXCollections.observableArrayList("Planning", "Active", "Finished"));
-        statusComboBox1.setItems(FXCollections.observableArrayList("scrum", "dev1", "dev2")); // usernames
+        statusComboBox1.setConverter(new StringConverter<Employee>() {
+            @Override
+            public String toString(Employee object) {
+                if(object != null) {
+                    return object.getUsername();
+                }
+                return "";
+            }
+            @Override
+            public Employee fromString(String string) {
+                return null;
+            }
+        });
     }
 
     @FXML
@@ -73,18 +95,23 @@ public class AddProjectViewController {
     private void save() {
         String title = titleField.getText();
         String description = descriptionField.getText();
-        String status = statusComboBox.getValue();
-        String scrumMaster = statusComboBox1.getValue();
-        String startDate = startDatePicker.getValue() != null ? startDatePicker.getValue().toString() : null;
-        String endDate = endDatePicker.getValue() != null ? endDatePicker.getValue().toString() : null;
+        Employee scrumMaster = statusComboBox1.getValue();
 
-        if (title.isEmpty() || description.isEmpty() || status == null || scrumMaster == null || startDate == null || endDate == null) {
+        if (title.isEmpty() || description.isEmpty() || scrumMaster == null) {
             showAlert("Please fill all fields.");
             return;
         }
 
-        // TODO: call viewModel.saveProject(...) when backend is ready
-        showAlert("Project saved (not really yet, dummy logic).");
+        EmployeeList assignedEmployees = new EmployeeList();
+        for(Employee employee : assignedUsers) {
+            assignedEmployees.add(employee);
+        }
+
+        assignedEmployees.add(scrumMaster);
+        assignedEmployees.add(viewModel.getLoggedEmployee());
+
+        viewModel.saveProject(scrumMaster, title, description, assignedEmployees);
+
         viewHandler.openView("ManageProjects");
     }
 

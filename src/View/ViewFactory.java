@@ -40,12 +40,12 @@ public class ViewFactory
                  controller.init(viewHandler, viewModelFactory.getManageProjectsViewModel());
              }
 
-//             case "AddProject" -> {
-//                 loader.setLocation(getClass().getResource("/View/AddProjectView.fxml"));
-//                 root = loader.load();
-//                 AddProjectViewController controller = loader.getController();
-//                 controller.init(viewHandler, viewModelFactory.getAddProjectViewModel());
-//             }
+             case "AddProject" -> {
+                 loader.setLocation(getClass().getResource("/View/AddProjectView.fxml"));
+                 root = loader.load();
+                 AddProjectViewController controller = loader.getController();
+                 controller.init(viewHandler, viewModelFactory.getAddProjectViewModel());
+             }
 
              case "EditProject" -> {
                  loader.setLocation(getClass().getResource("/View/EditProjectView.fxml"));

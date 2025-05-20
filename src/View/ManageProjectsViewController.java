@@ -65,7 +65,7 @@ public class ManageProjectsViewController
     @FXML
     private void add ()
     {
-        viewHandler.openView("AddProject"); // Later: pass a new empty project or use ViewModel logic
+        viewHandler.openView("AddProject");
     }
     @FXML
     private void edit ()
