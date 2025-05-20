@@ -49,8 +49,19 @@ public class ManageProjectsViewController
                 // TODO: Pass selected project to ViewState if needed
                 Project selected = tableView.getSelectionModel().getSelectedItem();
                 viewHandler.openView("ManageSprints", selected);
+
             }
+
         });
+
+        String roleName = viewModel.employeeGetLog().getRole().getRole_name();
+        if (roleName.equals("developer") || roleName.equals("scrum_master"))
+        {
+            addProject.setVisible(false);
+            editProject.setVisible(false);
+        }
+
+
 
 
     }

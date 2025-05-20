@@ -1,6 +1,7 @@
 package ViewModel;
 
 import ClientModel.ClientModelManager;
+import Model.Employee;
 import Model.Project;
 import Model.ProjectList;
 import javafx.collections.FXCollections;
@@ -41,5 +42,9 @@ public class ManageProjectsViewModel {
     public void logOut()
     {
         model.logOut();
+    }
+
+    public Employee employeeGetLog(){
+        return model.getLoggedEmployee();
     }
 }

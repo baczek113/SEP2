@@ -19,7 +19,7 @@
                 <TableColumn fx:id="endDate" prefWidth="230.0" text="End date" />
             </columns>
         </TableView>
-        <Label layoutX="225.0" layoutY="14.0" prefHeight="47.0" prefWidth="240.0" text="Manage Sprints" textAlignment="CENTER">
+        <Label layoutX="293.0" layoutY="13.0" prefHeight="47.0" prefWidth="102.0" text="Sprints" textAlignment="CENTER">
             <font>
                 <Font size="32.0" />
             </font>
