@@ -63,6 +63,9 @@ public class ManageTasksViewController {
             changeStatus.setVisible(false);
             unassign.setVisible(false);
         }
+        if (viewModel.getProject(sprint.getProject_id()).getStatus().equals("pending")){
+            changeStatus.setVisible(false);
+        }
         if(viewModel.getLoggedEmployeeRole().equals("product_owner"))
         {
             takeTask.setVisible(false);
