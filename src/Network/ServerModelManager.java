@@ -456,7 +456,6 @@ public class ServerModelManager {
             Task newTask = dao.addTask(project, title, description, priority);
             if(newTask != null) {
                 Project relevantProject = projects.get(project.getProject_id());
-                newTask.setSprint_id(0);
                 relevantProject.addToBacklog(newTask);
                 return true;
             }

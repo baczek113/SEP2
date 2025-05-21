@@ -31,6 +31,10 @@ public class ViewTaskViewController {
         this.viewModel = viewModel;
         this.selectedTask = (Task) obj;
 
+        if (viewModel.getProject(selectedTask.getProject_id()).getStatus().equals("finished")){
+            editButton.setVisible(false);
+        }
+
         // TODO: Replace with values from the actual viewModel or model
         nameLabel.setText(selectedTask.getName());
         descriptionLabel.setText(selectedTask.getDescription());
