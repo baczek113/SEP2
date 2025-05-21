@@ -23,6 +23,7 @@ public class ViewProjectViewController {
 
     @FXML private Button backButton;
     @FXML private Button editButton;
+    @FXML private  Label createdBy;
 
     private ViewHandler viewHandler;
     private ViewProjectViewModel viewModel;
@@ -41,6 +42,7 @@ public class ViewProjectViewController {
         scrumMasterLabel.setText(selectedProject.getScrum_master().getUsername());
         startDateLabel.setText(selectedProject.getStartDate());
         endDateLabel.setText(selectedProject.getEndDate());
+        createdBy.setText(selectedProject.getCreated_by().getUsername());
 
         // Set table column
         assignedUsernameColumn.setText("Employees");

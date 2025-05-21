@@ -40,29 +40,29 @@
             <Font size="20.0" />
          </font></Label>
 
-        <Label layoutX="4.0" layoutY="265.0" text="SCRUM Master:">
+        <Label layoutY="250.0" text="SCRUM Master:">
          <font>
             <Font size="20.0" />
          </font></Label>
-        <Label fx:id="scrumMasterLabel" layoutX="190.0" layoutY="265.0" prefHeight="30.0" prefWidth="182.0">
-         <font>
-            <Font size="20.0" />
-         </font></Label>
-
-        <Label layoutX="54.0" layoutY="332.0" text="Start Date:">
-         <font>
-            <Font size="20.0" />
-         </font></Label>
-        <Label fx:id="startDateLabel" layoutX="190.0" layoutY="332.0" prefHeight="30.0" prefWidth="182.0">
+        <Label fx:id="scrumMasterLabel" layoutX="190.0" layoutY="255.0" prefHeight="30.0" prefWidth="182.0">
          <font>
             <Font size="20.0" />
          </font></Label>
 
-        <Label layoutX="58.0" layoutY="389.0" text="End Date:">
+        <Label layoutX="43.0" layoutY="302.0" text="Start Date:">
          <font>
             <Font size="20.0" />
          </font></Label>
-        <Label fx:id="endDateLabel" layoutX="181.0" layoutY="389.0" prefHeight="30.0" prefWidth="189.0">
+        <Label fx:id="startDateLabel" layoutX="190.0" layoutY="302.0" prefHeight="30.0" prefWidth="182.0">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+
+        <Label layoutX="58.0" layoutY="350.0" text="End Date:">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+        <Label fx:id="endDateLabel" layoutX="181.0" layoutY="350.0" prefHeight="30.0" prefWidth="189.0">
          <font>
             <Font size="20.0" />
          </font></Label>
@@ -78,8 +78,18 @@
         </TableView>
 
         <!-- Action buttons -->
-        <Button fx:id="backButton"  onAction="#backToProject" layoutX="181.0" layoutY="469.0" prefWidth="150" text="← Back to Projects" />
-        <Button fx:id="editButton"  onAction="#editProject" layoutX="483.0" layoutY="469.0" prefWidth="150" text="Edit Project" />
+        <Button fx:id="backButton" layoutX="181.0" layoutY="469.0" onAction="#backToProject" prefWidth="150" text="← Back to Projects" />
+        <Button fx:id="editButton" layoutX="483.0" layoutY="469.0" onAction="#editProject" prefWidth="150" text="Edit Project" />
+      <Label layoutX="47.0" layoutY="397.0" prefHeight="30.0" prefWidth="105.0" text="Created by:">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="createdBy" layoutX="186.0" layoutY="397.0" prefHeight="30.0" prefWidth="189.0">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
 
     </children>
 </AnchorPane>
