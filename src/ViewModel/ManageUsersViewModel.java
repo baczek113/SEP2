@@ -10,6 +10,7 @@ import javafx.collections.ObservableList;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.sql.SQLException;
 import java.util.List;
 
 public class ManageUsersViewModel
@@ -59,18 +60,13 @@ public class ManageUsersViewModel
         model.activateEmployee(employee);
     }
 
-    public void updateEmployee(Employee employee) {
-
-        model.editEmployee(employee);
-    }
     public void updateEmployee(Employee employee, String newUsername, int newRoleId) {
-        employee.setUsername(newUsername);
-
-        // Replace role object with new one
-        String roleName = roleNameFromId(newRoleId);
-        employee.setRole(new Role(newRoleId, roleName));
-
-        model.editEmployee(employee); // send to server
+        try {
+            Employee employeeCopy = new Employee(employee.getEmployee_id(), newRoleId, newUsername);
+            model.editEmployee(employeeCopy);
+        } catch (SQLException e) {
+//            ...
+        }
     }
     private String roleNameFromId(int id) {
         return switch (id) {
