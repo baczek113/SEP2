@@ -51,6 +51,12 @@ public class ViewProjectViewController {
             }
         }
         assignedUsersTable.setItems(assignedUsers);
+
+        String roleName = viewModel.getLogedEmployee().getRole().getRole_name();
+        if (roleName.equals("developer") || roleName.equals("scrum_master"))
+        {
+            editButton.setVisible(false);
+        }
     }
 
     @FXML
