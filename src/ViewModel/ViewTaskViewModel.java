@@ -27,4 +27,8 @@ public class ViewTaskViewModel {
         }
         return null;
     }
+    public Employee getLoggedEmployee ()
+    {
+        return model.getLoggedEmployee();
+    }
 }

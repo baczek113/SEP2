@@ -40,6 +40,11 @@ public class ViewTaskViewController {
         usernameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
         assignedUsers.addAll(selectedTask.getAssignedTo());
         assignedUsersTable.setItems(assignedUsers);
+
+        if (viewModel.getLoggedEmployee().getRole().getRole_name().equals("developer")|| viewModel.getLoggedEmployee().getRole().getRole_name().equals("scrum_master"))
+        {
+            editButton.setVisible(false);
+        }
     }
 
     @FXML

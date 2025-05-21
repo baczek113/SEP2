@@ -1,6 +1,7 @@
 package View;
 
 import Model.Employee;
+import Model.Project;
 import Model.Sprint;
 import ViewModel.ManageTasksViewModel;
 import javafx.beans.property.SimpleStringProperty;
@@ -73,9 +74,25 @@ public class ManageTasksViewController {
         bindTable(doingTable, doingNameColumn, doingAssignedToColumn, doingPriorityColumn, doingTasks);
         bindTable(doneTable, doneNameColumn, doneAssignedToColumn, donePriorityColumn, doneTasks);
         bindTable(checkedTable, checkedNameColumn, checkedAssignedToColumn, checkedPriorityColumn, checkedTasks);
+
+        enableDoubleClickOpen(todoTable);
+        enableDoubleClickOpen(doingTable);
+        enableDoubleClickOpen(doneTable);
+        enableDoubleClickOpen(checkedTable);
+
     }
 
-    private void updateSprint(PropertyChangeEvent propertyChangeEvent) {
+        private void enableDoubleClickOpen(TableView<Task> table) {
+            table.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && table.getSelectionModel().getSelectedItem() != null) {
+                    Task selected = table.getSelectionModel().getSelectedItem();
+                    viewHandler.openView("ViewTask", selected);
+                }
+            });
+        }
+
+
+        private void updateSprint(PropertyChangeEvent propertyChangeEvent) {
         updateSprint();
     }
 
