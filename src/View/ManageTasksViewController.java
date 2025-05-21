@@ -58,7 +58,7 @@ public class ManageTasksViewController {
         viewModel.addPropertyChangeListener(this::updateSprint);
         updateSprint();
 
-        if(viewModel.getLoggedEmployeeRole().equals("scrum_master"))
+        if(viewModel.getLoggedEmployeeRole().equals("scrum_master") || viewModel.getProject(sprint.getProject_id()).getStatus().equals("finished"))
         {
             takeTask.setVisible(false);
             changeStatus.setVisible(false);

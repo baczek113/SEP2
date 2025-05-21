@@ -38,7 +38,7 @@ public class ManageSprintsViewController {
         this.viewModel = viewModel;
         this.project = (Project) obj;
         this.viewModel.addListener(this::updateProjects);
-        if (viewModel.getLoggedEmployee().getRole().getRole_id() != 3){
+        if (viewModel.getLoggedEmployee().getRole().getRole_id() != 3 || project.getStatus().equals("finished")){
             addSprint.setVisible(false);
             editSprint.setVisible(false);
             removeSprint.setVisible(false);
