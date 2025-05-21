@@ -2,7 +2,7 @@ package Network;
 
 import ClientModel.Requests.LoginRequest;
 import ClientModel.Requests.Request;
-import Model.*;
+import DataModel.*;
 import Network.Database.DAO;
 import Network.Database.Initializer;
 import Network.RequestHandling.*;

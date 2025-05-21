@@ -1,9 +1,9 @@
 package Network.Database;
 
-import Model.Employee;
-import Model.Project;
-import Model.Sprint;
-import Model.Task;
+import DataModel.Employee;
+import DataModel.Project;
+import DataModel.Sprint;
+import DataModel.Task;
 
 import java.sql.*;
 import java.util.HashMap;
@@ -20,7 +20,7 @@ public class DAO {
     public Connection getConnection() throws SQLException
     {
         //Substitute for your own database login/password
-        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=sep_database", "postgres", "dupa123");
+        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=sep_database", "postgres", "gigakoks1");
     }
 
     public static DAO getInstance() throws SQLException

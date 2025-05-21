@@ -1,7 +1,7 @@
 package ClientModel.Requests;
 
-import Model.Employee;
-import Model.Project;
+import DataModel.Employee;
+import DataModel.Project;
 
 public class ProjectRequest extends Request{
     private Project project;

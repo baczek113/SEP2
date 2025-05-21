@@ -1,12 +1,11 @@
 package ClientModel;
 
 import ClientModel.Requests.*;
-import Model.*;
+import DataModel.*;
 import Network.Response.EmployeeResponse;
 import Network.Response.LoginResponse;
 import Network.Response.ProjectResponse;
 import Network.Response.Response;
-import View.EditProjectViewController;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;

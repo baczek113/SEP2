@@ -1,4 +1,4 @@
-package Model;
+package DataModel;
 
 import java.io.Serializable;
 import java.util.List;

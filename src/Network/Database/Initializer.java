@@ -1,6 +1,6 @@
 package Network.Database;
 
-import Model.*;
+import DataModel.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

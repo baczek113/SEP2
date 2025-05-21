@@ -1,7 +1,7 @@
 package ViewModel;
 
 import ClientModel.ClientModelManager;
-import Model.Employee;
+import DataModel.Employee;
 
 import java.util.List;
 

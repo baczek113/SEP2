@@ -1,9 +1,7 @@
 package ViewModel;
 
 import ClientModel.ClientModelManager;
-import Model.Project;
-
-import java.beans.PropertyChangeSupport;
+import DataModel.Project;
 
 public class AddTaskViewModel {
     private final ClientModelManager model;

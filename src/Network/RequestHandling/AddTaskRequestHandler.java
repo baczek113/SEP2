@@ -2,8 +2,7 @@ package Network.RequestHandling;
 
 import ClientModel.Requests.AddTaskRequest;
 import ClientModel.Requests.Request;
-import Model.Project;
-import Model.Sprint;
+import DataModel.Project;
 import Network.ServerModelManager;
 
 import java.sql.SQLException;

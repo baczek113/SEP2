@@ -1,6 +1,6 @@
 package View;
 
-import Model.Employee;
+import DataModel.Employee;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;

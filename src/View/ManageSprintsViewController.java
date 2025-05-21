@@ -1,8 +1,7 @@
 package View;
 
-import Model.Project;
-import Model.Sprint;
-import Model.Task;
+import DataModel.Project;
+import DataModel.Sprint;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;

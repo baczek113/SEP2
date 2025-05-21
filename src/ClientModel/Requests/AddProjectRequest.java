@@ -1,6 +1,6 @@
 package ClientModel.Requests;
 
-import Model.Employee;
+import DataModel.Employee;
 
 import java.sql.Date;
 import java.util.List;

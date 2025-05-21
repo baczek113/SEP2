@@ -1,6 +1,5 @@
 package View;
 
-import Model.Employee;
 import ViewModel.LoginViewModel;
 import javafx.application.Platform;
 import javafx.fxml.FXML;

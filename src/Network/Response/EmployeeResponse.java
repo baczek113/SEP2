@@ -1,6 +1,6 @@
 package Network.Response;
 
-import Model.Employee;
+import DataModel.Employee;
 
 import java.io.Serializable;
 import java.util.List;

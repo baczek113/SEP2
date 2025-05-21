@@ -1,8 +1,8 @@
 package ViewModel;
 
 import ClientModel.ClientModelManager;
-import Model.Project;
-import Model.Task;
+import DataModel.Project;
+import DataModel.Task;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;

@@ -1,7 +1,7 @@
 package ViewModel;
 
 import ClientModel.ClientModelManager;
-import Model.Employee;
+import DataModel.Employee;
 
 public class ViewProjectViewModel {
     private final ClientModelManager model;

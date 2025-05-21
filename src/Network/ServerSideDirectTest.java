@@ -1,7 +1,7 @@
 package Network;
 
 import ClientModel.Requests.*;
-import Model.*;
+import DataModel.*;
 import Network.Response.*;
 
 import java.sql.Date;

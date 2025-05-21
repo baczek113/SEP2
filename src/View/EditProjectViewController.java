@@ -1,8 +1,7 @@
 package View;
 
-import Model.Employee;
-import Model.Project;
-import javafx.application.Platform;
+import DataModel.Employee;
+import DataModel.Project;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -10,7 +9,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import ViewModel.EditProjectViewModel;
 
-import java.beans.PropertyChangeEvent;
 import java.time.LocalDate;
 
 public class EditProjectViewController {

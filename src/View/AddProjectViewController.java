@@ -1,7 +1,7 @@
 package View;
 
-import Model.Employee;
-import Model.EmployeeList;
+import DataModel.Employee;
+import DataModel.EmployeeList;
 import ViewModel.AddProjectViewModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

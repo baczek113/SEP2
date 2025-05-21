@@ -1,9 +1,8 @@
 package ViewModel;
 
 import ClientModel.ClientModelManager;
-import Model.Employee;
-import Model.Project;
-import Model.ProjectList;
+import DataModel.Employee;
+import DataModel.Project;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 

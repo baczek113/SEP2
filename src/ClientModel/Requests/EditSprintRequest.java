@@ -1,7 +1,7 @@
 package ClientModel.Requests;
 
-import Model.Employee;
-import Model.Sprint;
+import DataModel.Employee;
+import DataModel.Sprint;
 
 public class EditSprintRequest extends Request{
     private Sprint sprint;

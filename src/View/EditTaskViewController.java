@@ -1,7 +1,6 @@
 package View;
 
-import Model.Project;
-import Model.Task;
+import DataModel.Task;
 import ViewModel.EditTaskViewModel;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;

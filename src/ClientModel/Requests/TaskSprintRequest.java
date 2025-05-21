@@ -1,8 +1,8 @@
 package ClientModel.Requests;
 
-import Model.Employee;
-import Model.Sprint;
-import Model.Task;
+import DataModel.Employee;
+import DataModel.Sprint;
+import DataModel.Task;
 
 public class TaskSprintRequest extends Request {
     private Task task;

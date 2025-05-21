@@ -1,8 +1,8 @@
 package ViewModel;
 
 import ClientModel.ClientModelManager;
-import Model.Employee;
-import Model.Project;
+import DataModel.Employee;
+import DataModel.Project;
 
 import java.util.List;
 

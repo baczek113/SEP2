@@ -1,9 +1,7 @@
 package Network;
 
-import Model.Employee;
-import Model.EmployeeList;
-import Model.Project;
-import Model.ProjectList;
+import DataModel.Employee;
+import DataModel.Project;
 
 import java.sql.Date;
 import java.util.ArrayList;

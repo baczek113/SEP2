@@ -2,9 +2,9 @@ package Network.RequestHandling;
 
 import ClientModel.Requests.EmployeeRequest;
 import ClientModel.Requests.Request;
-import Model.Employee;
-import Model.EmployeeList;
-import Model.Project;
+import DataModel.Employee;
+import DataModel.EmployeeList;
+import DataModel.Project;
 import Network.ServerModelManager;
 
 import java.util.List;

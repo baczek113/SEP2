@@ -1,12 +1,8 @@
 package ViewModel;
 
 import ClientModel.ClientModelManager;
-import Model.Employee;
-import Model.Project;
-import Model.Task;
-
-import java.beans.PropertyChangeEvent;
-import java.util.List;
+import DataModel.Employee;
+import DataModel.Project;
 
 public class ViewTaskViewModel {
     private final ClientModelManager model;

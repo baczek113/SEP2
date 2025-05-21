@@ -1,6 +1,6 @@
 package ClientModel.Requests;
 
-import Model.Employee;
+import DataModel.Employee;
 
 public class EmployeeRequest extends Request {
     private Employee employeeToSend;

@@ -1,13 +1,10 @@
 package Network;
 
-import Model.Employee;
-import Model.EmployeeList;
-import Model.Project;
-import Model.ProjectList;
+import DataModel.Employee;
+import DataModel.Project;
+import DataModel.ProjectList;
 import Network.Response.*;
 
-import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 

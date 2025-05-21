@@ -1,7 +1,7 @@
 package Network;
 
 import ClientModel.Requests.Request;
-import Model.Employee;
+import DataModel.Employee;
 import Network.Response.EmployeeResponse;
 import Network.Response.LoginResponse;
 import Network.Response.ProjectResponse;

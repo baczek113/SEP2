@@ -1,6 +1,6 @@
 package Network.Response;
 
-import Model.Employee;
+import DataModel.Employee;
 
 public class LoginResponse extends Response
 {

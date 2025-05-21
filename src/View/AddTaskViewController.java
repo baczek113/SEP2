@@ -1,7 +1,7 @@
 package View;
 
 
-import Model.Project;
+import DataModel.Project;
 import ViewModel.AddTaskViewModel; // Replace with your actual ViewModel when implemented
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;

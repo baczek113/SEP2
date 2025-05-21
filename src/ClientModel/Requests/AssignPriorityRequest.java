@@ -1,7 +1,7 @@
 package ClientModel.Requests;
 
-import Model.Employee;
-import Model.Task;
+import DataModel.Employee;
+import DataModel.Task;
 
 public class AssignPriorityRequest extends Request{
     private Task task;

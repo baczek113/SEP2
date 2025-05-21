@@ -1,12 +1,9 @@
 package ViewModel;
 
 import ClientModel.ClientModelManager;
-import Model.Employee;
-import Model.Project;
-import Model.ProjectList;
-import Model.Task;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import DataModel.Employee;
+import DataModel.Project;
+import DataModel.Task;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;

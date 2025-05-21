@@ -1,4 +1,4 @@
-package Model;
+package DataModel;
 
 import Network.Database.DAO;
 

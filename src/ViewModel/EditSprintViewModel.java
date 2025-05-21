@@ -1,14 +1,10 @@
 package ViewModel;
 
 import ClientModel.ClientModelManager;
-import Model.Project;
-import Model.Sprint;
-import Model.Task;
+import DataModel.Sprint;
+import DataModel.Task;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.util.ArrayList;
 import java.util.List;
 
 public class EditSprintViewModel {

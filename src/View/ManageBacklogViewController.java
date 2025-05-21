@@ -1,7 +1,7 @@
 package View;
 
-import Model.Project;
-import Model.Task;
+import DataModel.Project;
+import DataModel.Task;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;

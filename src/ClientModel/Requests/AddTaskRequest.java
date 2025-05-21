@@ -1,8 +1,7 @@
 package ClientModel.Requests;
 
-import Model.Employee;
-import Model.Project;
-import Model.Sprint;
+import DataModel.Employee;
+import DataModel.Project;
 
 public class AddTaskRequest extends Request
 {

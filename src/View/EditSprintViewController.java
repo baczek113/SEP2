@@ -1,8 +1,8 @@
 package View;
 
-import Model.Project;
-import Model.Sprint;
-import Model.Task;
+import DataModel.Project;
+import DataModel.Sprint;
+import DataModel.Task;
 import ViewModel.EditSprintViewModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,11 +10,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeSupport;
 import java.sql.Date;
 import java.time.LocalDate;
-import java.util.List;
 
 public class EditSprintViewController {
 
