@@ -248,7 +248,7 @@ public class ManageTasksViewController {
             }
             else
             {
-                showAlert("As a product owner you can only change status form done to done and approved");
+                showAlert("As a product owner you can only change status from done to done and approved");
             }
         }
     }
