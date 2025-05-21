@@ -63,6 +63,11 @@ public class ManageTasksViewController {
             changeStatus.setVisible(false);
             unassign.setVisible(false);
         }
+        if(viewModel.getLoggedEmployeeRole().equals("product_owner"))
+        {
+            takeTask.setVisible(false);
+            unassign.setVisible(false);
+        }
 
         bindTable(todoTable, todoNameColumn, todoAssignedToColumn, todoPriorityColumn, todoTasks);
         bindTable(doingTable, doingNameColumn, doingAssignedToColumn, doingPriorityColumn, doingTasks);
@@ -243,7 +248,7 @@ public class ManageTasksViewController {
             }
             else
             {
-                showAlert("Product owner can only approve tasks");
+                showAlert("As a product owner you can only change status form done to done and approved");
             }
         }
     }
