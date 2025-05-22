@@ -33,15 +33,15 @@
         </Label>
       <TableView fx:id="assignedUsersTable" layoutX="65.0" layoutY="339.0" prefHeight="126.0" prefWidth="250.0">
         <columns>
-          <TableColumn  fx:id="usernameColumn"  prefWidth="249.60002746582032" text="Username" />
+          <TableColumn fx:id="usernameColumn" prefWidth="249.60002746582032" text="Username" />
         </columns>
       </TableView>
-      <Label layoutX="122.0" layoutY="298.0" prefHeight="30.0" prefWidth="135.0" text="Assigned users">
+      <Label layoutX="94.0" layoutY="299.0" prefHeight="30.0" prefWidth="191.0" text="Assigned Developers">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Label  layoutX="65.0" layoutY="44.0" text="Name:">
+      <Label layoutX="65.0" layoutY="44.0" text="Name:">
          <font>
             <Font size="20.0" />
          </font>
