@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="420.0" prefWidth="758.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.ManageUsersViewController">
+<AnchorPane prefHeight="420.0" prefWidth="758.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.ManageUsersViewController">
     <children>
         <TableView fx:id="tableView" layoutX="14.0" layoutY="56.0" prefHeight="310.0" prefWidth="427.0">
             <columns>
@@ -18,7 +18,7 @@
                 <TableColumn fx:id="status" prefWidth="130.0" text="Status" />
             </columns>
         </TableView>
-        <Label layoutX="239.0" prefHeight="47.0" prefWidth="201.0" text="Manage users" textAlignment="CENTER">
+        <Label layoutX="240.0" prefHeight="47.0" prefWidth="278.0" text="Manage Employees" textAlignment="CENTER">
             <font>
                 <Font size="32.0" />
             </font>
