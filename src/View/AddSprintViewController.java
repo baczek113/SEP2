@@ -31,18 +31,17 @@ public class AddSprintViewController {
 
     @FXML
     private void save() {
-        String name = titleField.getText();
+        String name = titleField.getText().trim();
         LocalDate localStartDate = startDatePicker.getValue();
         LocalDate localEndDate = endDatePicker.getValue();
 
-        Date startDate = null;
-        if (localStartDate != null) {
-            startDate = Date.valueOf(localStartDate);
+        if (name.isEmpty() || localStartDate == null || localEndDate == null || localStartDate.isAfter(localEndDate)) {
+            showAlert("Sprint data is incorrect. Please check the title and dates.");
+            return;
         }
-        Date endDate = null;
-        if (localEndDate != null) {
-            endDate = Date.valueOf(localEndDate);
-        }
+
+        Date startDate = Date.valueOf(localStartDate);
+        Date endDate = Date.valueOf(localEndDate);
 
         viewModel.addSprint(project, name, startDate, endDate);
         showAlert("Sprint saved successfully.");

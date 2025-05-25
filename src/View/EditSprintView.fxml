@@ -5,7 +5,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
@@ -18,31 +17,24 @@
             <font><Font size="28" /></font>
         </Label>
 
-        <Label layoutX="103.0" layoutY="90.0" text="Title:">
+        <Label layoutX="108.0" layoutY="95.0" text="Title:">
             <font>
                 <Font size="20.0" />
             </font></Label>
-        <TextField fx:id="titleField" layoutX="170.0" layoutY="93.0" prefWidth="250" />
-
-        <!-- Description -->
-        <Label layoutX="51.0" layoutY="272.0" text="Description:">
-            <font>
-                <Font size="20.0" />
-            </font></Label>
-        <TextArea fx:id="descriptionField" layoutX="170.0" layoutY="147.0" prefHeight="273.0" prefWidth="250" />
+        <TextField fx:id="titleField" layoutX="175.0" layoutY="98.0" prefWidth="250" />
 
         <!-- Dates -->
-        <Label layoutX="57.0" layoutY="443.0" text="Start Date:">
+        <Label layoutX="63.0" layoutY="153.0" text="Start Date:">
             <font>
                 <Font size="20.0" />
             </font></Label>
-        <DatePicker fx:id="startDatePicker" layoutX="170.0" layoutY="445.0" prefHeight="26.0" prefWidth="250.0" />
+        <DatePicker fx:id="startDatePicker" layoutX="176.0" layoutY="155.0" prefHeight="26.0" prefWidth="250.0" />
 
-        <Label layoutX="63.0" layoutY="502.0" text="End Date:">
+        <Label layoutX="69.0" layoutY="212.0" text="End Date:">
             <font>
                 <Font size="20.0" />
             </font></Label>
-        <DatePicker fx:id="endDatePicker" layoutX="170.0" layoutY="505.0" prefWidth="250.0" />
+        <DatePicker fx:id="endDatePicker" layoutX="176.0" layoutY="215.0" prefWidth="250.0" />
 
         <!-- User Tables -->
         <Label layoutX="538.0" layoutY="62.0" text="Assing tasks">

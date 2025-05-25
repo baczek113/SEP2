@@ -96,14 +96,33 @@ public class EditSprintViewController {
     }
 
     private void saveSprint() {
-        String tempTitle = titleField.getText();
+        String tempTitle = titleField.getText().trim();
         LocalDate localStartDate = startDatePicker.getValue();
         LocalDate localEndDate = endDatePicker.getValue();
-        Date.valueOf(localStartDate);
-        Date.valueOf(localEndDate);
-        Sprint tempSprint = new Sprint(sprint.getSprint_id(), sprint.getProject_id(), tempTitle, Date.valueOf(localStartDate), Date.valueOf(localEndDate));
+
+        if (tempTitle.isEmpty() || localStartDate == null || localEndDate == null || localStartDate.isAfter(localEndDate)) {
+            showAlert("Sprint data is incorrect. Please check the title and dates.");
+            return;
+        }
+
+        Sprint tempSprint = new Sprint(
+                sprint.getSprint_id(),
+                sprint.getProject_id(),
+                tempTitle,
+                Date.valueOf(localStartDate),
+                Date.valueOf(localEndDate)
+        );
+
         viewModel.editSprint(tempSprint);
         viewModel.addTasks(assignedTasks, availableTasks);
         viewHandler.openView("ManageSprints", project);
     }
+    private void showAlert(String msg) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information");
+        alert.setHeaderText(null);
+        alert.setContentText(msg);
+        alert.showAndWait();
+    }
+
 }
