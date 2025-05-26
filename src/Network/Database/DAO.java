@@ -64,17 +64,6 @@ public class DAO {
         }
     }
 
-    public void removeEmployee(Employee employee) {
-        try(Connection connection = getConnection()) {
-            PreparedStatement statement = connection.prepareStatement("DELETE FROM employee WHERE employee_id = ?");
-            statement.setInt(1, employee.getEmployee_id());
-            statement.executeUpdate();
-        }catch (SQLException e){
-            System.out.println("failed to remove employee: " + employee.getUsername());
-            throw new RuntimeException(e);
-        }
-    }
-
     public void addEmployeeToProject(Project project, Employee employee) {
         try(Connection connection = getConnection())
         {

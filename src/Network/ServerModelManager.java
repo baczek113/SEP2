@@ -691,8 +691,8 @@ public class ServerModelManager {
                     for(Sprint sprintReflection : projects.get(task.getProject_id()).getSprints())
                     {
                         sprintReflection.removeTask(taskReflection);
-                        return true;
                     }
+                    return true;
                 }
             }
             return false;
