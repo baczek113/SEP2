@@ -36,10 +36,6 @@ public class Project implements Serializable {
         return project_id;
     }
 
-    public void setProject_id(int project_id) {
-        this.project_id = project_id;
-    }
-
     public String getEndDate() {
         if(end_date != null) {
             return end_date.toString();
@@ -74,10 +70,6 @@ public class Project implements Serializable {
 
     public String getStatus() {
         return status;
-    }
-
-    public void setCreated_by(Employee created_by) {
-        this.created_by = created_by;
     }
 
     public void setDescription(String description) {

@@ -99,14 +99,9 @@ public class ManageBacklogViewController {
     }
 
     private void updateProject(PropertyChangeEvent propertyChangeEvent) {
-        for(Project iterableProject : viewModel.getProjects())
-        {
-            if(project.getProject_id() == iterableProject.getProject_id())
-            {
-                project = iterableProject;
-                observableList.clear();
-                observableList.addAll(project.getBacklog());
-            }
-        }
+            project = viewModel.getProjects().get(project.getProject_id());
+            observableList.clear();
+            observableList.addAll(project.getBacklog());
+            tableView.setItems(observableList);
     }
 }

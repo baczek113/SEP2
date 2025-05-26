@@ -14,13 +14,11 @@ import java.util.List;
 public class ManageSprintsViewModel
 {
   private final ClientModelManager model;
-  private List<Project> projects;
   private PropertyChangeSupport propertyChangeSupport;
 
   public ManageSprintsViewModel(ClientModelManager client)
   {
     this.model = client;
-    projects = client.getProjects();
     propertyChangeSupport = new PropertyChangeSupport(this);
     model.addListener("projects", this::projectsUpdated);
   }
@@ -33,19 +31,10 @@ public class ManageSprintsViewModel
     return model.getLoggedEmployee();
   }
   public void projectsUpdated(PropertyChangeEvent e) {
-      List<Project> updatedProjectsFromModel = (List<Project>) e.getNewValue();
-      this.projects = new ArrayList<>(updatedProjectsFromModel);
       propertyChangeSupport.firePropertyChange("projects", null, null);
   }
   public Project getProject(int project_id) {
-    for(Project project : model.getProjects())
-    {
-      if(project.getProject_id() == project_id)
-      {
-        return project;
-      }
-    }
-    return null;
+    return model.getProjects().get(project_id);
   }
   public void remove(Sprint sprint){
     model.removeSprint(sprint);

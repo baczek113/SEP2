@@ -64,7 +64,6 @@ public class EditSprintViewController {
           if (task.getSprint_id() == 0)
           {
             availableTasks.add(task);
-              System.out.println(task.getName());
           }
         }
         availableTaskTable.setItems(availableTasks);

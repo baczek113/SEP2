@@ -214,7 +214,7 @@ public class DAO {
 
             if(keys.next())
             {
-                return new Task(keys.getInt(1), -1, project.getProject_id(), title, description, "to-do", priority);
+                return new Task(keys.getInt(1), 0, project.getProject_id(), title, description, "to-do", priority);
             }
             else
             {
