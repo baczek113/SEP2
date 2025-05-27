@@ -222,7 +222,7 @@ public class ServerModelManager {
         }
         if(employee.getRole().getRole_name().equals("developer")) {
             for(Project project : projects) {
-                if(project.getEmployees().get(employee.getEmployee_id()) != null && project.getStatus().equals("ongoing"))
+                if(project.getEmployees().get(employee.getEmployee_id()) != null && !project.getStatus().equals("finished"))
                 {
                     return true;
                 }
