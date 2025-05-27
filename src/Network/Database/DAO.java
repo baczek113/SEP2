@@ -20,7 +20,7 @@ public class DAO {
     public Connection getConnection() throws SQLException
     {
         //Substitute for your own database login/password
-        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=sep_database", "postgres", "gigakoks1");
+        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=sep_database", "postgres", "zaq1@WSX");
     }
 
     public static DAO getInstance() throws SQLException
@@ -320,6 +320,7 @@ public class DAO {
 
     public Employee login(String username, String password)
     {
+        System.out.println("Login DAO");
         try(Connection connection = getConnection()) {
             PreparedStatement statement = connection.prepareStatement("SELECT employee_id, role_id, status FROM employee WHERE username = ? AND password = ?");
             statement.setString(1, username);

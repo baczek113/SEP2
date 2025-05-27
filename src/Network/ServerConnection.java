@@ -32,6 +32,8 @@ public  class ServerConnection implements Runnable{
     {
         try
         {
+            System.out.println("Login ServerConnection");
+
             Request loginRequest = (Request) inFromClient.readObject();
             LoginResponse loginResponse = (LoginResponse) modelManager.processLogin(loginRequest);
             int userType = -1;

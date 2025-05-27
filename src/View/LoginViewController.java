@@ -32,6 +32,8 @@ public class LoginViewController
         String password = name1.getText();
 
         viewModel.login(username, password);
+
+        System.out.println("Login ViewController");
     }
 
     public void handleLoginResponse(PropertyChangeEvent event)

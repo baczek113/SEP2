@@ -95,6 +95,7 @@ public class ClientModelManager {
             client = new ClientConnection(host, port, this, loginRequest);
             (new Thread(client)).start();
         }
+        System.out.println("Login clientModelManager");
     }
 
     public void createEmployee(String username, String password, int role_id){

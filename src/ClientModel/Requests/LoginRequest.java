@@ -12,6 +12,7 @@ public class LoginRequest extends Request
     super(action, null);
     this.username = username;
     this.password = password;
+    System.out.println("Login LoginRequest");
   }
 
   public String getUsername()

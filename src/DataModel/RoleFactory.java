@@ -33,4 +33,8 @@ public class RoleFactory implements Serializable {
         }
         return new Role(role_id, roleName);
     }
+    public static void setInstance(RoleFactory customFactory) {
+        instance = customFactory;
+    }
+
 }

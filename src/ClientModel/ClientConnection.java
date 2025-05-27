@@ -37,6 +37,8 @@ public class ClientConnection implements Runnable{
       try {
         while (running) {
           Response response = (Response) inFromServer.readObject();
+
+          System.out.println("Login ClientConnection");
           clientModelManager.handleServerResponse(response);
           if(response.getMessage().equals("loginFailure"))
           {

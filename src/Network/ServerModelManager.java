@@ -851,6 +851,8 @@ public class ServerModelManager {
 
     public Response processLogin(Request request)
     {
+        System.out.println("Login ServerModelManager");
+
         LoginRequest loginRequest = (LoginRequest) request;
         Employee loggedEmployee = this.login(loginRequest.getUsername(), loginRequest.getPassword());
         if(loggedEmployee != null && loggedEmployee.getStatus().equals("active")) {

@@ -107,18 +107,12 @@ public class ManageUsersViewController {
     private void save() {
         String username = usernameField.getText().trim();
         String selectedRole = roleComboBox.getValue();
+        String password = passwordField.getText().trim();
 
-        if (username.isEmpty() || selectedRole == null) {
-            showAlert("Please fill in all fields.");
+        String error = viewModel.validateInput(username, password, selectedRole, isEditMode, editingUser);
+        if (error != null) {
+            showAlert(error);
             return;
-        }
-        for (Employee employee : viewModel.getEmployees()) {
-            if (employee.getUsername().equalsIgnoreCase(username)) {
-                if (!isEditMode || (editingUser != null && !employee.equals(editingUser))) {
-                    showAlert("Username already exists.");
-                    return;
-                }
-            }
         }
 
         int roleId = mapRoleToId(selectedRole);
@@ -126,11 +120,6 @@ public class ManageUsersViewController {
         if (isEditMode && editingUser != null) {
             viewModel.updateEmployee(editingUser, username, roleId);
         } else {
-            String password = passwordField.getText().trim();
-            if (password.isEmpty()) {
-                showAlert("Please enter a password.");
-                return;
-            }
             viewModel.addEmployee(username, password, roleId);
         }
 
@@ -139,7 +128,6 @@ public class ManageUsersViewController {
         isEditMode = false;
         editingUser = null;
     }
-
 
     @FXML
     private void activate() {

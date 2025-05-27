@@ -24,6 +24,7 @@ public class LoginViewModel {
 
     public void login(String username, String password)
     {
+        System.out.println("Login ViewModel");
         model.login(username, password);
     }
 
