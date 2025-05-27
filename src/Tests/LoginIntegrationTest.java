@@ -22,7 +22,7 @@ public class LoginIntegrationTest {
     }
     @Test
     public void testFailedLogin() throws InterruptedException {
-        ClientModelManager model = new ClientModelManager("localhost", 1234);
+        ClientModelManager model = new ClientModelManager("localhost", 2137);
         LoginViewModel viewModel = new LoginViewModel(model);
 
         viewModel.login("wrong_user", "wrong_pass");
