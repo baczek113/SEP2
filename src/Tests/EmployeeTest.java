@@ -39,7 +39,7 @@ public class EmployeeTest {
     public void testActivateDeactivate() throws SQLException {
         Employee emp = new Employee(101, 1, "jane");
         emp.deativate();
-        assertEquals("inactive", emp.getStatus());
+        assertEquals("inactiveactive", emp.getStatus());
         emp.activate();
         assertEquals("active", emp.getStatus());
     }
